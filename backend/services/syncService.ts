@@ -1,60 +1,102 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-interface SyncItem {
+// ─── Types ────────────────────────────────────────────────────────────────────
+
+export type SyncEntityType = 'pet' | 'appointment' | 'medication' | 'medicalRecord';
+export type SyncAction = 'create' | 'update' | 'delete';
+export type ConflictResolutionStrategy = 'last-write-wins' | 'manual';
+
+export interface SyncItem {
   id: string;
-  type: 'pet' | 'appointment' | 'medication';
-  action: 'create' | 'update' | 'delete';
-  data: any;
+  type: SyncEntityType;
+  action: SyncAction;
+  data: Record<string, unknown>;
   timestamp: number;
   retries: number;
 }
 
-interface SyncStatus {
+export interface ConflictRecord {
+  entityId: string;
+  type: SyncEntityType;
+  localData: Record<string, unknown>;
+  serverData: Record<string, unknown>;
+  localTimestamp: number;
+  serverTimestamp: number;
+}
+
+export interface SyncStatus {
   isSyncing: boolean;
   lastSync: number | null;
   pendingCount: number;
   failedCount: number;
+  conflicts: ConflictRecord[];
 }
+
+// ─── Constants ────────────────────────────────────────────────────────────────
 
 const SYNC_QUEUE_KEY = '@sync_queue';
 const SYNC_STATUS_KEY = '@sync_status';
+const CONFLICTS_KEY = '@sync_conflicts';
 const MAX_RETRIES = 3;
 
-class SyncService {
-  private syncStatus: SyncStatus = {
-    isSyncing: false,
-    lastSync: null,
-    pendingCount: 0,
-    failedCount: 0,
-  };
+const DEFAULT_STATUS: SyncStatus = {
+  isSyncing: false,
+  lastSync: null,
+  pendingCount: 0,
+  failedCount: 0,
+  conflicts: [],
+};
 
-  async addToQueue(type: SyncItem['type'], action: SyncItem['action'], data: any): Promise<void> {
+// ─── SyncService ──────────────────────────────────────────────────────────────
+
+class SyncService {
+  private statusListeners: Array<(status: SyncStatus) => void> = [];
+
+  // ── Queue management ─────────────────────────────────────────────────────────
+
+  async addToQueue(type: SyncEntityType, action: SyncAction, data: Record<string, unknown>): Promise<void> {
     const queue = await this.getQueue();
+
+    const entityId = data.id as string | undefined;
+    const existingIdx = entityId
+      ? queue.findIndex(i => i.data.id === entityId && i.type === type && i.action === action)
+      : -1;
+
     const item: SyncItem = {
-      id: `${type}_${Date.now()}_${Math.random()}`,
+      id: `${type}_${Date.now()}_${Math.random().toString(36).slice(2)}`,
       type,
       action,
       data,
       timestamp: Date.now(),
       retries: 0,
     };
-    queue.push(item);
+
+    if (existingIdx >= 0) {
+      queue[existingIdx] = item;
+    } else {
+      queue.push(item);
+    }
+
     await AsyncStorage.setItem(SYNC_QUEUE_KEY, JSON.stringify(queue));
-    await this.updateStatus({ pendingCount: queue.length });
+    await this.patchStatus({ pendingCount: queue.length });
   }
 
-  async sync(apiClient: any): Promise<void> {
-    if (this.syncStatus.isSyncing) return;
+  // ── Push local changes to server ─────────────────────────────────────────────
 
-    await this.updateStatus({ isSyncing: true });
+  async sync(apiClient: { post: Function; put: Function; delete: Function; get: Function }): Promise<void> {
+    const status = await this.getStatus();
+    if (status.isSyncing) return;
+
+    await this.patchStatus({ isSyncing: true });
+
     const queue = await this.getQueue();
     const failed: SyncItem[] = [];
 
     for (const item of queue) {
       try {
         await this.syncItem(item, apiClient);
-      } catch (error) {
-        item.retries++;
+      } catch {
+        item.retries += 1;
         if (item.retries < MAX_RETRIES) {
           failed.push(item);
         }
@@ -62,7 +104,7 @@ class SyncService {
     }
 
     await AsyncStorage.setItem(SYNC_QUEUE_KEY, JSON.stringify(failed));
-    await this.updateStatus({
+    await this.patchStatus({
       isSyncing: false,
       lastSync: Date.now(),
       pendingCount: failed.length,
@@ -70,9 +112,114 @@ class SyncService {
     });
   }
 
-  private async syncItem(item: SyncItem, apiClient: any): Promise<void> {
+  // ── Pull from server ─────────────────────────────────────────────────────────
+
+  async pull(
+    apiClient: { get: Function },
+    types: SyncEntityType[] = ['pet', 'appointment', 'medication']
+  ): Promise<void> {
+    for (const type of types) {
+      try {
+        const response = await apiClient.get(`/${type}s`);
+        const serverItems: Record<string, unknown>[] = response.data;
+
+        for (const item of serverItems) {
+          const key = `@${type}_${item.id}`;
+          const localRaw = await AsyncStorage.getItem(key);
+          if (localRaw) {
+            const local = JSON.parse(localRaw) as Record<string, unknown>;
+            const resolved = await this.handleConflict(local, item);
+            await AsyncStorage.setItem(key, JSON.stringify(resolved));
+          } else {
+            await AsyncStorage.setItem(key, JSON.stringify(item));
+          }
+        }
+      } catch {
+        // Non-fatal: continue with other types
+      }
+    }
+  }
+
+  // ── Conflict resolution ──────────────────────────────────────────────────────
+
+  async handleConflict(
+    localData: Record<string, unknown>,
+    serverData: Record<string, unknown>,
+    strategy: ConflictResolutionStrategy = 'last-write-wins'
+  ): Promise<Record<string, unknown>> {
+    const localTs = (localData.updatedAt as number) || (localData.timestamp as number) || 0;
+    const serverTs = (serverData.updatedAt as number) || (serverData.timestamp as number) || 0;
+
+    if (strategy === 'last-write-wins') {
+      return serverTs >= localTs ? serverData : localData;
+    }
+
+    // Manual: store conflict for later resolution
+    const conflict: ConflictRecord = {
+      entityId: (localData.id as string) || '',
+      type: 'pet', // caller should pass type; defaulting here
+      localData,
+      serverData,
+      localTimestamp: localTs,
+      serverTimestamp: serverTs,
+    };
+    await this.addConflict(conflict);
+    return serverData;
+  }
+
+  async getConflicts(): Promise<ConflictRecord[]> {
+    const stored = await AsyncStorage.getItem(CONFLICTS_KEY);
+    return stored ? JSON.parse(stored) : [];
+  }
+
+  async resolveManualConflict(
+    entityId: string,
+    resolution: 'local' | 'server',
+    apiClient?: { put: Function }
+  ): Promise<void> {
+    const conflicts = await this.getConflicts();
+    const conflict = conflicts.find(c => c.entityId === entityId);
+    if (!conflict) return;
+
+    const resolved = resolution === 'local' ? conflict.localData : conflict.serverData;
+    const key = `@${conflict.type}_${entityId}`;
+    await AsyncStorage.setItem(key, JSON.stringify(resolved));
+
+    if (resolution === 'local' && apiClient) {
+      await apiClient.put(`/${conflict.type}s/${entityId}`, resolved);
+    }
+
+    await this.removeConflict(entityId);
+  }
+
+  // ── Status ───────────────────────────────────────────────────────────────────
+
+  async getStatus(): Promise<SyncStatus> {
+    const stored = await AsyncStorage.getItem(SYNC_STATUS_KEY);
+    const status: SyncStatus = stored ? JSON.parse(stored) : { ...DEFAULT_STATUS };
+    status.conflicts = await this.getConflicts();
+    return status;
+  }
+
+  onStatusChange(listener: (status: SyncStatus) => void): () => void {
+    this.statusListeners.push(listener);
+    return () => {
+      this.statusListeners = this.statusListeners.filter(l => l !== listener);
+    };
+  }
+
+  async clearQueue(): Promise<void> {
+    await AsyncStorage.setItem(SYNC_QUEUE_KEY, JSON.stringify([]));
+    await this.patchStatus({ pendingCount: 0, failedCount: 0 });
+  }
+
+  // ── Private helpers ──────────────────────────────────────────────────────────
+
+  private async syncItem(
+    item: SyncItem,
+    apiClient: { post: Function; put: Function; delete: Function }
+  ): Promise<void> {
     const endpoint = `/${item.type}s`;
-    
     switch (item.action) {
       case 'create':
         await apiClient.post(endpoint, item.data);
@@ -86,30 +233,32 @@ class SyncService {
     }
   }
 
-  async handleConflict(localData: any, serverData: any): Promise<any> {
-    const localTime = localData.updatedAt || localData.timestamp || 0;
-    const serverTime = serverData.updatedAt || serverData.timestamp || 0;
-    return serverTime >= localTime ? serverData : localData;
-  }
-
-  async getStatus(): Promise<SyncStatus> {
-    const stored = await AsyncStorage.getItem(SYNC_STATUS_KEY);
-    return stored ? JSON.parse(stored) : this.syncStatus;
-  }
-
-  private async updateStatus(updates: Partial<SyncStatus>): Promise<void> {
-    this.syncStatus = { ...this.syncStatus, ...updates };
-    await AsyncStorage.setItem(SYNC_STATUS_KEY, JSON.stringify(this.syncStatus));
-  }
-
   private async getQueue(): Promise<SyncItem[]> {
     const stored = await AsyncStorage.getItem(SYNC_QUEUE_KEY);
     return stored ? JSON.parse(stored) : [];
   }
 
-  async clearQueue(): Promise<void> {
-    await AsyncStorage.setItem(SYNC_QUEUE_KEY, JSON.stringify([]));
-    await this.updateStatus({ pendingCount: 0, failedCount: 0 });
+  private async patchStatus(updates: Partial<SyncStatus>): Promise<void> {
+    const current = await this.getStatus();
+    const next = { ...current, ...updates };
+    await AsyncStorage.setItem(SYNC_STATUS_KEY, JSON.stringify(next));
+    this.statusListeners.forEach(l => l(next));
+  }
+
+  private async addConflict(conflict: ConflictRecord): Promise<void> {
+    const conflicts = await this.getConflicts();
+    const idx = conflicts.findIndex(c => c.entityId === conflict.entityId);
+    if (idx >= 0) conflicts[idx] = conflict;
+    else conflicts.push(conflict);
+    await AsyncStorage.setItem(CONFLICTS_KEY, JSON.stringify(conflicts));
+  }
+
+  private async removeConflict(entityId: string): Promise<void> {
+    const conflicts = await this.getConflicts();
+    await AsyncStorage.setItem(
+      CONFLICTS_KEY,
+      JSON.stringify(conflicts.filter(c => c.entityId !== entityId))
+    );
   }
 }
 
