@@ -1,4 +1,28 @@
 {
+  "name": "petchain-mobile",
+  "version": "1.0.0",
+  "description": "PetChain — Secure pet health records, medication reminders, QR scanning, and emergency SOS, all powered by blockchain verification.",
+  "author": "PetChain, Inc. <support@petchain.app> (https://petchain.app)",
+  "homepage": "https://petchain.app",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DogStark/PetChain-MobileApp.git"
+  },
+  "license": "MIT",
+  "keywords": [
+    "pet",
+    "health",
+    "medical-records",
+    "blockchain",
+    "qr-scanner",
+    "medication-reminders",
+    "vet",
+    "pet-care",
+    "pet-tracker",
+    "react-native",
+    "expo",
+    "stellar"
+  ],
   "scripts": {
     "start": "APP_ENV=development expo start",
     "start:staging": "APP_ENV=staging expo start",
