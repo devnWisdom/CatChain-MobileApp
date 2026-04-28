@@ -112,7 +112,8 @@ const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({ visible, emai
 
 const SettingsScreen: React.FC<Props> = ({ onLogout }) => {
   const { t } = useTranslation();
-  const [profile, setProfile] = useState<User | null>(null);
+  const { mode: themeMode, setMode: setThemeMode } = useTheme();
+  const [_profile, setProfile] = useState<User | null>(null);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
@@ -528,6 +529,31 @@ const SettingsScreen: React.FC<Props> = ({ onLogout }) => {
         )}
       </View>
 
+      {/* ── Theme ── */}
+      <SectionHeader title={t('settings.theme', 'Theme')} />
+      <View style={styles.card}>
+        {(['system', 'light', 'dark'] as ThemeMode[]).map((option, idx, arr) => (
+          <React.Fragment key={option}>
+            <TouchableOpacity
+              style={styles.row}
+              onPress={() => void setThemeMode(option)}
+              accessibilityRole="radio"
+              accessibilityState={{ checked: themeMode === option }}
+            >
+              <Text style={styles.rowLabel}>
+                {option === 'system'
+                  ? t('settings.themeSystem', 'Follow system')
+                  : option === 'light'
+                    ? t('settings.themeLight', 'Light')
+                    : t('settings.themeDark', 'Dark')}
+              </Text>
+              {themeMode === option && <Text style={styles.checkmark}>✓</Text>}
+            </TouchableOpacity>
+            {idx < arr.length - 1 && <RowSeparator />}
+          </React.Fragment>
+        ))}
+      </View>
+
       {/* ── Language ── */}
       <SectionHeader title={t('settings.language')} />
       <View style={styles.card}>
@@ -661,6 +687,7 @@ const styles = StyleSheet.create({
   rowLabel: { fontSize: 15, color: '#1a1a1a' },
   rowValue: { fontSize: 15, color: '#888' },
   chevron: { fontSize: 20, color: '#bbb' },
+  checkmark: { fontSize: 16, color: '#4CAF50', fontWeight: '700' },
   separator: { height: 1, backgroundColor: '#f0f0f0' },
   notifLoader: { alignSelf: 'flex-end', marginBottom: 4 },
   logoutBtn: {
