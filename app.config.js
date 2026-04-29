@@ -74,6 +74,7 @@ module.exports = {
       favicon: './assets/favicon.png',
     },
     plugins: [
+      'expo-updates',
       [
         '@sentry/react-native/expo',
         {
@@ -101,6 +102,10 @@ module.exports = {
        SENTRY_ENABLE_IN_DEV: process.env.SENTRY_ENABLE_IN_DEV ?? 'false',
        MAX_CACHE_SIZE: process.env.MAX_CACHE_SIZE ?? '50',
        PAGINATION_LIMIT: process.env.PAGINATION_LIMIT ?? '20',
+       IOS_STORE_URL: process.env.IOS_STORE_URL ?? 'https://apps.apple.com/app/petchain/id000000000',
+       ANDROID_STORE_URL: process.env.ANDROID_STORE_URL ?? 'https://play.google.com/store/apps/details?id=app.petchain.mobile',
+       MIN_NATIVE_VERSION_IOS: process.env.MIN_NATIVE_VERSION_IOS ?? '1.0.0',
+       MIN_NATIVE_VERSION_ANDROID: process.env.MIN_NATIVE_VERSION_ANDROID ?? '1.0.0',
      },
   },
 };
