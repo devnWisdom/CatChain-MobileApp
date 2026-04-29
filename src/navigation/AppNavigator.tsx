@@ -16,6 +16,7 @@ import ManualEntryScreen from '../screens/ManualEntryScreen';
 import MedicalRecordSearchScreen from '../screens/MedicalRecordSearchScreen';
 import MedicalRecordViewerScreen from '../screens/MedicalRecordViewerScreen';
 import MedicationScreen from '../screens/MedicationScreen';
+import NearbyVetScreen from '../screens/NearbyVetScreen';
 import OnboardingScreen from '../screens/OnboardingScreen';
 import PaymentScreen from '../screens/PaymentScreen';
 import PetDetailScreen from '../screens/PetDetailScreen';
@@ -117,6 +118,9 @@ function PetNavigator() {
           />
         )}
       </PetStack.Screen>
+      <PetStack.Screen name="NearbyVet" options={{ title: 'Nearby Vet Clinics' }}>
+        {({ navigation }) => <NearbyVetScreen onBack={() => navigation.goBack()} />}
+      </PetStack.Screen>
       <PetStack.Screen
         name="NotificationPreferences"
         options={{ title: 'Notification Preferences' }}
@@ -187,6 +191,7 @@ const linking: LinkingOptions<RootStackParamList> = {
               PetHealthMetrics: 'pets/:petId/health',
               PetForm: 'pets/form/:petId?',
               PetShare: 'pets/:petId/share',
+              NearbyVet: 'nearby-vets',
             },
           },
           Medications: 'medications',
