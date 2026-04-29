@@ -101,6 +101,7 @@
     "expo-notifications": "^0.31.1",
     "expo-secure-store": "^14.0.1",
     "expo-sqlite": "^15.0.6",
+    "expo-updates": "^0.26.0",
     "graphql": "^16.0.0",
     "jsonwebtoken": "^9.0.3",
     "react-native-image-picker": "^7.0.0",
