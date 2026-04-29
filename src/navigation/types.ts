@@ -36,6 +36,7 @@ export type PetStackParamList = {
   MedicalRecordSearch: { petId: string };
   MedicalRecordViewer: { petId: string; petName?: string };
   PetShare: { petId: string; petName: string };
+  NearbyVet: undefined;
 };
 
 // ─── Screen prop helpers ──────────────────────────────────────────────────────

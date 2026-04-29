@@ -1,6 +1,7 @@
 import Geolocation from '@react-native-community/geolocation';
 import { Linking, Platform } from 'react-native';
 
+import config from '../config';
 import { getItem, setItem, removeItem as _removeItem } from './localDB';
 import { requestAndroidPermission } from './permissionService';
 
@@ -222,7 +223,71 @@ class EmergencyService {
     longitude: number,
     radiusKm = 10,
   ): Promise<VetClinic[]> {
-    // Mock data — replace with a real Places API call (e.g. Google Places)
+    const apiKey = config.googlePlaces.apiKey;
+    if (apiKey) {
+      try {
+        return await this.fetchClinicsFromPlacesAPI(latitude, longitude, radiusKm, apiKey);
+      } catch {
+        // fall through to mock data
+      }
+    }
+    return this.getMockClinics(latitude, longitude, radiusKm);
+  }
+
+  private async fetchClinicsFromPlacesAPI(
+    latitude: number,
+    longitude: number,
+    radiusKm: number,
+    apiKey: string,
+  ): Promise<VetClinic[]> {
+    const radiusMeters = radiusKm * 1000;
+    const url =
+      `https://maps.googleapis.com/maps/api/place/nearbysearch/json` +
+      `?location=${latitude},${longitude}` +
+      `&radius=${radiusMeters}` +
+      `&type=veterinary_care` +
+      `&key=${apiKey}`;
+
+    const response = await fetch(url);
+    if (!response.ok) throw new Error(`Places API error: ${response.status}`);
+
+    const data = (await response.json()) as {
+      status: string;
+      results: Array<{
+        place_id: string;
+        name: string;
+        vicinity: string;
+        geometry: { location: { lat: number; lng: number } };
+        rating?: number;
+        formatted_phone_number?: string;
+      }>;
+    };
+
+    if (data.status !== 'OK' && data.status !== 'ZERO_RESULTS') {
+      throw new Error(`Places API status: ${data.status}`);
+    }
+
+    return (data.results ?? [])
+      .map((place) => ({
+        id: place.place_id,
+        name: place.name,
+        address: place.vicinity,
+        phoneNumber: place.formatted_phone_number ?? '',
+        latitude: place.geometry.location.lat,
+        longitude: place.geometry.location.lng,
+        rating: place.rating,
+        available24h: false,
+        distance: this.calculateDistance(
+          latitude,
+          longitude,
+          place.geometry.location.lat,
+          place.geometry.location.lng,
+        ),
+      }))
+      .sort((a, b) => (a.distance ?? 0) - (b.distance ?? 0));
+  }
+
+  private getMockClinics(latitude: number, longitude: number, radiusKm: number): VetClinic[] {
     const mockClinics: VetClinic[] = [
       {
         id: 'clinic-1',
@@ -346,7 +411,7 @@ class EmergencyService {
 
   // ── Helpers ──────────────────────────────────────────────────────────────────
 
-  private calculateDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
+  calculateDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
     const R = 6371;
     const dLat = this.toRad(lat2 - lat1);
     const dLon = this.toRad(lon2 - lon1);

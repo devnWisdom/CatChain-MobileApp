@@ -43,6 +43,9 @@ const config = {
     dsn: env('SENTRY_DSN', ''),
     enableInDev: env('SENTRY_ENABLE_IN_DEV', 'false') === 'true',
   },
+  googlePlaces: {
+    apiKey: env('GOOGLE_PLACES_API_KEY', ''),
+  },
 } as const;
 
 export type AppConfig = typeof config;
