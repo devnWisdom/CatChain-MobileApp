@@ -4,6 +4,7 @@ import express from 'express';
 import type { AuditableRequest } from '../../middleware/auditLog';
 import { authenticateJWT, authorizeRoles, type AuthenticatedRequest } from '../../middleware/auth';
 import { UserRole } from '../../models/UserRole';
+import stellarAnchorService from '../../services/stellarService';
 import { ok, sendError } from '../response';
 import { store, type StoredMedicalRecord } from '../store';
 
@@ -113,6 +114,54 @@ router.get('/:id', (req: AuthenticatedRequest, res) => {
 
   (req as AuditableRequest).audit?.('medical_record.accessed', 'medical_record', row.id);
   return res.json(ok(toApiRecord(row)));
+});
+
+router.post('/:id/anchor', authorizeRoles(UserRole.ADMIN, UserRole.VET), async (req, res) => {
+  const row = store.medicalRecords.get(req.params.id);
+  if (!row) return sendError(res, 404, 'NOT_FOUND', 'Medical record not found');
+
+  try {
+    const result = await stellarAnchorService.anchorRecord({
+      recordId: row.id,
+      payload: toApiRecord(row),
+      sourceSecret: typeof req.body?.sourceSecret === 'string' ? req.body.sourceSecret : undefined,
+      network: req.body?.network === 'mainnet' ? 'mainnet' : 'testnet',
+    });
+
+    const next: StoredMedicalRecord = {
+      ...row,
+      blockchainTxHash: result.transactionId,
+      blockchainHash: result.recordHash,
+      isBlockchainVerified: result.status !== 'failed',
+      blockchainVerifiedAt: new Date().toISOString(),
+    };
+    store.medicalRecords.set(row.id, next);
+    return res.json(ok({ ...result, record: toApiRecord(next) }));
+  } catch (error) {
+    return sendError(
+      res,
+      502,
+      'STELLAR_ANCHOR_FAILED',
+      error instanceof Error ? error.message : 'Failed to anchor record',
+    );
+  }
+});
+
+router.get('/:id/anchor-status', async (req, res) => {
+  const row = store.medicalRecords.get(req.params.id);
+  if (!row) return sendError(res, 404, 'NOT_FOUND', 'Medical record not found');
+
+  const status = await stellarAnchorService.getTransactionStatus(row.id);
+  return res.json(
+    ok(
+      status ?? {
+        recordId: row.id,
+        recordHash: row.blockchainHash,
+        transactionId: row.blockchainTxHash,
+        status: row.blockchainTxHash ? 'submitted' : 'pending',
+      },
+    ),
+  );
 });
 
 // Only Admin and Vet can create, update, or delete medical records

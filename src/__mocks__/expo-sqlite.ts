@@ -16,9 +16,15 @@ const mockTx = {
 };
 
 const mockDb = {
+  execAsync: jest.fn(() => Promise.resolve()),
+  runAsync: jest.fn(() => Promise.resolve({ changes: 1, lastInsertRowId: 1 })),
+  getFirstAsync: jest.fn(() => Promise.resolve(null)),
+  getAllAsync: jest.fn(() => Promise.resolve([])),
+  withTransactionAsync: jest.fn((callback) => callback()),
   transaction: jest.fn((callback) => {
     callback(mockTx);
   }),
 };
 
 export const openDatabase = jest.fn(() => mockDb);
+export const openDatabaseSync = jest.fn(() => mockDb);

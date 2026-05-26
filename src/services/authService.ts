@@ -312,3 +312,90 @@ export async function authenticateWithBiometric(): Promise<boolean> {
     return false;
   }
 }
+
+export async function getToken(): Promise<string | null> {
+  const token = await getSecureToken();
+  if (!token) return null;
+  if (_isTokenExpired(token)) return refreshToken();
+  return token;
+}
+
+export async function getSession(): Promise<StoredSession | null> {
+  const tokens = await getSecureTokens();
+  if (!tokens) return null;
+  if (_isTokenExpired(tokens.token)) {
+    const token = await refreshToken();
+    return { token, refreshToken: tokens.refreshToken };
+  }
+  return tokens;
+}
+
+export async function isAuthenticated(): Promise<boolean> {
+  return (await getToken()) !== null;
+}
+
+export async function authenticateWithBiometrics(): Promise<StoredSession> {
+  const available = await isBiometricAuthenticationAvailable();
+  const enabled = await isBiometricAuthenticationEnabled();
+  if (!available || !enabled) throw new AuthError('Biometric authentication is unavailable', 'BIOMETRIC_UNAVAILABLE');
+  const ok = await authenticateWithBiometric();
+  if (!ok) throw new AuthError('Biometric authentication failed', 'BIOMETRIC_AUTH_FAILED');
+  const session = await getSession();
+  if (!session) throw new AuthError('No stored session available', 'NO_SESSION');
+  return session;
+}
+
+const PIN_HASH_KEY = 'com.petchain.auth.pin.hash';
+let pinFailures = 0;
+let biometricFailures = 0;
+let lastForegroundAt = Date.now();
+let inMemorySecret: string | null = null;
+
+export async function setPin(pin: string): Promise<void> {
+  const { hashPassword } = await import('../utils/encryption');
+  const SecureStore = await import('expo-secure-store');
+  await SecureStore.setItemAsync(PIN_HASH_KEY, hashPassword(pin));
+}
+
+export async function verifyPin(pin: string): Promise<boolean> {
+  const { hashPassword } = await import('../utils/encryption');
+  const SecureStore = await import('expo-secure-store');
+  const expected = await SecureStore.getItemAsync(PIN_HASH_KEY);
+  const valid = !!expected && expected === hashPassword(pin);
+  if (valid) {
+    pinFailures = 0;
+    return true;
+  }
+  pinFailures += 1;
+  if (pinFailures >= 5) {
+    inMemorySecret = null;
+    await clearSecureTokens();
+  }
+  return false;
+}
+
+export async function shouldPromptOnForeground(idleTimeoutMs = 5 * 60 * 1000): Promise<boolean> {
+  const elapsed = Date.now() - lastForegroundAt;
+  lastForegroundAt = Date.now();
+  return elapsed >= idleTimeoutMs && (await isAuthenticated());
+}
+
+export async function authenticateOnForeground(idleTimeoutMs?: number): Promise<'unlocked' | 'pin_required' | 'not_required'> {
+  if (!(await shouldPromptOnForeground(idleTimeoutMs))) return 'not_required';
+  if (!(await isBiometricAuthenticationEnabled())) return 'pin_required';
+  const ok = await authenticateWithBiometric();
+  if (ok) {
+    biometricFailures = 0;
+    return 'unlocked';
+  }
+  biometricFailures += 1;
+  return biometricFailures >= 3 ? 'pin_required' : 'not_required';
+}
+
+export function setInMemorySecret(secret: string | null): void {
+  inMemorySecret = secret;
+}
+
+export function getInMemorySecret(): string | null {
+  return inMemorySecret;
+}
