@@ -14,6 +14,7 @@ import medicalRecordsRouter from './routes/medicalRecords';
 import medicationsRouter from './routes/medications';
 import paymentsRouter from './routes/payments';
 import petsRouter from './routes/pets';
+import syncRouter from './routes/sync';
 import usersRouter from './routes/users';
 import { attachAudit } from '../middleware/auditLog';
 
@@ -42,6 +43,7 @@ export function createApp(): Express {
   api.use('/audit-logs', auditLogsRouter);
   api.use('/docs', docsRouter);
   api.use('/community', communityRouter);
+  api.use('/sync', syncRouter);
 
   app.use('/api', api);
 
