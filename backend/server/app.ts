@@ -4,6 +4,7 @@ import express, { type Express, type NextFunction, type Request, type Response }
 import { errBody } from './response';
 import { applySecurityHeaders } from '../middleware/securityHeaders';
 import { sanitizeInputs } from '../middleware/sanitize';
+import { createRedisSessionMiddleware } from '../middleware/redisSession';
 import analyticsRouter from './routes/analytics';
 import appointmentsRouter from './routes/appointments';
 import auditLogsRouter from './routes/auditLogs';
@@ -24,6 +25,12 @@ import usersRouter from './routes/users';
 import vetsRouter from './routes/vets';
 import { attachAudit } from '../middleware/auditLog';
 
+// Readiness probe state — set to false while the process is draining
+let isReady = true;
+export function setReadiness(ready: boolean): void {
+  isReady = ready;
+}
+
 export function createApp(): Express {
   const app = express();
 
@@ -33,14 +40,31 @@ export function createApp(): Express {
   app.use(cors());
   app.use(express.json());
   app.use(sanitizeInputs);
+  app.use(createRedisSessionMiddleware());
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   app.use(attachAudit as any);
 
   const api = express.Router();
+
+  // --- Health & readiness probes (unauthenticated) -----------------------
   api.get('/health', (_req, res) => {
     res.json({ ok: true, service: 'petchain-api', timestamp: new Date().toISOString() });
   });
 
+  api.get('/ready', (_req, res) => {
+    if (!isReady) {
+      res.status(503).json({
+        ok: false,
+        service: 'petchain-api',
+        reason: 'Shutting down — draining connections',
+        timestamp: new Date().toISOString(),
+      });
+      return;
+    }
+    res.json({ ok: true, service: 'petchain-api', timestamp: new Date().toISOString() });
+  });
+
+  // --- Application routes ------------------------------------------------
   api.use('/analytics', analyticsRouter);
   api.use('/backups', backupsRouter);
   api.use('/users', usersRouter);

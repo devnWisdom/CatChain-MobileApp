@@ -130,6 +130,7 @@
     "@storybook/addon-ondevice-notes": "^8.6.0",
     "@storybook/blocks": "^8.6.0",
     "@storybook/react-native": "^8.6.0",
+    "@types/connect-redis": "^0.0.23",
     "@types/cors": "^2.8.19",
     "@types/helmet": "^0.0.48",
     "@types/crypto-js": "^4.2.2",
