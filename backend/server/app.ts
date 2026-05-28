@@ -78,6 +78,7 @@ export function createApp(): Express {
   api.use('/docs', docsRouter);
   api.use('/emergency', emergencyRouter);
   api.use('/community', communityRouter);
+  api.use('/photos', photosRouter);
   api.use('/sync', syncRouter);
   api.use('/vets', vetsRouter);
   api.use('/privacy', privacyRouter);

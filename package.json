@@ -102,6 +102,7 @@
     "axios": "^1.15.2",
     "crypto-js": "^4.2.0",
     "expo-barcode-scanner": "^13.0.1",
+    "expo-image-manipulator": "^13.0.6",
     "expo-camera": "^55.0.16",
     "expo-constants": "^18.0.13",
     "expo-notifications": "^0.31.1",
