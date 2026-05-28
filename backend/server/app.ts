@@ -2,6 +2,7 @@ import cors from 'cors';
 import express, { type Express, type NextFunction, type Request, type Response } from 'express';
 
 import { errBody } from './response';
+import { applySecurityHeaders } from '../middleware/securityHeaders';
 import { sanitizeInputs } from '../middleware/sanitize';
 import { createRedisSessionMiddleware } from '../middleware/redisSession';
 import analyticsRouter from './routes/analytics';
@@ -12,12 +13,16 @@ import communityRouter from './routes/community';
 import docsRouter from './routes/docs';
 import emergencyRouter from './routes/emergency';
 import importRouter from './routes/import';
+import insuranceRouter from './routes/insurance';
 import medicalRecordsRouter from './routes/medicalRecords';
 import medicationsRouter from './routes/medications';
 import paymentsRouter from './routes/payments';
 import petsRouter from './routes/pets';
+import privacyRouter from './routes/privacy';
+import searchRouter from './routes/search';
 import syncRouter from './routes/sync';
 import usersRouter from './routes/users';
+import vetsRouter from './routes/vets';
 import { attachAudit } from '../middleware/auditLog';
 
 // Readiness probe state — set to false while the process is draining
@@ -28,6 +33,10 @@ export function setReadiness(ready: boolean): void {
 
 export function createApp(): Express {
   const app = express();
+
+  // Security headers (Helmet + CSP + HSTS) — applied before any routes
+  applySecurityHeaders(app);
+
   app.use(cors());
   app.use(express.json());
   app.use(sanitizeInputs);
@@ -70,6 +79,10 @@ export function createApp(): Express {
   api.use('/emergency', emergencyRouter);
   api.use('/community', communityRouter);
   api.use('/sync', syncRouter);
+  api.use('/vets', vetsRouter);
+  api.use('/privacy', privacyRouter);
+  api.use('/insurance', insuranceRouter);
+  api.use('/search', searchRouter);
 
   app.use('/api', api);
 
