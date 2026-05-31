@@ -28,6 +28,7 @@ module.exports = {
     '^expo-document-picker$': '<rootDir>/src/__mocks__/expo-document-picker.ts',
     '^expo-image-manipulator$': '<rootDir>/src/__mocks__/expo-image-manipulator.ts',
     '^expo-image-picker$': '<rootDir>/src/__mocks__/expo-image-picker.ts',
+    '^node-fetch$': '<rootDir>/src/__mocks__/node-fetch.js',
   },
   collectCoverageFrom: [
     'src/**/*.ts',
