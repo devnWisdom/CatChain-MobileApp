@@ -304,6 +304,53 @@ export interface ListMedicalRecordsRequest extends PaginationParams {
 }
 
 /**
+ * Waitlist - Join Waitlist Request
+ */
+export interface JoinWaitlistRequest {
+  vetId: string;
+  petId: string;
+  preferredDateStart: string;
+  preferredDateEnd: string;
+}
+
+/**
+ * Waitlist - Waitlist Entry (API shape)
+ */
+export interface WaitlistEntryDto {
+  id: string;
+  userId: string;
+  vetId: string;
+  petId: string;
+  preferredDateStart: string;
+  preferredDateEnd: string;
+  status: 'WAITING' | 'NOTIFIED' | 'ACCEPTED' | 'EXPIRED' | 'CANCELLED';
+  position: number;
+  estimatedWaitMinutes: number;
+  notifiedAt: string | null;
+  acceptanceDeadline: string | null;
+  appointmentId: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+/**
+ * Waitlist - Accept Slot Request
+ */
+export interface AcceptWaitlistSlotRequest {
+  appointmentId: string;
+}
+
+/**
+ * Waitlist - Position Info Response
+ */
+export interface WaitlistPositionResponse {
+  entryId: string;
+  position: number;
+  estimatedWaitMinutes: number;
+  status: string;
+}
+
+/**
  * Blockchain - Store Record Request
  */
 export interface StoreRecordRequest {
