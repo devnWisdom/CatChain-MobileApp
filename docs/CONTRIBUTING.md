@@ -110,6 +110,60 @@ For new features, provide:
 
 Thank you for contributing to PetChain-MobileApp!
 
+## Docker Development Environment
+
+The easiest way to get a local backend running is with Docker Compose. This starts PostgreSQL 15, Redis 7, and the Node 18 backend with hot reload — no local database installation required.
+
+### Prerequisites
+
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/) (or Docker Engine + Compose plugin)
+
+### Quick start
+
+```bash
+# Copy the pre-configured env file (safe defaults, never use in production)
+cp .env.docker .env.local   # optional — docker-compose uses .env.docker automatically
+
+# Start postgres + redis + backend
+npm run dev:docker
+```
+
+The backend API will be available at `http://localhost:3000/api`.
+
+### With pgAdmin (optional)
+
+```bash
+docker-compose --profile tools up
+```
+
+pgAdmin will be available at `http://localhost:5050`.  
+Login: `admin@petchain.local` / `pgadmin_dev`
+
+### Useful commands
+
+```bash
+# Run in detached mode
+docker-compose up -d
+
+# View backend logs
+docker-compose logs -f backend
+
+# Stop and remove containers (data volumes are preserved)
+docker-compose down
+
+# Stop and remove containers AND volumes (full reset)
+docker-compose down -v
+
+# Rebuild the backend image after dependency changes
+docker-compose build backend
+```
+
+### Environment variables
+
+The `.env.docker` file at the repo root contains pre-configured values for the compose stack. **Never commit real secrets** — the file uses placeholder values intended for local development only.
+
+---
+
 ## End-to-End (E2E) Testing with Detox
 
 PetChain uses [Detox](https://wix.github.io/Detox/) for end-to-end testing on iOS Simulator and Android Emulator.

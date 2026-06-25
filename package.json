@@ -47,6 +47,7 @@
     "seed:test": "ts-node backend/seeds/index.ts --owners 2 --vets 1 --pets 1 --records 1 --appointments 1 --medications 1",
     "seed:large": "ts-node backend/seeds/index.ts --owners 20 --vets 10 --pets 3 --records 5 --appointments 3 --medications 2",
     "server": "tsx backend/server/index.ts",
+    "dev:docker": "docker-compose up",
     "audit:high": "npm audit --audit-level=high",
     "storybook:ci": "npx sb-rn-get-stories"
   },
