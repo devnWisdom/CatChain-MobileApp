@@ -145,22 +145,23 @@ function App() {
     <ThemeProvider>
       <ToastProvider>
         <PetProvider>
-        <ErrorBoundary>
-          <ThemeTransitionView>
-            <View style={styles.root}>
-              <OfflineIndicator />
-              <AppNavigator />
-              <UpdatePrompt
-                visible={updateStatus.visible}
-                variant={updateStatus.visible ? updateStatus.variant : 'optional'}
-                storeUrl={updateStatus.visible ? updateStatus.storeUrl : undefined}
-                onUpdate={handleUpdate}
-                onDismiss={handleDismiss}
-              />
-            </View>
-          </ThemeTransitionView>
-        </ErrorBoundary>
-      </PetProvider>
+          <ErrorBoundary>
+            <ThemeTransitionView>
+              <View style={styles.root}>
+                <OfflineIndicator />
+                <AppNavigator />
+                <UpdatePrompt
+                  visible={updateStatus.visible}
+                  variant={updateStatus.visible ? updateStatus.variant : 'optional'}
+                  storeUrl={updateStatus.visible ? updateStatus.storeUrl : undefined}
+                  onUpdate={handleUpdate}
+                  onDismiss={handleDismiss}
+                />
+              </View>
+            </ThemeTransitionView>
+          </ErrorBoundary>
+        </PetProvider>
+      </ToastProvider>
     </ThemeProvider>
   );
 }
