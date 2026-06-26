@@ -11,6 +11,7 @@ import {
   View,
 } from 'react-native';
 
+import { EmptyState } from '../components/EmptyState';
 import { SkeletonCard } from '../components/SkeletonCard';
 import { useMinimumLoadingTime } from '../hooks/useMinimumLoadingTime';
 import {
@@ -762,7 +763,15 @@ const MedicationScreen: React.FC = () => {
           keyExtractor={(item) => item.id}
           renderItem={renderMedItem}
           contentContainerStyle={styles.listContent}
-          ListEmptyComponent={<Text style={styles.emptyText}>No medications added yet.</Text>}
+          ListEmptyComponent={
+            <EmptyState
+              icon="medkit"
+              title="No Medications"
+              description="Keep track of your pet's prescriptions, dosages, and refill schedules."
+              buttonText="Add medication"
+              onPress={openAdd}
+            />
+          }
           removeClippedSubviews
           maxToRenderPerBatch={10}
           windowSize={5}

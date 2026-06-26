@@ -21,6 +21,7 @@ import lostFoundService, {
 } from '../services/lostFoundService';
 import mapService, { type Location } from '../services/mapService';
 import petService, { type Pet } from '../services/petService';
+import { EmptyState } from '../components/EmptyState';
 import { pickImage } from '../utils/imageUtils';
 
 const DEFAULT_RADIUS_KM = 25;
@@ -222,9 +223,17 @@ const LostFoundScreen: React.FC = () => {
         renderItem={renderReport}
         keyExtractor={(item) => item.id}
         ListEmptyComponent={
-          <Text style={styles.emptyText}>
-            {loading ? 'Loading reports…' : 'No reports found in your area yet.'}
-          </Text>
+          loading ? (
+            <Text style={styles.emptyText}>Loading reports…</Text>
+          ) : (
+            <EmptyState
+              icon="search"
+              title={selectedTab === 'lost' ? 'No Lost Pets Nearby' : 'No Found Pets Nearby'}
+              description={selectedTab === 'lost' ? 'No active lost pet reports in your area.' : 'No active found pet reports in your area.'}
+              buttonText="Create a report"
+              onPress={() => setCreateModalVisible(true)}
+            />
+          )
         }
         contentContainerStyle={styles.listContent}
       />

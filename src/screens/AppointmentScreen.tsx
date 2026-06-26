@@ -14,6 +14,7 @@ import {
 } from 'react-native';
 import { v4 as uuid } from 'uuid';
 
+import { EmptyState } from '../components/EmptyState';
 import { SkeletonCard } from '../components/SkeletonCard';
 import { useMinimumLoadingTime } from '../hooks/useMinimumLoadingTime';
 import type { Medication } from '../models/Medication';
@@ -398,9 +399,13 @@ const AppointmentScreen: React.FC = () => {
           renderItem={renderItem}
           contentContainerStyle={displayed.length === 0 && styles.empty}
           ListEmptyComponent={
-            <Text style={styles.emptyText}>
-              {tab === 'upcoming' ? 'No upcoming appointments.' : 'No past appointments.'}
-            </Text>
+            <EmptyState
+              icon="calendar"
+              title={tab === 'upcoming' ? 'No Upcoming Appointments' : 'No Past Appointments'}
+              description={tab === 'upcoming' ? 'Schedule your next vet visit or grooming session.' : 'You have no past appointment records.'}
+              buttonText="Book appointment"
+              onPress={() => setBookingVisible(true)}
+            />
           }
           removeClippedSubviews
           maxToRenderPerBatch={10}
