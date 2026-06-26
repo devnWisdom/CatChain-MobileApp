@@ -24,6 +24,7 @@ export interface StoredUser {
   twoFactorPendingSecret?: string; // secret during setup (before confirmation)
   recoveryToken?: string; // bcrypt-hashed recovery token
   recoveryTokenExpiresAt?: number; // epoch ms
+  timezone?: string;
 }
 
 export interface StoredPet {

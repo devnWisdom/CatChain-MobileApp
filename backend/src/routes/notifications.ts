@@ -11,14 +11,20 @@ import {
   clearDLQ,
   getDLQ,
   getMetrics,
+  getPendingReceipts,
   getPreferences,
+  getReceipt,
   getSubscriptions,
   getTokens,
+  getUserTimezone,
   registerToken,
   removeAllTokens,
   removeToken,
+  rescheduleForTimezoneChange,
+  scheduleAtLocalTime,
   sendToUser,
   setPreferences,
+  setUserTimezone,
   subscribe,
   unsubscribe,
 } from '../../services/pushService';
@@ -194,6 +200,100 @@ router.delete('/dlq', authorizeRoles(UserRole.ADMIN), async (_req, res) => {
   return res.json(ok(null, 'DLQ cleared'));
 });
 
+// ─── Timezone management ──────────────────────────────────────────────────────
+
+/** GET /api/notifications/timezone — get user's timezone */
+router.get('/timezone', async (req: AuthenticatedRequest, res) => {
+  const timezone = await getUserTimezone(req.user!.id);
+  return res.json(ok({ timezone }));
+});
+
+/** PUT /api/notifications/timezone — update user's timezone and reschedule pending notifications */
+router.put('/timezone', async (req: AuthenticatedRequest, res) => {
+  const { timezone } = req.body as { timezone?: string };
+  if (!timezone?.trim()) {
+    return sendError(
+      res,
+      400,
+      'VALIDATION_ERROR',
+      'timezone is required (IANA timezone string, e.g. Asia/Tokyo)',
+    );
+  }
+  try {
+    await rescheduleForTimezoneChange(req.user!.id, timezone.trim());
+    return res.json(
+      ok({ timezone: timezone.trim() }, 'Timezone updated and notifications rescheduled'),
+    );
+  } catch (err) {
+    return sendError(
+      res,
+      400,
+      'VALIDATION_ERROR',
+      err instanceof Error ? err.message : 'Invalid timezone',
+    );
+  }
+});
+
+/** POST /api/notifications/schedule — schedule a push notification at a local time */
+router.post('/schedule', async (req: AuthenticatedRequest, res) => {
+  const { topic, title, body, localDate, localTime, timezone, data } = req.body as {
+    topic?: string;
+    title?: string;
+    body?: string;
+    localDate?: string;
+    localTime?: string;
+    timezone?: string;
+    data?: Record<string, unknown>;
+  };
+
+  if (!topic || !ALL_TOPICS.includes(topic as NotificationTopic)) {
+    return sendError(
+      res,
+      400,
+      'VALIDATION_ERROR',
+      `topic must be one of: ${ALL_TOPICS.join(', ')}`,
+    );
+  }
+  if (!title?.trim()) return sendError(res, 400, 'VALIDATION_ERROR', 'title is required');
+  if (!body?.trim()) return sendError(res, 400, 'VALIDATION_ERROR', 'body is required');
+  if (!localDate?.trim())
+    return sendError(res, 400, 'VALIDATION_ERROR', 'localDate is required (YYYY-MM-DD)');
+  if (!localTime?.trim())
+    return sendError(res, 400, 'VALIDATION_ERROR', 'localTime is required (HH:MM)');
+
+  const utcDate = await scheduleAtLocalTime(
+    req.user!.id,
+    topic as NotificationTopic,
+    title.trim(),
+    body.trim(),
+    localDate.trim(),
+    localTime.trim(),
+    timezone?.trim(),
+    data,
+  );
+
+  if (!utcDate) {
+    return sendError(res, 500, 'SCHEDULE_ERROR', 'Failed to schedule notification');
+  }
+
+  return res.status(201).json(ok({ scheduledUtcTime: utcDate.toISOString() }));
+});
+
+// ─── Receipt tracking (admin) ──────────────────────────────────────────────────
+
+/** GET /api/notifications/receipts — list pending receipts (admin) */
+router.get('/receipts', authorizeRoles(UserRole.ADMIN), async (_req, res) => {
+  const receipts = await getPendingReceipts();
+  return res.json(ok({ count: receipts.length, receipts }));
+});
+
+/** GET /api/notifications/receipts/:jobId — get a specific receipt (admin) */
+router.get('/receipts/:jobId', authorizeRoles(UserRole.ADMIN), async (req, res) => {
+  const receipt = await getReceipt(req.params.jobId);
+  if (!receipt) return sendError(res, 404, 'NOT_FOUND', 'Receipt not found');
+  return res.json(ok(receipt));
+});
+
 // ─── Vaccination notification transfer ───────────────────────────────────────
 
 /**
@@ -208,12 +308,7 @@ router.post('/vaccination-transfer', async (req: AuthenticatedRequest, res) => {
   };
 
   if (!petId?.trim() || !newOwnerUserId?.trim()) {
-    return sendError(
-      res,
-      400,
-      'VALIDATION_ERROR',
-      'petId and newOwnerUserId are required',
-    );
+    return sendError(res, 400, 'VALIDATION_ERROR', 'petId and newOwnerUserId are required');
   }
 
   const pet = require('../../server/store').store.pets.get(petId.trim());
@@ -221,7 +316,12 @@ router.post('/vaccination-transfer', async (req: AuthenticatedRequest, res) => {
 
   // Only the current owner or admin may trigger this transfer
   if (req.user!.role !== UserRole.ADMIN && req.user!.id !== pet.ownerId) {
-    return sendError(res, 403, 'FORBIDDEN', 'You do not have permission to transfer notifications for this pet');
+    return sendError(
+      res,
+      403,
+      'FORBIDDEN',
+      'You do not have permission to transfer notifications for this pet',
+    );
   }
 
   await sendToUser(
