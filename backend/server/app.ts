@@ -60,6 +60,8 @@ import notificationTemplatesRouter from '../src/routes/notificationTemplates';
 import oauthRouter from '../src/routes/oauth';
 import shelterRouter from '../src/routes/shelter';
 
+import { getPoolStats } from '../config/database';
+
 // Readiness probe state — set to false while the process is draining
 let isReady = true;
 export function setReadiness(ready: boolean): void {
@@ -129,7 +131,16 @@ export function createApp(): Express {
 
   // --- Health & readiness probes (unauthenticated, exempt from rate limiting) --
   api.get('/health', (_req, res) => {
-    res.json({ ok: true, service: 'petchain-api', timestamp: new Date().toISOString() });
+    const pool = getPoolStats();
+    if (pool.waiting > 5) {
+      console.warn(`[db] WARN: pool waiting count is ${pool.waiting}`);
+    }
+    res.json({
+      ok: true,
+      service: 'petchain-api',
+      timestamp: new Date().toISOString(),
+      pool,
+    });
   });
 
   api.get('/ready', (_req, res) => {
