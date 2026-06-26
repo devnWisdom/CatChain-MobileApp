@@ -542,7 +542,11 @@ const VetDirectoryScreen: React.FC = () => {
         </View>
 
         {chatLoading ? (
-          <ActivityIndicator style={styles.loader} size="large" color="#4299e1" />
+          <View style={styles.chatList}>
+            {Array.from({ length: 4 }).map((_, index) => (
+              <SkeletonCard key={`chat-skeleton-${index}`} height={64} lines={2} />
+            ))}
+          </View>
         ) : (
           <FlatList
             data={messages}
