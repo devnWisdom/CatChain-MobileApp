@@ -304,4 +304,25 @@ router.delete(
   },
 );
 
+/**
+ * POST /medical-records/attachments/signed-url
+ * Re-issues a fresh 1-hour signed URL for a medical record attachment.
+ * Requires a valid session token. Old unsigned URLs will return 403 from the CDN.
+ *
+ * Body: { key: string }  — the raw storage key (e.g. "medical/records/r-123/doc.pdf")
+ */
+router.post('/attachments/signed-url', (req: AuthenticatedRequest, res) => {
+  const { key } = req.body as { key?: unknown };
+  if (typeof key !== 'string' || !key.trim()) {
+    return sendError(res, 400, 'BAD_REQUEST', 'key is required');
+  }
+  // Basic path traversal guard
+  if (key.includes('..') || key.startsWith('/')) {
+    return sendError(res, 400, 'BAD_REQUEST', 'Invalid key');
+  }
+  const { reissueMedicalRecordSignedUrl } = require('../../services/cdnService') as typeof import('../../services/cdnService');
+  const signedUrl = reissueMedicalRecordSignedUrl(key.trim());
+  return res.json(ok({ signedUrl }));
+});
+
 export default router;
