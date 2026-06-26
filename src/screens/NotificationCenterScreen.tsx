@@ -25,6 +25,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import NotificationItem, { resolveNavPayload } from '../components/NotificationItem';
 import { SkeletonCard } from '../components/SkeletonCard';
+import { useTheme } from '../context/ThemeContext';
+import { useToast } from '../context/ToastContext';
 import { useMinimumLoadingTime } from '../hooks/useMinimumLoadingTime';
 import {
   deleteAll,
@@ -62,6 +64,7 @@ type Action =
   | { type: 'LOAD_SUCCESS'; notifications: AppNotification[]; unreadCount: number }
   | { type: 'LOAD_ERROR'; error: string }
   | { type: 'REFRESH_START' }
+  | { type: 'REFRESH_ERROR_KEEP_DATA' }
   | { type: 'SET_FILTER'; filter: Filter }
   | { type: 'TOGGLE_SELECT'; id: string }
   | { type: 'CLEAR_SELECTION' }
@@ -87,6 +90,12 @@ function reducer(state: State, action: Action): State {
       };
     case 'LOAD_ERROR':
       return { ...state, loading: false, refreshing: false, error: action.error };
+    case 'REFRESH_ERROR_KEEP_DATA':
+      // A refresh (or any fetch) failed, but we already had data on screen.
+      // Clear the loading/refreshing flags without touching `notifications`
+      // or setting `error`, so the existing list stays visible — the toast
+      // is the only signal to the user that this fetch failed.
+      return { ...state, loading: false, refreshing: false, error: null };
     case 'SET_FILTER':
       return { ...state, filter: action.filter, selected: new Set(), loading: true };
     case 'TOGGLE_SELECT': {
@@ -155,6 +164,8 @@ export default function NotificationCenterScreen() {
   const [state, dispatch] = useReducer(reducer, INITIAL_STATE);
   const navigation = useNavigation<{ navigate: (screen: string, params?: unknown) => void }>();
   const isMounted = useRef(true);
+  const { colors } = useTheme();
+  const { show: showToast } = useToast();
 
   const [groupByPet, setGroupByPet] = useState(false);
   const [collapsedSections, setCollapsedSections] = useState<Set<string>>(new Set());
@@ -242,6 +253,7 @@ export default function NotificationCenterScreen() {
 
   const load = useCallback(
     async (isRefresh = false) => {
+      const hadData = state.notifications.length > 0;
       dispatch({ type: isRefresh ? 'REFRESH_START' : 'LOAD_START' });
       try {
         const [notifications, unreadCount] = await Promise.all([
@@ -252,7 +264,13 @@ export default function NotificationCenterScreen() {
           dispatch({ type: 'LOAD_SUCCESS', notifications, unreadCount });
         }
       } catch (err) {
-        if (isMounted.current) {
+        if (!isMounted.current) return;
+
+        if (hadData) {
+          // Keep the existing list on screen; surface the failure as a toast.
+          showToast("Couldn't refresh — showing cached data", { variant: 'error' });
+          dispatch({ type: 'REFRESH_ERROR_KEEP_DATA' });
+        } else {
           dispatch({
             type: 'LOAD_ERROR',
             error: err instanceof Error ? err.message : 'Failed to load notifications',
@@ -260,12 +278,13 @@ export default function NotificationCenterScreen() {
         }
       }
     },
-    [state.filter],
+    [state.filter, state.notifications.length, showToast],
   );
 
   useEffect(() => {
     void load();
-  }, [load]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state.filter]);
 
   // ── Actions ─────────────────────────────────────────────────────────────────
 
@@ -396,6 +415,7 @@ export default function NotificationCenterScreen() {
 
   const hasSelection = state.selected.size > 0;
   const hasUnread = state.notifications.some((n) => !n.isRead);
+  const showFullErrorState = state.error !== null && state.notifications.length === 0;
 
   // ── Render ──────────────────────────────────────────────────────────────────
 
@@ -435,7 +455,7 @@ export default function NotificationCenterScreen() {
           <Switch 
             value={groupByPet} 
             onValueChange={handleToggleGroup}
-            trackColor={{ false: '#D1D5DB', true: '#4CAF50' }}
+            trackColor={{ false: '#D1D5DB', true: colors.primary }}
           />
         </View>
       </View>
@@ -498,7 +518,7 @@ export default function NotificationCenterScreen() {
             <SkeletonCard key={`skeleton-${index}`} />
           ))}
         </View>
-      ) : state.error ? (
+      ) : showFullErrorState ? (
         <View style={styles.centered} testID="error-state">
           <Text style={styles.errorText}>{state.error}</Text>
           <TouchableOpacity onPress={() => load()} style={styles.retryBtn}>
@@ -514,7 +534,8 @@ export default function NotificationCenterScreen() {
             <RefreshControl
               refreshing={state.refreshing}
               onRefresh={() => load(true)}
-              tintColor="#4CAF50"
+              colors={[colors.primary]}
+              tintColor={colors.primary}
             />
           }
           ListEmptyComponent={
