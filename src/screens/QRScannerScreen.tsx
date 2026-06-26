@@ -76,22 +76,28 @@ const QRScannerScreen: React.FC<QRScannerScreenProps> = ({
 
     setScanned(true);
 
-    // Validate QR code
-    const result = scanQRCode(data);
+    void (async () => {
+      const result = await scanQRCode(data);
 
-    if (result.valid && result.petId) {
-      onScanSuccess(data);
-    } else {
-      Alert.alert(
-        'Invalid QR Code',
-        result.error || 'This QR code is not a valid PetChain record.',
-        [
-          { text: 'Try Again', onPress: () => setScanned(false) },
-          { text: 'Manual Entry', onPress: onManualEntry },
-          { text: 'Cancel', style: 'cancel', onPress: onClose },
-        ],
-      );
-    }
+      if (result.valid && result.petId) {
+        onScanSuccess(data);
+      } else {
+        const isExpiredOrUsed =
+          result.error === 'This code has expired' ||
+          result.error === 'This code has already been used' ||
+          result.error === 'This code has been revoked';
+
+        Alert.alert(
+          isExpiredOrUsed ? 'Code No Longer Valid' : 'Invalid QR Code',
+          result.error || 'This QR code is not a valid PetChain record.',
+          [
+            { text: 'Try Again', onPress: () => setScanned(false) },
+            { text: 'Manual Entry', onPress: onManualEntry },
+            { text: 'Cancel', style: 'cancel', onPress: onClose },
+          ],
+        );
+      }
+    })();
   };
 
   const toggleTorch = () => setTorchEnabled(!torchEnabled);
