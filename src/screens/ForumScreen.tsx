@@ -81,7 +81,25 @@ export default function ForumScreen() {
       setBody('');
       setSpecies('');
       setBreed('');
-    } catch (e) {
+    } catch (e: any) {
+      const data = e?.response?.data;
+      if (e?.response?.status === 422 && data?.code === 'CONTENT_FLAGGED') {
+        if (data.suggestEdit) {
+          // Suggest-edit mode: prompt user to revise
+          Alert.alert(
+            '✏️ Flagged language detected',
+            `Your post contains: "${(data.flaggedWords as string[]).join('", "')}". Please edit and resubmit.`,
+            [{ text: 'OK — let me fix it' }],
+          );
+        } else {
+          // Hard block
+          Alert.alert(
+            '🚫 Post blocked',
+            'Your post was removed because it contains prohibited content.',
+          );
+        }
+        return;
+      }
       Alert.alert('Post failed', 'Unable to create forum question.');
     }
   }
@@ -108,7 +126,18 @@ export default function ForumScreen() {
       });
       if (res.data?.answer) setAnswers((prev) => [res.data.answer, ...prev]);
       setAnswerBody('');
-    } catch (e) {
+    } catch (e: any) {
+      const data = e?.response?.data;
+      if (e?.response?.status === 422 && data?.code === 'CONTENT_FLAGGED') {
+        Alert.alert(
+          data.suggestEdit ? '✏️ Flagged language' : '🚫 Answer blocked',
+          data.suggestEdit
+            ? `Contains flagged word(s): "${(data.flaggedWords as string[]).join('", "')}". Please revise.`
+            : 'Your answer was blocked due to prohibited content.',
+          [{ text: 'OK' }],
+        );
+        return;
+      }
       Alert.alert('Answer failed', 'Unable to submit answer.');
     } finally {
       setAnswerLoading(false);
