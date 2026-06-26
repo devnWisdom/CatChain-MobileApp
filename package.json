@@ -33,6 +33,7 @@
     "eas:build:prod": "eas build --platform all --profile production",
     "test": "jest --runInBand",
     "test:ci": "jest --runInBand --ci --coverage",
+    "test:integration": "jest --runInBand --config jest.integration.config.js",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",

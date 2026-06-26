@@ -297,6 +297,16 @@ When adding new features:
 - Add tests for uncovered branches
 - Use coverage report to identify gaps
 
+## Stellar Migration Integration Tests
+
+PostgreSQL-backed checkpoint reconciliation tests live in `backend/tests/integration/`. Run them separately:
+
+```bash
+DATABASE_URL=postgresql://postgres:postgres@localhost:5432/postgres npm run test:integration
+```
+
+These tests set `RUN_INTEGRATION_TESTS=true` via `jest.integration.config.js` and are not part of the default `npm test` CI job.
+
 ## Resources
 
 - [Jest Documentation](https://jestjs.io/)
