@@ -10,6 +10,8 @@ import {
   View,
 } from 'react-native';
 
+import MultiStepFormHeader from '../components/MultiStepFormHeader';
+import { useMultiStepFormFocus } from '../hooks/useMultiStepFormFocus';
 import type { Species } from '../models/Pet';
 import breedInsightsService from '../services/breedInsightsService';
 import petService, { type Pet } from '../services/petService';
@@ -43,6 +45,12 @@ const EMPTY: FormState = {
   microchipId: '',
 };
 
+const FORM_STEPS = [
+  { title: 'Photo & basics' },
+  { title: 'Physical details' },
+  { title: 'Identification' },
+];
+
 const PetFormScreen: React.FC<Props> = ({ pet, ownerId = '', onBack, onSaved }) => {
   const isEdit = !!pet;
   const [form, setForm] = useState<FormState>(
@@ -61,6 +69,20 @@ const PetFormScreen: React.FC<Props> = ({ pet, ownerId = '', onBack, onSaved }) 
   const [breedSuggestions, setBreedSuggestions] = useState<string[]>([]);
   const [photoUri, setPhotoUri] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
+
+  const {
+    currentStep,
+    totalSteps,
+    stepHeadingRef,
+    stepAnnouncement,
+    registerFirstInteractive,
+    registerFieldRef,
+    goNext,
+    goBack,
+    focusFirstError,
+    isFirstStep,
+    isLastStep,
+  } = useMultiStepFormFocus(FORM_STEPS);
 
   const loadPhoto = useCallback(async () => {
     if (pet) setPhotoUri(await getPhoto(pet.id));
@@ -102,10 +124,6 @@ const PetFormScreen: React.FC<Props> = ({ pet, ownerId = '', onBack, onSaved }) 
     setBreedSuggestions([]);
   };
 
-  // ── Photo management ───────────────────────────────────────────────────────
-  // Without expo-image-picker installed we prompt for a URI directly.
-  // In a real build, replace this with ImagePicker.launchImageLibraryAsync().
-
   const handlePhotoAction = () => {
     Alert.alert('Pet Photo', 'Enter a photo URL or file URI', [
       {
@@ -132,11 +150,32 @@ const PetFormScreen: React.FC<Props> = ({ pet, ownerId = '', onBack, onSaved }) 
     ]);
   };
 
-  // ── Save ───────────────────────────────────────────────────────────────────
+  const validateCurrentStep = (): boolean => {
+    if (currentStep === 0) {
+      if (!form.name.trim()) {
+        focusFirstError('name', 'Name is required.');
+        return false;
+      }
+      if (!form.species.trim()) {
+        focusFirstError('species', 'Species is required.');
+        return false;
+      }
+    }
+    return true;
+  };
+
+  const handleNext = () => {
+    if (!validateCurrentStep()) return;
+    goNext();
+  };
 
   const handleSave = async () => {
-    if (!form.name.trim() || !form.species.trim()) {
-      Alert.alert('Validation', 'Name and species are required.');
+    if (!form.name.trim()) {
+      focusFirstError('name', 'Name is required.', 0);
+      return;
+    }
+    if (!form.species.trim()) {
+      focusFirstError('species', 'Species is required.', 0);
       return;
     }
     setSaving(true);
@@ -161,7 +200,6 @@ const PetFormScreen: React.FC<Props> = ({ pet, ownerId = '', onBack, onSaved }) 
         saved = await petService.createPet({ ...payload, ownerId });
       }
 
-      // Persist photo locally
       if (photoUri) {
         await savePhoto(saved.id, photoUri);
       } else if (isEdit && pet) {
@@ -173,6 +211,140 @@ const PetFormScreen: React.FC<Props> = ({ pet, ownerId = '', onBack, onSaved }) 
       Alert.alert('Error', 'Failed to save pet. Please try again.');
     } finally {
       setSaving(false);
+    }
+  };
+
+  const renderField = ({
+    key,
+    label,
+    placeholder,
+    keyboardType,
+    isFirstInteractive = false,
+  }: {
+    key: keyof FormState;
+    label: string;
+    placeholder: string;
+    keyboardType: 'default' | 'decimal-pad';
+    isFirstInteractive?: boolean;
+  }) => (
+    <View key={key} style={styles.fieldRow}>
+      <Text style={styles.fieldLabel}>{label}</Text>
+      <TextInput
+        ref={(ref) => {
+          registerFieldRef(key, ref);
+          if (isFirstInteractive) {
+            registerFirstInteractive(currentStep, ref);
+          }
+        }}
+        style={styles.input}
+        placeholder={placeholder}
+        value={form[key]}
+        onChangeText={key === 'breed' ? updateBreedField : set(key)}
+        keyboardType={keyboardType}
+        placeholderTextColor="#bbb"
+        accessibilityLabel={label.replace('*', '').trim()}
+        returnKeyType="next"
+        testID={`pet-${key}-input`}
+      />
+    </View>
+  );
+
+  const renderStepContent = () => {
+    switch (currentStep) {
+      case 0:
+        return (
+          <>
+            <TouchableOpacity
+              ref={(ref) => registerFirstInteractive(0, ref)}
+              style={styles.photoSection}
+              onPress={handlePhotoAction}
+              accessibilityRole="button"
+              accessibilityLabel={photoUri ? 'Change photo' : 'Add photo'}
+            >
+              {photoUri ? (
+                <Image
+                  source={{ uri: photoUri }}
+                  style={styles.photo}
+                  accessible
+                  accessibilityLabel="Pet photo"
+                />
+              ) : (
+                <View style={[styles.photo, styles.photoPlaceholder]}>
+                  <Text style={styles.photoEmoji}>🐾</Text>
+                </View>
+              )}
+              <Text style={styles.photoHint}>{photoUri ? 'Change photo' : 'Add photo'}</Text>
+            </TouchableOpacity>
+            {renderField({
+              key: 'name',
+              label: 'Name *',
+              placeholder: 'e.g. Buddy',
+              keyboardType: 'default',
+            })}
+            {renderField({
+              key: 'species',
+              label: 'Species *',
+              placeholder: 'e.g. Dog, Cat',
+              keyboardType: 'default',
+            })}
+            {renderField({
+              key: 'breed',
+              label: 'Breed',
+              placeholder: 'e.g. Labrador',
+              keyboardType: 'default',
+            })}
+            {breedSuggestions.length > 0 && (
+              <View style={styles.suggestionsCard}>
+                <Text style={styles.suggestionsTitle}>Suggested breeds</Text>
+                <View style={styles.suggestionsRow}>
+                  {breedSuggestions.map((suggestion) => (
+                    <TouchableOpacity
+                      key={suggestion}
+                      onPress={() => selectBreedSuggestion(suggestion)}
+                      style={styles.suggestionChip}
+                      accessibilityRole="button"
+                      accessibilityLabel={`Select ${suggestion}`}
+                    >
+                      <Text style={styles.suggestionText}>{suggestion}</Text>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              </View>
+            )}
+          </>
+        );
+      case 1:
+        return (
+          <>
+            {renderField({
+              key: 'weight',
+              label: `Weight (${weightUnit()})`,
+              placeholder: 'e.g. 12.5',
+              keyboardType: 'decimal-pad',
+              isFirstInteractive: true,
+            })}
+            {renderField({
+              key: 'dateOfBirth',
+              label: 'Date of Birth',
+              placeholder: 'YYYY-MM-DD',
+              keyboardType: 'default',
+            })}
+          </>
+        );
+      case 2:
+        return (
+          <>
+            {renderField({
+              key: 'microchipId',
+              label: 'Microchip ID',
+              placeholder: 'Optional',
+              keyboardType: 'default',
+              isFirstInteractive: true,
+            })}
+          </>
+        );
+      default:
+        return null;
     }
   };
 
@@ -188,116 +360,50 @@ const PetFormScreen: React.FC<Props> = ({ pet, ownerId = '', onBack, onSaved }) 
           <Text style={styles.backText}>‹ Back</Text>
         </TouchableOpacity>
         <Text style={styles.headerTitle}>{isEdit ? 'Edit Pet' : 'Add Pet'}</Text>
-        <TouchableOpacity
-          onPress={() => void handleSave()}
-          style={[styles.saveBtn, saving && styles.saveBtnDisabled]}
-          disabled={saving}
-          accessibilityRole="button"
-          accessibilityLabel={isEdit ? 'Save changes' : 'Save pet'}
-          testID="pet-form-save-button"
-        >
-          <Text style={styles.saveBtnText}>{saving ? 'Saving…' : 'Save'}</Text>
-        </TouchableOpacity>
+        {isLastStep ? (
+          <TouchableOpacity
+            onPress={() => void handleSave()}
+            style={[styles.saveBtn, saving && styles.saveBtnDisabled]}
+            disabled={saving}
+            accessibilityRole="button"
+            accessibilityLabel={isEdit ? 'Save changes' : 'Save pet'}
+            testID="pet-form-save-button"
+          >
+            <Text style={styles.saveBtnText}>{saving ? 'Saving…' : 'Save'}</Text>
+          </TouchableOpacity>
+        ) : (
+          <View style={styles.headerSpacer} />
+        )}
       </View>
 
       <ScrollView contentContainerStyle={styles.content}>
-        {/* Photo */}
-        <TouchableOpacity
-          style={styles.photoSection}
-          onPress={handlePhotoAction}
-          accessibilityRole="button"
-          accessibilityLabel={photoUri ? 'Change photo' : 'Add photo'}
-        >
-          {photoUri ? (
-            <Image
-              source={{ uri: photoUri }}
-              style={styles.photo}
-              accessible
-              accessibilityLabel="Pet photo"
-            />
-          ) : (
-            <View style={[styles.photo, styles.photoPlaceholder]}>
-              <Text style={styles.photoEmoji}>🐾</Text>
-            </View>
+        <MultiStepFormHeader
+          stepHeadingRef={stepHeadingRef}
+          announcement={stepAnnouncement}
+          currentStep={currentStep}
+          totalSteps={totalSteps}
+        />
+        <View style={styles.formCard}>{renderStepContent()}</View>
+        <View style={styles.stepActions}>
+          {!isFirstStep && (
+            <TouchableOpacity
+              style={styles.secondaryBtn}
+              onPress={goBack}
+              accessibilityRole="button"
+              accessibilityLabel="Go to previous step"
+            >
+              <Text style={styles.secondaryBtnText}>Back</Text>
+            </TouchableOpacity>
           )}
-          <Text style={styles.photoHint}>{photoUri ? 'Change photo' : 'Add photo'}</Text>
-        </TouchableOpacity>
-
-        {/* Fields */}
-        <View style={styles.formCard}>
-          {(
-            [
-              { key: 'name', label: 'Name *', placeholder: 'e.g. Buddy', keyboardType: 'default' },
-              {
-                key: 'species',
-                label: 'Species *',
-                placeholder: 'e.g. Dog, Cat',
-                keyboardType: 'default',
-              },
-              {
-                key: 'breed',
-                label: 'Breed',
-                placeholder: 'e.g. Labrador',
-                keyboardType: 'default',
-              },
-              {
-                key: 'weight',
-                label: `Weight (${weightUnit()})`,
-                placeholder: `e.g. 12.5`,
-                keyboardType: 'decimal-pad',
-              },
-              {
-                key: 'dateOfBirth',
-                label: 'Date of Birth',
-                placeholder: 'YYYY-MM-DD',
-                keyboardType: 'default',
-              },
-              {
-                key: 'microchipId',
-                label: 'Microchip ID',
-                placeholder: 'Optional',
-                keyboardType: 'default',
-              },
-            ] as Array<{
-              key: keyof FormState;
-              label: string;
-              placeholder: string;
-              keyboardType: 'default' | 'decimal-pad';
-            }>
-          ).map(({ key, label, placeholder, keyboardType }) => (
-            <View key={key} style={styles.fieldRow}>
-              <Text style={styles.fieldLabel}>{label}</Text>
-              <TextInput
-                style={styles.input}
-                placeholder={placeholder}
-                value={form[key]}
-                onChangeText={key === 'breed' ? updateBreedField : set(key)}
-                keyboardType={keyboardType}
-                placeholderTextColor="#bbb"
-                accessibilityLabel={label.replace('*', '').trim()}
-                returnKeyType="next"
-                testID={`pet-${key}-input`}
-              />
-            </View>
-          ))}
-
-          {breedSuggestions.length > 0 && (
-            <View style={styles.suggestionsCard}>
-              <Text style={styles.suggestionsTitle}>Suggested breeds</Text>
-              <View style={styles.suggestionsRow}>
-                {breedSuggestions.map((suggestion) => (
-                  <TouchableOpacity
-                    key={suggestion}
-                    onPress={() => selectBreedSuggestion(suggestion)}
-                    style={styles.suggestionChip}
-                    accessibilityRole="button"
-                    accessibilityLabel={`Select ${suggestion}`}
-                  >
-                    <Text style={styles.suggestionText}>{suggestion}</Text>
-                  </TouchableOpacity>
-                ))}
-              </View>
-            </View>
+          {!isLastStep && (
+            <TouchableOpacity
+              style={styles.primaryBtn}
+              onPress={handleNext}
+              accessibilityRole="button"
+              accessibilityLabel="Go to next step"
+            >
+              <Text style={styles.primaryBtnText}>Next</Text>
+            </TouchableOpacity>
           )}
         </View>
       </ScrollView>
@@ -319,6 +425,7 @@ const styles = StyleSheet.create({
   backBtn: { padding: 4 },
   backText: { fontSize: 17, color: '#4CAF50' },
   headerTitle: { fontSize: 17, fontWeight: '700', color: '#1a1a1a' },
+  headerSpacer: { width: 64 },
   saveBtn: {
     backgroundColor: '#4CAF50',
     paddingHorizontal: 14,
@@ -385,6 +492,25 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: '600',
   },
+  stepActions: { flexDirection: 'row', gap: 10, marginTop: 16 },
+  primaryBtn: {
+    flex: 1,
+    backgroundColor: '#4CAF50',
+    paddingVertical: 12,
+    borderRadius: 8,
+    alignItems: 'center',
+  },
+  primaryBtnText: { color: '#fff', fontWeight: '600' },
+  secondaryBtn: {
+    flex: 1,
+    borderWidth: 1,
+    borderColor: '#ddd',
+    paddingVertical: 12,
+    borderRadius: 8,
+    alignItems: 'center',
+    backgroundColor: '#fff',
+  },
+  secondaryBtnText: { color: '#666', fontWeight: '600' },
 });
 
 export default PetFormScreen;

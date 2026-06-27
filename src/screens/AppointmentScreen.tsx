@@ -16,8 +16,10 @@ import {
 import { Swipeable } from 'react-native-gesture-handler';
 import { v4 as uuid } from 'uuid';
 
+import MultiStepFormHeader from '../components/MultiStepFormHeader';
 import { SkeletonCard } from '../components/SkeletonCard';
 import { useMinimumLoadingTime } from '../hooks/useMinimumLoadingTime';
+import { useMultiStepFormFocus } from '../hooks/useMultiStepFormFocus';
 import type { Medication } from '../models/Medication';
 import type { MainTabParamList } from '../navigation/types';
 import {
@@ -33,6 +35,7 @@ import {
   getUpcoming,
   saveAppointment,
   scheduleAppointmentReminders,
+  type ConflictCheckResponse,
   type ConflictDetectionResult,
 } from '../services/appointmentService';
 import {
@@ -59,6 +62,13 @@ const EMPTY_FORM = {
   vetName: '',
   notes: '',
 };
+
+const BOOKING_STEPS = [
+  { title: 'Pet details' },
+  { title: 'Appointment time' },
+  { title: 'Vet & location' },
+  { title: 'Notes & confirm' },
+];
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
@@ -96,6 +106,21 @@ const AppointmentScreen: React.FC = () => {
   const [pendingAppointment, setPendingAppointment] = useState<Appointment | null>(null);
   const [conflictModalVisible, setConflictModalVisible] = useState(false);
   const [isCheckingConflicts, setIsCheckingConflicts] = useState(false);
+
+  const {
+    currentStep: bookingStep,
+    totalSteps: bookingTotalSteps,
+    stepHeadingRef: bookingHeadingRef,
+    stepAnnouncement: bookingStepAnnouncement,
+    registerFirstInteractive: registerBookingFirstInteractive,
+    registerFieldRef: registerBookingFieldRef,
+    goNext: goBookingNext,
+    goBack: goBookingBack,
+    resetSteps: resetBookingSteps,
+    focusFirstError: focusBookingError,
+    isFirstStep: isBookingFirstStep,
+    isLastStep: isBookingLastStep,
+  } = useMultiStepFormFocus(BOOKING_STEPS);
 
   // Enforce minimum 300ms display for skeleton
   const displayLoading = useMinimumLoadingTime(isLoading, { minLoadingTime: 300 });
@@ -188,9 +213,46 @@ const AppointmentScreen: React.FC = () => {
 
   // ─── Build appointment object from form ──────────────────────────────────────
 
+  const openBookingModal = () => {
+    resetBookingSteps();
+    setBookingVisible(true);
+  };
+
+  const closeBookingModal = () => {
+    setBookingVisible(false);
+    setConflictState(null);
+    resetBookingSteps();
+  };
+
+  const validateBookingStep = (): boolean => {
+    if (bookingStep === 0) {
+      if (!form.petName.trim()) {
+        focusBookingError('petName', 'Pet name is required.', 0);
+        return false;
+      }
+      if (!form.title.trim()) {
+        focusBookingError('title', 'Title is required.', 0);
+        return false;
+      }
+    }
+    if (bookingStep === 1 && !form.date.trim()) {
+      focusBookingError('date', 'Date and time are required.', 1);
+      return false;
+    }
+    return true;
+  };
+
   const buildAppointment = (): Appointment | null => {
-    if (!form.petName.trim() || !form.title.trim() || !form.date.trim()) {
-      Alert.alert('Missing fields', 'Pet name, title and date are required.');
+    if (!form.petName.trim()) {
+      focusBookingError('petName', 'Pet name is required.', 0);
+      return null;
+    }
+    if (!form.title.trim()) {
+      focusBookingError('title', 'Title is required.', 0);
+      return null;
+    }
+    if (!form.date.trim()) {
+      focusBookingError('date', 'Date and time are required.', 1);
       return null;
     }
     const dateObj = new Date(form.date);
@@ -227,7 +289,7 @@ const AppointmentScreen: React.FC = () => {
     await syncAppointmentToCalendar(saved).catch(() => {});
     setForm(EMPTY_FORM);
     setConflictState(null);
-    setBookingVisible(false);
+    closeBookingModal();
     setConflictModalVisible(false);
     setPendingAppointment(null);
     setConflictResult(null);
@@ -440,7 +502,7 @@ const AppointmentScreen: React.FC = () => {
       {/* Header */}
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Appointments</Text>
-        <TouchableOpacity style={styles.addBtn} onPress={() => setBookingVisible(true)}>
+        <TouchableOpacity style={styles.addBtn} onPress={openBookingModal}>
           <Text style={styles.addBtnText}>+ Book</Text>
         </TouchableOpacity>
       </View>
@@ -525,60 +587,150 @@ const AppointmentScreen: React.FC = () => {
       )}
 
       {/* ── Book Modal ── */}
-      <Modal
-        visible={bookingVisible}
-        animationType="slide"
-        onRequestClose={() => {
-          setBookingVisible(false);
-          setConflictState(null);
-        }}
-      >
+      <Modal visible={bookingVisible} animationType="slide" onRequestClose={closeBookingModal}>
         <View style={styles.modalContainer}>
           <View style={styles.modalHeader}>
             <Text style={styles.modalTitle}>Book Appointment</Text>
             <TouchableOpacity
-              onPress={() => {
-                setBookingVisible(false);
-                setConflictState(null);
-              }}
+              onPress={closeBookingModal}
+              accessibilityRole="button"
+              accessibilityLabel="Close booking form"
             >
               <Text style={styles.modalClose}>✕</Text>
             </TouchableOpacity>
           </View>
           <ScrollView contentContainerStyle={styles.modalBody}>
-            {(
-              [
-                { key: 'petName', label: 'Pet Name *', placeholder: 'Buddy' },
-                { key: 'title', label: 'Title *', placeholder: 'Annual checkup' },
-                { key: 'date', label: 'Date & Time *', placeholder: '2026-05-10T09:00' },
-                { key: 'vetName', label: 'Vet Name', placeholder: 'Dr. Smith' },
-                { key: 'location', label: 'Location', placeholder: 'City Vet Clinic' },
-                { key: 'notes', label: 'Notes', placeholder: 'Bring vaccination records' },
-              ] as { key: keyof typeof EMPTY_FORM; label: string; placeholder: string }[]
-            ).map(({ key, label, placeholder }) => (
-              <View key={key} style={styles.field}>
-                <Text style={styles.label}>{label}</Text>
+            <MultiStepFormHeader
+              stepHeadingRef={bookingHeadingRef}
+              announcement={bookingStepAnnouncement}
+              currentStep={bookingStep}
+              totalSteps={bookingTotalSteps}
+            />
+            {bookingStep === 0 && (
+              <>
+                {(
+                  [
+                    { key: 'petName', label: 'Pet Name *', placeholder: 'Buddy' },
+                    { key: 'title', label: 'Title *', placeholder: 'Annual checkup' },
+                  ] as { key: keyof typeof EMPTY_FORM; label: string; placeholder: string }[]
+                ).map(({ key, label, placeholder }, index) => (
+                  <View key={key} style={styles.field}>
+                    <Text style={styles.label}>{label}</Text>
+                    <TextInput
+                      ref={(ref) => {
+                        registerBookingFieldRef(key, ref);
+                        if (index === 0) registerBookingFirstInteractive(0, ref);
+                      }}
+                      style={styles.input}
+                      value={form[key]}
+                      onChangeText={(v) => setForm((f) => ({ ...f, [key]: v }))}
+                      placeholder={placeholder}
+                      placeholderTextColor="#9CA3AF"
+                      accessibilityLabel={label.replace('*', '').trim()}
+                    />
+                  </View>
+                ))}
+              </>
+            )}
+            {bookingStep === 1 && (
+              <View style={styles.field}>
+                <Text style={styles.label}>Date & Time *</Text>
                 <TextInput
+                  ref={(ref) => {
+                    registerBookingFieldRef('date', ref);
+                    registerBookingFirstInteractive(1, ref);
+                  }}
                   style={styles.input}
-                  value={form[key]}
-                  onChangeText={(v) => setForm((f) => ({ ...f, [key]: v }))}
-                  placeholder={placeholder}
+                  value={form.date}
+                  onChangeText={(v) => setForm((f) => ({ ...f, date: v }))}
+                  placeholder="2026-05-10T09:00"
                   placeholderTextColor="#9CA3AF"
-                  multiline={key === 'notes'}
+                  accessibilityLabel="Date and time"
                 />
               </View>
-            ))}
-            <TouchableOpacity
-              style={[styles.primaryBtn, isCheckingConflicts && styles.btnDisabled]}
-              onPress={() => void handleBook()}
-              disabled={isCheckingConflicts}
-            >
-              {isCheckingConflicts ? (
-                <ActivityIndicator color="#fff" />
-              ) : (
-                <Text style={styles.primaryBtnText}>Confirm Booking</Text>
+            )}
+            {bookingStep === 2 && (
+              <>
+                {(
+                  [
+                    { key: 'vetName', label: 'Vet Name', placeholder: 'Dr. Smith' },
+                    { key: 'location', label: 'Location', placeholder: 'City Vet Clinic' },
+                  ] as { key: keyof typeof EMPTY_FORM; label: string; placeholder: string }[]
+                ).map(({ key, label, placeholder }, index) => (
+                  <View key={key} style={styles.field}>
+                    <Text style={styles.label}>{label}</Text>
+                    <TextInput
+                      ref={(ref) => {
+                        registerBookingFieldRef(key, ref);
+                        if (index === 0) registerBookingFirstInteractive(2, ref);
+                      }}
+                      style={styles.input}
+                      value={form[key]}
+                      onChangeText={(v) => setForm((f) => ({ ...f, [key]: v }))}
+                      placeholder={placeholder}
+                      placeholderTextColor="#9CA3AF"
+                      accessibilityLabel={label}
+                    />
+                  </View>
+                ))}
+              </>
+            )}
+            {bookingStep === 3 && (
+              <View style={styles.field}>
+                <Text style={styles.label}>Notes</Text>
+                <TextInput
+                  ref={(ref) => {
+                    registerBookingFieldRef('notes', ref);
+                    registerBookingFirstInteractive(3, ref);
+                  }}
+                  style={styles.input}
+                  value={form.notes}
+                  onChangeText={(v) => setForm((f) => ({ ...f, notes: v }))}
+                  placeholder="Bring vaccination records"
+                  placeholderTextColor="#9CA3AF"
+                  multiline
+                  accessibilityLabel="Notes"
+                />
+              </View>
+            )}
+            <View style={styles.stepActions}>
+              {!isBookingFirstStep && (
+                <TouchableOpacity
+                  style={styles.bookingSecondaryBtn}
+                  onPress={goBookingBack}
+                  accessibilityRole="button"
+                  accessibilityLabel="Go to previous step"
+                >
+                  <Text style={styles.secondaryBtnText}>Back</Text>
+                </TouchableOpacity>
               )}
-            </TouchableOpacity>
+              {!isBookingLastStep ? (
+                <TouchableOpacity
+                  style={styles.primaryBtn}
+                  onPress={() => {
+                    if (validateBookingStep()) goBookingNext();
+                  }}
+                  accessibilityRole="button"
+                  accessibilityLabel="Go to next step"
+                >
+                  <Text style={styles.primaryBtnText}>Next</Text>
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity
+                  style={[styles.primaryBtn, isCheckingConflicts && styles.btnDisabled]}
+                  onPress={() => void handleBook()}
+                  disabled={isCheckingConflicts}
+                  accessibilityRole="button"
+                  accessibilityLabel="Confirm booking"
+                >
+                  {isCheckingConflicts ? (
+                    <ActivityIndicator color="#fff" />
+                  ) : (
+                    <Text style={styles.primaryBtnText}>Confirm Booking</Text>
+                  )}
+                </TouchableOpacity>
+              )}
+            </View>
           </ScrollView>
         </View>
       </Modal>
@@ -859,6 +1011,16 @@ const styles = StyleSheet.create({
   warningBtnText: { color: '#B45309', fontWeight: '600', fontSize: 15 },
   secondaryBtn: { paddingVertical: 12, alignItems: 'center', marginTop: 8 },
   secondaryBtnText: { color: '#6B7280', fontSize: 14 },
+  stepActions: { flexDirection: 'row', gap: 10, marginTop: 8 },
+  bookingSecondaryBtn: {
+    flex: 1,
+    borderWidth: 1,
+    borderColor: '#D1D5DB',
+    borderRadius: 10,
+    paddingVertical: 14,
+    alignItems: 'center',
+    backgroundColor: '#fff',
+  },
   // Warning banner
   warningBanner: { borderRadius: 10, padding: 14, marginBottom: 16 },
   warningBannerRed: { backgroundColor: '#FEE2E2', borderLeftWidth: 4, borderLeftColor: '#EF4444' },
