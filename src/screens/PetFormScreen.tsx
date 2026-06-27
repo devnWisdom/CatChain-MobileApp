@@ -1,6 +1,7 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   Alert,
+  FlatList,
   Image,
   ScrollView,
   StyleSheet,
@@ -13,10 +14,32 @@ import {
 import MultiStepFormHeader from '../components/MultiStepFormHeader';
 import { useMultiStepFormFocus } from '../hooks/useMultiStepFormFocus';
 import type { Species } from '../models/Pet';
-import breedInsightsService from '../services/breedInsightsService';
+import breedInsightsService, { type BreedInsight } from '../services/breedInsightsService';
 import petService, { type Pet } from '../services/petService';
 import { parseWeightToKg, weightUnit } from '../utils/localeValues';
 import { getPhoto, removePhoto, savePhoto } from '../utils/petPhotoStore';
+
+/** Special-case breed options shown at the bottom of every suggestion list */
+const SPECIAL_BREEDS: BreedInsight[] = [
+  {
+    id: 'mixed-breed',
+    name: 'Mixed breed',
+    species: 'dog',
+    lifeExpectancyYears: 0,
+    commonHealthConditions: [],
+    careRecommendations: [],
+  },
+  {
+    id: 'unknown-breed',
+    name: 'Unknown',
+    species: 'dog',
+    lifeExpectancyYears: 0,
+    commonHealthConditions: [],
+    careRecommendations: [],
+  },
+];
+
+const DEBOUNCE_MS = 300;
 
 interface Props {
   /** Pass a pet to edit; omit for add mode. */
@@ -45,11 +68,13 @@ const EMPTY: FormState = {
   microchipId: '',
 };
 
-const FORM_STEPS = [
-  { title: 'Photo & basics' },
-  { title: 'Physical details' },
-  { title: 'Identification' },
-];
+/** Returns an image source for a breed — uses CDN URL, falls back gracefully if unavailable */
+const getBreedImageSource = (breed: BreedInsight): { uri: string } | null => {
+  if (breed.id === 'mixed-breed' || breed.id === 'unknown-breed') return null;
+  return {
+    uri: `https://cdn.petchain.app/breeds/${encodeURIComponent(breed.name.toLowerCase().replace(/\s+/g, '-'))}.jpg`,
+  };
+};
 
 const PetFormScreen: React.FC<Props> = ({ pet, ownerId = '', onBack, onSaved }) => {
   const isEdit = !!pet;
@@ -65,10 +90,13 @@ const PetFormScreen: React.FC<Props> = ({ pet, ownerId = '', onBack, onSaved }) 
         }
       : EMPTY,
   );
-  const [breedOptions, setBreedOptions] = useState<string[]>([]);
-  const [breedSuggestions, setBreedSuggestions] = useState<string[]>([]);
+  const [allBreeds, setAllBreeds] = useState<BreedInsight[]>([]);
+  const [breedSuggestions, setBreedSuggestions] = useState<BreedInsight[]>([]);
+  /** The currently selected breed object (for image preview after selection) */
+  const [selectedBreed, setSelectedBreed] = useState<BreedInsight | null>(null);
   const [photoUri, setPhotoUri] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const {
     currentStep,
@@ -92,37 +120,75 @@ const PetFormScreen: React.FC<Props> = ({ pet, ownerId = '', onBack, onSaved }) 
     void loadPhoto();
   }, [loadPhoto]);
 
+  // Load the full breed list once on mount
   useEffect(() => {
     void (async () => {
       try {
         const breeds = await breedInsightsService.getBreedList();
-        setBreedOptions(breeds.map((breed) => breed.name));
+        setAllBreeds(breeds);
       } catch {
-        setBreedOptions([]);
+        setAllBreeds([]);
       }
     })();
   }, []);
 
+  // If editing a pet with a known breed, pre-select it
+  useEffect(() => {
+    if (pet?.breed && allBreeds.length > 0) {
+      const found = allBreeds.find(
+        (b) => b.name.toLowerCase() === (pet.breed ?? '').toLowerCase(),
+      );
+      if (found) setSelectedBreed(found);
+    }
+  }, [pet, allBreeds]);
+
   const set = (key: keyof FormState) => (val: string) => setForm((f) => ({ ...f, [key]: val }));
 
+  /**
+   * Called on every keystroke in the breed field.
+   * Debounces the suggestion search by 300 ms to avoid thrashing on fast typing.
+   */
   const updateBreedField = (value: string) => {
     setForm((f) => ({ ...f, breed: value }));
-    const normalized = value.trim().toLowerCase();
+    // Clear selected breed image when the user starts typing again
+    setSelectedBreed(null);
 
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+
+    const normalized = value.trim().toLowerCase();
     if (!normalized) {
       setBreedSuggestions([]);
       return;
     }
 
-    setBreedSuggestions(
-      breedOptions.filter((breed) => breed.toLowerCase().includes(normalized)).slice(0, 6),
-    );
+    debounceRef.current = setTimeout(() => {
+      const matched = allBreeds
+        .filter((b) => b.name.toLowerCase().includes(normalized))
+        .slice(0, 6);
+      // Always append the special-case options so the user can pick them
+      const specials = SPECIAL_BREEDS.filter((s) =>
+        s.name.toLowerCase().includes(normalized),
+      );
+      setBreedSuggestions([...matched, ...specials]);
+    }, DEBOUNCE_MS);
   };
 
-  const selectBreedSuggestion = (breed: string) => {
-    setForm((f) => ({ ...f, breed }));
+  const selectBreed = (breed: BreedInsight) => {
+    setForm((f) => ({ ...f, breed: breed.name }));
+    setSelectedBreed(breed);
     setBreedSuggestions([]);
   };
+
+  // Clean up debounce timer on unmount
+  useEffect(() => {
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    };
+  }, []);
+
+  // ── Photo management ───────────────────────────────────────────────────────
+  // Without expo-image-picker installed we prompt for a URI directly.
+  // In a real build, replace this with ImagePicker.launchImageLibraryAsync().
 
   const handlePhotoAction = () => {
     Alert.alert('Pet Photo', 'Enter a photo URL or file URI', [
@@ -395,16 +461,163 @@ const PetFormScreen: React.FC<Props> = ({ pet, ownerId = '', onBack, onSaved }) 
               <Text style={styles.secondaryBtnText}>Back</Text>
             </TouchableOpacity>
           )}
-          {!isLastStep && (
-            <TouchableOpacity
-              style={styles.primaryBtn}
-              onPress={handleNext}
-              accessibilityRole="button"
-              accessibilityLabel="Go to next step"
-            >
-              <Text style={styles.primaryBtnText}>Next</Text>
-            </TouchableOpacity>
+          <Text style={styles.photoHint}>{photoUri ? 'Change photo' : 'Add photo'}</Text>
+        </TouchableOpacity>
+
+        {/* Fields */}
+        <View style={styles.formCard}>
+          {(
+            [
+              { key: 'name', label: 'Name *', placeholder: 'e.g. Buddy', keyboardType: 'default' },
+              {
+                key: 'species',
+                label: 'Species *',
+                placeholder: 'e.g. Dog, Cat',
+                keyboardType: 'default',
+              },
+            ] as Array<{
+              key: keyof FormState;
+              label: string;
+              placeholder: string;
+              keyboardType: 'default' | 'decimal-pad';
+            }>
+          ).map(({ key, label, placeholder, keyboardType }) => (
+            <View key={key} style={styles.fieldRow}>
+              <Text style={styles.fieldLabel}>{label}</Text>
+              <TextInput
+                style={styles.input}
+                placeholder={placeholder}
+                value={form[key]}
+                onChangeText={set(key)}
+                keyboardType={keyboardType}
+                placeholderTextColor="#bbb"
+                accessibilityLabel={label.replace('*', '').trim()}
+                returnKeyType="next"
+                testID={`pet-${key}-input`}
+              />
+            </View>
+          ))}
+
+          {/* ── Breed autocomplete with image preview ── */}
+          <View style={styles.fieldRow}>
+            <Text style={styles.fieldLabel}>Breed</Text>
+
+            {/* Selected breed preview — shown after a breed is chosen */}
+            {selectedBreed && (
+              <View style={styles.selectedBreedRow} accessibilityLabel={`Selected breed: ${selectedBreed.name}`}>
+                {getBreedImageSource(selectedBreed) ? (
+                  <Image
+                    source={getBreedImageSource(selectedBreed)!}
+                    style={styles.selectedBreedImage}
+                    accessibilityLabel={`${selectedBreed.name} breed image`}
+                  />
+                ) : (
+                  <View style={[styles.selectedBreedImage, styles.breedImagePlaceholder]}>
+                    <Text style={styles.breedPlaceholderEmoji}>🐾</Text>
+                  </View>
+                )}
+                <Text style={styles.selectedBreedName}>{selectedBreed.name}</Text>
+                <TouchableOpacity
+                  onPress={() => {
+                    setSelectedBreed(null);
+                    setForm((f) => ({ ...f, breed: '' }));
+                  }}
+                  accessibilityRole="button"
+                  accessibilityLabel="Clear breed selection"
+                  style={styles.clearBreedBtn}
+                >
+                  <Text style={styles.clearBreedText}>✕</Text>
+                </TouchableOpacity>
+              </View>
+            )}
+
+            <TextInput
+              style={styles.input}
+              placeholder="Search breed…"
+              value={form.breed}
+              onChangeText={updateBreedField}
+              placeholderTextColor="#bbb"
+              accessibilityLabel="Breed"
+              returnKeyType="next"
+              testID="pet-breed-input"
+            />
+          </View>
+
+          {/* Breed suggestion dropdown with thumbnails */}
+          {breedSuggestions.length > 0 && (
+            <View style={styles.suggestionsDropdown}>
+              <FlatList
+                data={breedSuggestions}
+                keyExtractor={(item) => item.id}
+                scrollEnabled={false}
+                ItemSeparatorComponent={() => <View style={styles.suggestionDivider} />}
+                renderItem={({ item: breed }) => (
+                  <TouchableOpacity
+                    onPress={() => selectBreed(breed)}
+                    style={styles.suggestionRow}
+                    accessibilityRole="button"
+                    accessibilityLabel={`Select ${breed.name}`}
+                  >
+                    {breed.id !== 'mixed-breed' && breed.id !== 'unknown-breed' ? (
+                      <Image
+                        source={getBreedImageSource(breed)!}
+                        style={styles.suggestionThumbnail}
+                        accessibilityLabel={`${breed.name} thumbnail`}
+                      />
+                    ) : (
+                      <View style={[styles.suggestionThumbnail, styles.breedImagePlaceholder]}>
+                        <Text style={styles.breedPlaceholderEmoji}>🐾</Text>
+                      </View>
+                    )}
+                    <Text style={styles.suggestionRowText}>{breed.name}</Text>
+                  </TouchableOpacity>
+                )}
+              />
+            </View>
           )}
+
+          {(
+            [
+              {
+                key: 'weight',
+                label: `Weight (${weightUnit()})`,
+                placeholder: `e.g. 12.5`,
+                keyboardType: 'decimal-pad',
+              },
+              {
+                key: 'dateOfBirth',
+                label: 'Date of Birth',
+                placeholder: 'YYYY-MM-DD',
+                keyboardType: 'default',
+              },
+              {
+                key: 'microchipId',
+                label: 'Microchip ID',
+                placeholder: 'Optional',
+                keyboardType: 'default',
+              },
+            ] as Array<{
+              key: keyof FormState;
+              label: string;
+              placeholder: string;
+              keyboardType: 'default' | 'decimal-pad';
+            }>
+          ).map(({ key, label, placeholder, keyboardType }) => (
+            <View key={key} style={styles.fieldRow}>
+              <Text style={styles.fieldLabel}>{label}</Text>
+              <TextInput
+                style={styles.input}
+                placeholder={placeholder}
+                value={form[key]}
+                onChangeText={set(key)}
+                keyboardType={keyboardType}
+                placeholderTextColor="#bbb"
+                accessibilityLabel={label.replace('*', '').trim()}
+                returnKeyType="next"
+                testID={`pet-${key}-input`}
+              />
+            </View>
+          ))}
         </View>
       </ScrollView>
     </View>
@@ -492,25 +705,79 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: '600',
   },
-  stepActions: { flexDirection: 'row', gap: 10, marginTop: 16 },
-  primaryBtn: {
-    flex: 1,
-    backgroundColor: '#4CAF50',
-    paddingVertical: 12,
-    borderRadius: 8,
+  // ── Breed autocomplete with images ──
+  selectedBreedRow: {
+    flexDirection: 'row',
     alignItems: 'center',
+    backgroundColor: '#f1f8e9',
+    borderRadius: 8,
+    padding: 8,
+    marginBottom: 8,
   },
-  primaryBtnText: { color: '#fff', fontWeight: '600' },
-  secondaryBtn: {
+  selectedBreedImage: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    marginRight: 10,
+    backgroundColor: '#e8f5e9',
+  },
+  selectedBreedName: {
     flex: 1,
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#33691e',
+  },
+  clearBreedBtn: {
+    padding: 4,
+  },
+  clearBreedText: {
+    fontSize: 16,
+    color: '#888',
+  },
+  suggestionsDropdown: {
+    marginTop: 4,
+    marginBottom: 8,
+    backgroundColor: '#fff',
+    borderRadius: 10,
     borderWidth: 1,
     borderColor: '#ddd',
-    paddingVertical: 12,
-    borderRadius: 8,
-    alignItems: 'center',
-    backgroundColor: '#fff',
+    overflow: 'hidden',
+    shadowColor: '#000',
+    shadowOpacity: 0.08,
+    shadowRadius: 4,
+    elevation: 3,
   },
-  secondaryBtnText: { color: '#666', fontWeight: '600' },
+  suggestionRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+  },
+  suggestionThumbnail: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    marginRight: 12,
+    backgroundColor: '#e8f5e9',
+  },
+  breedImagePlaceholder: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#e8f5e9',
+  },
+  breedPlaceholderEmoji: {
+    fontSize: 18,
+  },
+  suggestionRowText: {
+    fontSize: 14,
+    color: '#1a1a1a',
+    fontWeight: '500',
+  },
+  suggestionDivider: {
+    height: 1,
+    backgroundColor: '#f0f0f0',
+    marginLeft: 60,
+  },
 });
 
 export default PetFormScreen;

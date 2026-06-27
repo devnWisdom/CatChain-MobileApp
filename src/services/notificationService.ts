@@ -834,9 +834,12 @@ export const cancelScheduledNotification = async (notificationId: string): Promi
 /**
  * Called when a pet changes owner. Cancels all scheduled vaccination
  * notifications for the pet on the current device, then asks the backend to
- * trigger a push to the new owner so they can re-register the reminders.
+ * trigger a push to the new owner so they can re-schedule the reminders.
+ *
+ * @param petId - ID of the transferred pet
+ * @param newOwnerUserId - User ID of the new owner
  */
-export const transferVaccinationNotifications = async (
+export const cancelAndTransferVaccinationNotifications = async (
   petId: string,
   newOwnerUserId: string,
 ): Promise<void> => {
