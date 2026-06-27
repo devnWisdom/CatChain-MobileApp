@@ -46,6 +46,7 @@ import vetsRouter from './routes/vets';
 import vitalsRouter from './routes/vitals';
 import { attachAudit } from '../middleware/auditLog';
 import { authRateLimiter, dataRateLimiter, publicRateLimiter } from '../middleware/rateLimiter';
+import activityRouter from '../src/routes/activity';
 import adminRouter from '../src/routes/admin';
 import anchorRouter from '../src/routes/anchor';
 import apiKeysRouter from '../src/routes/apiKeys';
@@ -173,6 +174,7 @@ export function createApp(): Express {
   api.use('/breeds', breedsRouter);
   api.use('/reports', reportsRouter);
   api.use('/sync', dataRateLimiter, syncRouter);
+  api.use('/activity', dataRateLimiter, activityRouter);
   api.use('/travel-certificates', travelCertificatesRouter);
   api.use('/reconciliation', reconciliationRouter);
   api.use('/referrals', dataRateLimiter, referralsRouter);

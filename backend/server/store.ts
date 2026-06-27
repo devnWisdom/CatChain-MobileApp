@@ -39,6 +39,7 @@ export interface StoredPet {
   ownerId: string;
   createdAt: string;
   updatedAt: string;
+  metadata?: Record<string, any>;
 }
 
 export interface StoredMedicalRecord {
@@ -232,6 +233,7 @@ function seed() {
     ownerId: userId,
     createdAt: t,
     updatedAt: t,
+    metadata: { stepGoal: 6000 },
   });
 
   const medicalRecords = new Map<string, StoredMedicalRecord>();

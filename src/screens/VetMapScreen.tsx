@@ -15,7 +15,7 @@
  *  - Integrates with native maps for turn-by-turn navigation
  */
 
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   ActivityIndicator,
   Alert,
@@ -31,6 +31,7 @@ import {
 } from 'react-native';
 import MapView, { Callout, Marker, UrlTile, type Region } from 'react-native-maps';
 
+import { calculateClinicStatus, useClinicStatus } from '../hooks/useClinicStatus';
 import { getAvailability } from '../services/appointmentService';
 import mapService, { type ClinicType, type Location, type VetClinic } from '../services/mapService';
 import { networkMonitor } from '../utils/networkMonitor';
@@ -83,6 +84,34 @@ function tomorrowStr(): string {
   return d.toISOString().slice(0, 10);
 }
 
+// ─── Component helpers ────────────────────────────────────────────────────────
+
+const WEEKDAY_LABELS: Record<string, string> = {
+  monday: 'Monday',
+  tuesday: 'Tuesday',
+  wednesday: 'Wednesday',
+  thursday: 'Thursday',
+  friday: 'Friday',
+  saturday: 'Saturday',
+  sunday: 'Sunday',
+};
+
+const ClinicStatusBadge: React.FC<{ clinic: VetClinic }> = ({ clinic }) => {
+  const status = useClinicStatus(clinic);
+  const config = {
+    emergency: { bg: '#FDF2F8', border: '#FBCFE8', text: '#BE185D', label: '🚨 24h Emergency' },
+    open: { bg: '#ECFDF5', border: '#A7F3D0', text: '#047857', label: '● Open Now' },
+    closing_soon: { bg: '#FFFBEB', border: '#FDE68A', text: '#B45309', label: '⏳ Closing Soon' },
+    closed: { bg: '#FEF2F2', border: '#FECACA', text: '#B91C1C', label: '○ Closed' },
+  }[status];
+
+  return (
+    <View style={[styles.statusBadge, { backgroundColor: config.bg, borderColor: config.border }]}>
+      <Text style={[styles.statusBadgeText, { color: config.text }]}>{config.label}</Text>
+    </View>
+  );
+};
+
 // ─── Component ────────────────────────────────────────────────────────────────
 
 const VetMapScreen: React.FC<Props> = ({ onBookAppointment }) => {
@@ -92,6 +121,7 @@ const VetMapScreen: React.FC<Props> = ({ onBookAppointment }) => {
   const [clinics, setClinics] = useState<VetClinic[]>([]);
   const [selectedClinic, setSelectedClinic] = useState<VetClinic | null>(null);
   const [activeFilter, setActiveFilter] = useState<ClinicType | 'all'>('all');
+  const [openNowOnly, setOpenNowOnly] = useState(false);
   const [loading, setLoading] = useState(true);
   const [locationLoading, setLocationLoading] = useState(false);
   const [isOffline, setIsOffline] = useState(false);
@@ -103,6 +133,18 @@ const VetMapScreen: React.FC<Props> = ({ onBookAppointment }) => {
 
   // Bottom sheet slide-up animation
   const sheetAnim = useRef(new Animated.Value(0)).current;
+
+  // Memoized filtered clinics selector for real-time performance
+  const visibleClinics = useMemo(() => {
+    let filtered = clinics;
+    if (openNowOnly) {
+      filtered = filtered.filter((clinic) => {
+        const status = calculateClinicStatus(clinic);
+        return status === 'open' || status === 'closing_soon' || status === 'emergency';
+      });
+    }
+    return filtered;
+  }, [clinics, openNowOnly]);
 
   // ── Network status ──────────────────────────────────────────────────────────
 
@@ -198,10 +240,20 @@ const VetMapScreen: React.FC<Props> = ({ onBookAppointment }) => {
 
   // ── Map interactions ────────────────────────────────────────────────────────
 
-  const handleMarkerPress = (clinic: VetClinic) => {
+  const handleMarkerPress = async (clinic: VetClinic) => {
     setSelectedClinic(clinic);
     animateSheet(true);
     void loadClinicSlots(clinic);
+
+    try {
+      const details = await mapService.getClinicDetails(clinic.id);
+      setSelectedClinic((prev) => (prev && prev.id === clinic.id ? { ...prev, ...details } : prev));
+      setClinics((prevClinics) =>
+        prevClinics.map((c) => (c.id === clinic.id ? { ...c, ...details } : c)),
+      );
+    } catch {
+      // Silently ignore detail fetching error
+    }
   };
 
   const handleMapPress = () => {
@@ -385,7 +437,7 @@ const VetMapScreen: React.FC<Props> = ({ onBookAppointment }) => {
           accessibilityLabel="Vet clinic map"
         >
           <UrlTile urlTemplate={OSM_TILE_URL} maximumZ={19} flipY={false} offlineMode={isOffline} />
-          {clinics.map(renderMarker)}
+          {visibleClinics.map(renderMarker)}
         </MapView>
       ) : (
         <View style={styles.noLocationContainer}>
@@ -402,6 +454,17 @@ const VetMapScreen: React.FC<Props> = ({ onBookAppointment }) => {
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={styles.filterScroll}
         >
+          <TouchableOpacity
+            style={[styles.openNowToggle, openNowOnly && styles.openNowToggleActive]}
+            onPress={() => setOpenNowOnly(!openNowOnly)}
+            accessibilityLabel="Toggle open now clinics only"
+            accessibilityState={{ checked: openNowOnly }}
+          >
+            <Text style={[styles.openNowToggleText, openNowOnly && styles.openNowToggleTextActive]}>
+              {openNowOnly ? '🟢 Open Now' : '⚪ Open Now Only'}
+            </Text>
+          </TouchableOpacity>
+          <View style={styles.filterDivider} />
           {FILTER_OPTIONS.map(renderFilterChip)}
         </ScrollView>
       </View>
@@ -422,7 +485,7 @@ const VetMapScreen: React.FC<Props> = ({ onBookAppointment }) => {
       {/* ── Clinic count badge ── */}
       <View style={styles.countBadge}>
         <Text style={styles.countBadgeText}>
-          {clinics.length} clinic{clinics.length !== 1 ? 's' : ''} nearby
+          {visibleClinics.length} clinic{visibleClinics.length !== 1 ? 's' : ''} nearby
         </Text>
       </View>
 
@@ -455,11 +518,7 @@ const VetMapScreen: React.FC<Props> = ({ onBookAppointment }) => {
                       {selectedClinic.type}
                     </Text>
                   </View>
-                  {selectedClinic.available24h && (
-                    <View style={styles.badge24h}>
-                      <Text style={styles.badge24hText}>24h</Text>
-                    </View>
-                  )}
+                  <ClinicStatusBadge clinic={selectedClinic} />
                 </View>
               </View>
             </View>
@@ -499,6 +558,54 @@ const VetMapScreen: React.FC<Props> = ({ onBookAppointment }) => {
                   <Text style={styles.sheetMetaValue}>⭐ {selectedClinic.rating}</Text>
                 </View>
               )}
+            </View>
+          )}
+
+          {/* Weekly Schedule */}
+          {selectedClinic.schedule && (
+            <View style={styles.scheduleSection}>
+              <Text style={styles.scheduleTitle}>🕒 Operational Hours</Text>
+              <View style={styles.scheduleCard}>
+                {['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'].map(
+                  (day) => {
+                    const hours = selectedClinic.schedule?.[day];
+                    const todayIndex = new Date().getDay();
+                    const todayDayName = [
+                      'sunday',
+                      'monday',
+                      'tuesday',
+                      'wednesday',
+                      'thursday',
+                      'friday',
+                      'saturday',
+                    ][todayIndex];
+                    const isToday = day === todayDayName;
+                    return (
+                      <View
+                        key={day}
+                        style={[styles.scheduleRow, isToday && styles.scheduleRowToday]}
+                      >
+                        <Text style={[styles.scheduleDay, isToday && styles.scheduleDayToday]}>
+                          {WEEKDAY_LABELS[day]} {isToday && '•'}
+                        </Text>
+                        <Text style={[styles.scheduleHours, isToday && styles.scheduleHoursToday]}>
+                          {hours ? `${hours.open} - ${hours.close}` : 'Closed'}
+                        </Text>
+                      </View>
+                    );
+                  },
+                )}
+              </View>
+            </View>
+          )}
+          {selectedClinic.available24h && (
+            <View style={styles.scheduleSection}>
+              <Text style={styles.scheduleTitle}>🕒 Operational Hours</Text>
+              <View style={styles.emergencyScheduleCard}>
+                <Text style={styles.emergencyScheduleText}>
+                  🟢 Open 24 Hours, 7 Days a Week for Emergencies
+                </Text>
+              </View>
             </View>
           )}
 
@@ -549,17 +656,29 @@ const VetMapScreen: React.FC<Props> = ({ onBookAppointment }) => {
       )}
 
       {/* ── Fallback list when no map location ── */}
-      {!initialRegion && clinics.length > 0 && (
+      {!initialRegion && visibleClinics.length > 0 && (
         <View style={styles.fallbackList}>
           <Text style={styles.fallbackListTitle}>Cached Clinics</Text>
           <FlatList
-            data={clinics}
+            data={visibleClinics}
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => (
               <View style={styles.fallbackCard}>
-                <Text style={styles.fallbackCardName}>
-                  {TYPE_ICONS[item.type]} {item.name}
-                </Text>
+                <View style={styles.fallbackHeaderRow}>
+                  <Text style={styles.fallbackCardName}>
+                    {TYPE_ICONS[item.type]} {item.name}
+                  </Text>
+                  <View style={styles.fallbackBadgeRow}>
+                    <View
+                      style={[styles.typeBadge, { backgroundColor: TYPE_COLORS[item.type] + '22' }]}
+                    >
+                      <Text style={[styles.typeBadgeText, { color: TYPE_COLORS[item.type] }]}>
+                        {item.type}
+                      </Text>
+                    </View>
+                    <ClinicStatusBadge clinic={item} />
+                  </View>
+                </View>
                 <Text style={styles.fallbackCardSub}>{item.address}</Text>
                 <View style={styles.fallbackCardActions}>
                   <TouchableOpacity
@@ -862,6 +981,97 @@ const styles = StyleSheet.create({
   fallbackActionText: { fontSize: 13, color: '#2d6a4f', fontWeight: '600' },
   fallbackBookBtn: { backgroundColor: '#EFF6FF', borderColor: '#BFDBFE' },
   fallbackBookText: { fontSize: 13, color: '#1D4ED8', fontWeight: '600' },
+
+  // Open Now toggle styles
+  openNowToggle: {
+    paddingHorizontal: 14,
+    paddingVertical: 7,
+    borderRadius: 20,
+    backgroundColor: '#fff',
+    borderWidth: 1.5,
+    borderColor: '#e2e8f0',
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOpacity: 0.08,
+        shadowRadius: 4,
+        shadowOffset: { width: 0, height: 2 },
+      },
+      android: { elevation: 2 },
+    }),
+  },
+  openNowToggleActive: { backgroundColor: '#ECFDF5', borderColor: '#4CAF50' },
+  openNowToggleText: { fontSize: 13, color: '#444', fontWeight: '600' },
+  openNowToggleTextActive: { color: '#047857' },
+  filterDivider: { width: 1, backgroundColor: '#cbd5e1', marginVertical: 6, marginHorizontal: 4 },
+
+  // Status Badge styles
+  statusBadge: {
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 10,
+    borderWidth: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  statusBadgeText: { fontSize: 11, fontWeight: '700' },
+
+  // Weekly Schedule styles
+  scheduleSection: { marginTop: 12, marginBottom: 16 },
+  scheduleTitle: {
+    fontSize: 12,
+    color: '#718096',
+    fontWeight: '700',
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+    marginBottom: 8,
+  },
+  scheduleCard: {
+    backgroundColor: '#F7FAFC',
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+  },
+  scheduleRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingVertical: 8,
+    borderBottomWidth: 1,
+    borderBottomColor: '#EDF2F7',
+  },
+  scheduleRowToday: {
+    backgroundColor: '#EDFDF5',
+    borderRadius: 8,
+    paddingHorizontal: 8,
+    marginHorizontal: -8,
+  },
+  scheduleDay: { fontSize: 13, color: '#4A5568', fontWeight: '500' },
+  scheduleDayToday: { color: '#047857', fontWeight: '700' },
+  scheduleHours: { fontSize: 13, color: '#718096', fontWeight: '600' },
+  scheduleHoursToday: { color: '#047857', fontWeight: '700' },
+  emergencyScheduleCard: {
+    backgroundColor: '#FFF5F5',
+    borderWidth: 1,
+    borderColor: '#FED7D7',
+    borderRadius: 12,
+    padding: 12,
+    alignItems: 'center',
+  },
+  emergencyScheduleText: { fontSize: 13, fontWeight: '700', color: '#C53030' },
+
+  // Fallback card styles
+  fallbackHeaderRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    marginBottom: 6,
+  },
+  fallbackBadgeRow: { flexDirection: 'row', gap: 6, alignItems: 'center' },
 });
 
 // Suppress unused import warning — SCREEN_WIDTH is available for responsive calculations
