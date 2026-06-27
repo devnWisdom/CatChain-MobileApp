@@ -14,6 +14,10 @@ import {
   listSupportRequests,
   updateSupportRequest,
 } from '../../server/supportRequests';
+import {
+  getAllSyncResults,
+  getSyncResults,
+} from '../../services/shelterIntegrationService';
 
 const router = Router();
 
@@ -435,5 +439,26 @@ function getServerMetrics(req: AuthenticatedRequest) {
         },
   };
 }
+
+
+// ─── Shelter sync results ─────────────────────────────────────────────────────
+
+/**
+ * GET /admin/shelter/sync
+ * Returns the last 10 sync results for every shelter that has run a sync.
+ */
+router.get('/shelter/sync', (_req, res) => {
+  return res.json(ok(getAllSyncResults(10), 'Shelter sync results loaded'));
+});
+
+/**
+ * GET /admin/shelter/sync/:shelterId
+ * Returns the last 10 sync results for the given shelter.
+ */
+router.get('/shelter/sync/:shelterId', (req, res) => {
+  const { shelterId } = req.params;
+  const results = getSyncResults(shelterId, 10);
+  return res.json(ok({ shelterId, results }, 'Shelter sync results loaded'));
+});
 
 export default router;
