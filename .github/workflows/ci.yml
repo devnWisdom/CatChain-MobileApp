@@ -41,6 +41,9 @@ jobs:
       - name: Validate migrations
         run: npm run migrations:validate
 
+      - name: Check for empty test files
+        run: npm run check:empty-tests
+
       - name: Lint
         run: npm run lint
 
