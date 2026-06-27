@@ -4,6 +4,7 @@ import express from 'express';
 
 import { authenticateJWT, authorizeRoles, type AuthenticatedRequest } from '../../middleware/auth';
 import { UserRole } from '../../models/UserRole';
+import { sendNotification } from '../../services/notificationTemplateService';
 import { ok, sendError } from '../../server/response';
 import {
   ALL_TOPICS,
@@ -141,7 +142,13 @@ router.patch('/preferences', async (req: AuthenticatedRequest, res) => {
 
 // ─── Send (internal / admin) ──────────────────────────────────────────────────
 
-/** POST /api/notifications/send — send a push to a user (admin only) */
+/**
+ * POST /api/notifications/send — send a push to a user (admin only)
+ *
+ * NOTE: title/body are admin-authored free text, not a template key, so this
+ * route intentionally bypasses sendNotification()/template locale resolution
+ * and calls pushService.sendToUser() directly, same as before.
+ */
 router.post('/send', authorizeRoles(UserRole.ADMIN), async (req: AuthenticatedRequest, res) => {
   const { userId, topic, title, body, data } = req.body as {
     userId?: string;
@@ -224,12 +231,14 @@ router.post('/vaccination-transfer', async (req: AuthenticatedRequest, res) => {
     return sendError(res, 403, 'FORBIDDEN', 'You do not have permission to transfer notifications for this pet');
   }
 
-  await sendToUser(
+  await sendNotification(
     newOwnerUserId.trim(),
-    'health_tips' as NotificationTopic, // closest available topic for health-related push
-    '🐾 Vaccination reminders transferred',
-    `Vaccination reminders for ${pet.name} are now active on your account.`,
-    { type: 'vaccination_transfer', petId: petId.trim() },
+    'vaccination_transfer',
+    { petName: pet.name },
+    {
+      topic: 'health_tips' as NotificationTopic, // closest available topic for health-related push
+      data: { type: 'vaccination_transfer', petId: petId.trim() },
+    },
   );
 
   logger.info('vaccination_notifications_transferred', {
