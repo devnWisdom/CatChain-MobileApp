@@ -12,7 +12,7 @@ import {
   View,
 } from 'react-native';
 
-import MultiStepFormHeader from '../components/MultiStepFormHeader';
+import { EmptyState } from '../components/EmptyState';
 import { SkeletonCard } from '../components/SkeletonCard';
 import { useTheme } from '../context/ThemeContext';
 import { useToast } from '../context/ToastContext';
@@ -881,13 +881,13 @@ const MedicationScreen: React.FC = () => {
           keyExtractor={(item) => item.id}
           renderItem={renderMedItem}
           contentContainerStyle={styles.listContent}
-          ListEmptyComponent={<Text style={styles.emptyText}>No medications added yet.</Text>}
-          refreshControl={
-            <RefreshControl
-              refreshing={isRefreshing}
-              onRefresh={() => void handleRefresh()}
-              colors={[colors.primary]}
-              tintColor={colors.primary}
+          ListEmptyComponent={
+            <EmptyState
+              icon="medkit"
+              title="No Medications"
+              description="Keep track of your pet's prescriptions, dosages, and refill schedules."
+              buttonText="Add medication"
+              onPress={openAdd}
             />
           }
           removeClippedSubviews

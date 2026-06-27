@@ -95,7 +95,68 @@ if (require.main === module) {
   const PORT = process.env.PORT || 3000;
   // TODO: replace with your real pg Pool instance
   const app = createApp(null);
-  app.listen(PORT, () => {
+
+  if (process.env.ADD_DELAY_ROUTE) {
+    app.get('/delay', async (req, res) => {
+      console.log('[Test] Delay route started');
+      await new Promise(resolve => setTimeout(resolve, Number(process.env.ADD_DELAY_ROUTE) || 2000));
+      console.log('[Test] Delay route finished');
+      res.json({ ok: true });
+    });
+  }
+
+  const server = app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
   });
+
+  let shuttingDown = false;
+
+  const gracefulShutdown = async (signal: string) => {
+    if (shuttingDown) return;
+    shuttingDown = true;
+    console.log(`\n[Shutdown] Received ${signal}, starting graceful shutdown`);
+    const start = Date.now();
+
+    // 1. Stop accepting new connections & wait for in-flight requests
+    console.log(`[Shutdown] Stopping HTTP server...`);
+    
+    const serverClosePromise = new Promise<void>((resolve, reject) => {
+      server.close((err) => {
+        if (err) reject(err);
+        else resolve();
+      });
+    });
+
+    try {
+      // Wait max 30s
+      await withTimeout(serverClosePromise, 30000);
+      console.log(`[Shutdown] HTTP server closed in ${Date.now() - start}ms`);
+    } catch (err: any) {
+      console.error(`[Shutdown] HTTP server close error or timeout:`, err.message);
+    }
+
+    // 2. Close DB Pool
+    try {
+      const dbStart = Date.now();
+      await getPool().end();
+      console.log(`[Shutdown] DB pool closed in ${Date.now() - dbStart}ms`);
+    } catch (err: any) {
+      console.error(`[Shutdown] Error closing DB pool:`, err.message);
+    }
+
+    // 3. Close Redis
+    try {
+      const redisStart = Date.now();
+      await getRedisClient().quit();
+      console.log(`[Shutdown] Redis connection closed in ${Date.now() - redisStart}ms`);
+    } catch (err: any) {
+      console.error(`[Shutdown] Error closing Redis:`, err.message);
+    }
+
+    console.log(`[Shutdown] Complete in ${Date.now() - start}ms. Exiting.`);
+    process.exit(0);
+  };
+
+  process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
+  process.on('SIGINT', () => gracefulShutdown('SIGINT'));
 }

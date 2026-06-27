@@ -24,6 +24,7 @@ import {
   saveDocumentLocally,
   uploadDocument,
 } from '../services/documentService';
+import { EmptyState } from '../components/EmptyState';
 import { useSecureScreen } from '../utils/secureScreen';
 import api from '../services/api';
 
@@ -376,7 +377,15 @@ const DocumentVaultScreen: React.FC<DocumentVaultScreenProps> = ({
           data={documents}
           keyExtractor={(item) => item.id}
           renderItem={renderDocument}
-          ListEmptyComponent={<Text style={styles.emptyText}>No documents found</Text>}
+          ListEmptyComponent={
+            <EmptyState
+              icon="folder-open"
+              title="Vault is Empty"
+              description="Securely store vaccination records, lab results, and insurance documents."
+              buttonText="Upload document"
+              onPress={handlePickFile}
+            />
+          }
           contentContainerStyle={styles.listContent}
         />
       )}

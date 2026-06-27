@@ -17,7 +17,7 @@ import {
 import { Swipeable } from 'react-native-gesture-handler';
 import { v4 as uuid } from 'uuid';
 
-import MultiStepFormHeader from '../components/MultiStepFormHeader';
+import { EmptyState } from '../components/EmptyState';
 import { SkeletonCard } from '../components/SkeletonCard';
 import { useTheme } from '../context/ThemeContext';
 import { useToast } from '../context/ToastContext';
@@ -558,9 +558,13 @@ const AppointmentScreen: React.FC = () => {
           renderItem={renderItem}
           contentContainerStyle={displayed.length === 0 && styles.empty}
           ListEmptyComponent={
-            <Text style={styles.emptyText}>
-              {tab === 'upcoming' ? 'No upcoming appointments.' : 'No past appointments.'}
-            </Text>
+            <EmptyState
+              icon="calendar"
+              title={tab === 'upcoming' ? 'No Upcoming Appointments' : 'No Past Appointments'}
+              description={tab === 'upcoming' ? 'Schedule your next vet visit or grooming session.' : 'You have no past appointment records.'}
+              buttonText="Book appointment"
+              onPress={() => setBookingVisible(true)}
+            />
           }
           refreshControl={
             <RefreshControl

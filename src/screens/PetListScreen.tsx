@@ -6,6 +6,7 @@ import { OptimizedImage } from '../components/OptimizedImage';
 import PaywallModal from '../components/PaywallModal';
 import PetAggregateView from '../components/PetAggregateView';
 import PetSelectorBar from '../components/PetSelectorBar';
+import { EmptyState } from '../components/EmptyState';
 import { RetryError } from '../components/RetryError';
 import { SkeletonCard } from '../components/SkeletonCard';
 import SOSButton from '../components/SOSButton';
@@ -205,9 +206,13 @@ const PetListScreen: React.FC<Props> = ({ onSelectPet, onAddPet, onAdoptPet }) =
           getItemLayout={getItemLayout}
           contentContainerStyle={styles.list}
           ListEmptyComponent={
-            <Text style={styles.empty} accessibilityLiveRegion="polite">
-              No pets yet. Add one!
-            </Text>
+            <EmptyState
+              icon="paw"
+              title="No Pets Yet"
+              description="Get started by adding your first pet's profile to PetChain."
+              buttonText="Add your first pet"
+              onPress={handleAddPet}
+            />
           }
           refreshControl={
             <RefreshControl
