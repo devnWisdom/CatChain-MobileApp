@@ -118,7 +118,13 @@ function appointmentTypeLabel(type: string): string {
 // ─── Sub-components ─────────────────────────────────────────────────────────
 
 // Memoized because it receives simple scalar props and is rendered multiple times
-const SectionHeader = React.memo(function SectionHeader({ title, icon }: { title: string; icon: string }) {
+const SectionHeader = React.memo(function SectionHeader({
+  title,
+  icon,
+}: {
+  title: string;
+  icon: string;
+}) {
   return (
     <View style={styles.sectionHeader}>
       <Text style={styles.sectionIcon}>{icon}</Text>
@@ -391,6 +397,7 @@ const PetHealthDashboardScreen: React.FC<Props> = ({ petId, petName, onBack, onO
             <SectionHeader title="Weight & Growth" icon="📈" />
             <WeightChart
               data={data.weightHistory}
+              petName={petName}
               vetRecommendedRange={{ min: 4.5, max: 5.5 }}
               onExport={handleExportChart}
               height={300}
