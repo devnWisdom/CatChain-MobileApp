@@ -5,6 +5,7 @@ import {
   ActivityIndicator,
   FlatList,
   Modal,
+  RefreshControl,
   ScrollView,
   StyleSheet,
   Text,
@@ -18,6 +19,8 @@ import { v4 as uuid } from 'uuid';
 
 import MultiStepFormHeader from '../components/MultiStepFormHeader';
 import { SkeletonCard } from '../components/SkeletonCard';
+import { useTheme } from '../context/ThemeContext';
+import { useToast } from '../context/ToastContext';
 import { useMinimumLoadingTime } from '../hooks/useMinimumLoadingTime';
 import { useMultiStepFormFocus } from '../hooks/useMultiStepFormFocus';
 import type { Medication } from '../models/Medication';
@@ -75,6 +78,9 @@ const BOOKING_STEPS = [
 const AppointmentScreen: React.FC = () => {
   useSecureScreen();
 
+  const { colors } = useTheme();
+  const { show: showToast } = useToast();
+
   const route = useRoute<{
     key: string;
     name: string;
@@ -88,6 +94,7 @@ const AppointmentScreen: React.FC = () => {
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [medications, setMedications] = useState<Medication[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const [bookingVisible, setBookingVisible] = useState(false);
   const [detailAppt, setDetailAppt] = useState<Appointment | null>(null);
   const [rescheduleVisible, setRescheduleVisible] = useState(false);
@@ -125,16 +132,30 @@ const AppointmentScreen: React.FC = () => {
   // Enforce minimum 300ms display for skeleton
   const displayLoading = useMinimumLoadingTime(isLoading, { minLoadingTime: 300 });
 
+  const hasData = appointments.length > 0;
+
   const load = useCallback(async () => {
     setIsLoading(true);
     try {
       const [appts, meds] = await Promise.all([getAppointments(), getMedications()]);
       setAppointments(appts);
       setMedications(meds);
+    } catch (err) {
+      // Only surface a toast if we already have cached data on screen — an
+      // initial-load failure with no data falls through to the empty state.
+      if (hasData) {
+        showToast("Couldn't refresh — showing cached data", { variant: 'error' });
+      }
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [hasData, showToast]);
+
+  const handleRefresh = useCallback(async () => {
+    setIsRefreshing(true);
+    await load();
+    setIsRefreshing(false);
+  }, [load]);
 
   // Pre-fill booking form when navigated from VetMapScreen
   useEffect(() => {
@@ -161,7 +182,8 @@ const AppointmentScreen: React.FC = () => {
 
   useEffect(() => {
     void load();
-  }, [load]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     AsyncStorage.getItem(ARCHIVED_IDS_KEY)
@@ -535,7 +557,19 @@ const AppointmentScreen: React.FC = () => {
           keyExtractor={(a) => a.id}
           renderItem={renderItem}
           contentContainerStyle={displayed.length === 0 && styles.empty}
-          ListEmptyComponent={<Text style={styles.emptyText}>No upcoming appointments.</Text>}
+          ListEmptyComponent={
+            <Text style={styles.emptyText}>
+              {tab === 'upcoming' ? 'No upcoming appointments.' : 'No past appointments.'}
+            </Text>
+          }
+          refreshControl={
+            <RefreshControl
+              refreshing={isRefreshing}
+              onRefresh={() => void handleRefresh()}
+              colors={[colors.primary]}
+              tintColor={colors.primary}
+            />
+          }
           removeClippedSubviews
           maxToRenderPerBatch={10}
           windowSize={5}

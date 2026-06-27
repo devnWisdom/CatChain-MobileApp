@@ -7,6 +7,7 @@ import {
   Modal,
   PanResponder,
   Platform,
+  RefreshControl,
   ScrollView,
   StyleSheet,
   Text,
@@ -16,6 +17,8 @@ import {
 } from 'react-native';
 
 import { SkeletonCard } from '../components/SkeletonCard';
+import { useTheme } from '../context/ThemeContext';
+import { useToast } from '../context/ToastContext';
 import { useMinimumLoadingTime } from '../hooks/useMinimumLoadingTime';
 import mapService from '../services/mapService';
 import {
@@ -139,10 +142,14 @@ const sliderStyles = StyleSheet.create({
 // ─── Component ────────────────────────────────────────────────────────────────
 
 const VetDirectoryScreen: React.FC = () => {
+  const { colors } = useTheme();
+  const { show: showToast } = useToast();
+
   const [screen, setScreen] = useState<Screen>('directory');
   const [vets, setVets] = useState<VetProfile[]>([]);
   const [selectedVet, setSelectedVet] = useState<VetProfile | null>(null);
   const [loading, setLoading] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   const displayLoading = useMinimumLoadingTime(loading, { minLoadingTime: 300 });
 
@@ -201,7 +208,9 @@ const VetDirectoryScreen: React.FC = () => {
       r: number,
       specialties: string[],
       availOnly: boolean,
+      isRefresh = false,
     ) => {
+      const hadData = vets.length > 0;
       setLoading(true);
       try {
         const specialtyParam = specialties.length === 1 ? specialties[0] : undefined;
@@ -236,12 +245,18 @@ const VetDirectoryScreen: React.FC = () => {
 
         setVets(sorted);
       } catch {
-        Alert.alert('Error', 'Failed to search vets');
+        // A pull-to-refresh on an already-populated list: keep the list,
+        // toast instead of an intrusive blocking alert.
+        if (isRefresh && hadData) {
+          showToast("Couldn't refresh — showing cached data", { variant: 'error' });
+        } else {
+          Alert.alert('Error', 'Failed to search vets');
+        }
       } finally {
         setLoading(false);
       }
     },
-    [],
+    [vets.length, showToast],
   );
 
   // Debounced re-search when filters change
@@ -253,7 +268,14 @@ const VetDirectoryScreen: React.FC = () => {
     return () => {
       if (debounceRef.current) clearTimeout(debounceRef.current);
     };
-  }, [userLat, userLng, radius, selectedSpecialties, availableOnly, doSearch]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userLat, userLng, radius, selectedSpecialties, availableOnly]);
+
+  const handleRefresh = useCallback(async () => {
+    setIsRefreshing(true);
+    await doSearch(userLat, userLng, radius, selectedSpecialties, availableOnly, true);
+    setIsRefreshing(false);
+  }, [doSearch, userLat, userLng, radius, selectedSpecialties, availableOnly]);
 
   // ── Filter drawer ──────────────────────────────────────────────────────────
 
@@ -395,6 +417,14 @@ const VetDirectoryScreen: React.FC = () => {
             )}
             ListEmptyComponent={<Text style={styles.empty}>No vets found.</Text>}
             contentContainerStyle={styles.list}
+            refreshControl={
+              <RefreshControl
+                refreshing={isRefreshing}
+                onRefresh={() => void handleRefresh()}
+                colors={[colors.primary]}
+                tintColor={colors.primary}
+              />
+            }
           />
         )}
 

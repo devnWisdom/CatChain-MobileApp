@@ -3,6 +3,7 @@ import {
   Alert,
   FlatList,
   Modal,
+  RefreshControl,
   ScrollView,
   StyleSheet,
   Text,
@@ -13,6 +14,8 @@ import {
 
 import MultiStepFormHeader from '../components/MultiStepFormHeader';
 import { SkeletonCard } from '../components/SkeletonCard';
+import { useTheme } from '../context/ThemeContext';
+import { useToast } from '../context/ToastContext';
 import { useMinimumLoadingTime } from '../hooks/useMinimumLoadingTime';
 import { useMultiStepFormFocus } from '../hooks/useMultiStepFormFocus';
 import {
@@ -84,10 +87,14 @@ function weekDates(): Date[] {
 const MedicationScreen: React.FC = () => {
   useSecureScreen();
 
+  const { colors } = useTheme();
+  const { show: showToast } = useToast();
+
   const [tab, setTab] = useState<Tab>('list');
   const [medications, setMedications] = useState<Medication[]>([]);
   const [doseLogs, setDoseLogs] = useState<DoseLog[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [editingMed, setEditingMed] = useState<Medication | null>(null);
   const [form, setForm] = useState<Omit<Medication, 'id'>>(EMPTY_FORM);
@@ -119,19 +126,34 @@ const MedicationScreen: React.FC = () => {
   // Enforce minimum 300ms display for skeleton
   const displayLoading = useMinimumLoadingTime(isLoading, { minLoadingTime: 300 });
 
+  const hasData = medications.length > 0 || doseLogs.length > 0;
+
   const loadData = useCallback(async () => {
     setIsLoading(true);
     try {
       const [meds, logs] = await Promise.all([getMedications(), getDoseLogs()]);
       setMedications(meds);
       setDoseLogs(logs);
+    } catch (err) {
+      // Only surface a toast if we already have cached data on screen — an
+      // initial-load failure with no data falls through to the empty state.
+      if (hasData) {
+        showToast("Couldn't refresh — showing cached data", { variant: 'error' });
+      }
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [hasData, showToast]);
 
   useEffect(() => {
     void loadData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const handleRefresh = useCallback(async () => {
+    setIsRefreshing(true);
+    await loadData();
+    setIsRefreshing(false);
   }, [loadData]);
 
   const openAdd = () => {
@@ -860,6 +882,14 @@ const MedicationScreen: React.FC = () => {
           renderItem={renderMedItem}
           contentContainerStyle={styles.listContent}
           ListEmptyComponent={<Text style={styles.emptyText}>No medications added yet.</Text>}
+          refreshControl={
+            <RefreshControl
+              refreshing={isRefreshing}
+              onRefresh={() => void handleRefresh()}
+              colors={[colors.primary]}
+              tintColor={colors.primary}
+            />
+          }
           removeClippedSubviews
           maxToRenderPerBatch={10}
           windowSize={5}
