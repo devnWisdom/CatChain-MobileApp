@@ -1,4 +1,5 @@
 import { useRoute } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   ActivityIndicator,
@@ -12,6 +13,7 @@ import {
   View,
   Alert,
 } from 'react-native';
+import { Swipeable } from 'react-native-gesture-handler';
 import { v4 as uuid } from 'uuid';
 
 import { SkeletonCard } from '../components/SkeletonCard';
@@ -44,6 +46,9 @@ import { useSecureScreen } from '../utils/secureScreen';
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 type Tab = 'upcoming' | 'past';
+
+const ARCHIVED_IDS_KEY = 'appointment_archived_ids';
+const PAST_THRESHOLD_MS = 24 * 60 * 60 * 1000;
 
 const EMPTY_FORM = {
   petId: '',
@@ -80,6 +85,11 @@ const AppointmentScreen: React.FC = () => {
   const [rescheduleDate, setRescheduleDate] = useState('');
   const [bookingLoading, setBookingLoading] = useState(false);
   const [conflictState, setConflictState] = useState<ConflictCheckResponse | null>(null);
+  const [archivedIds, setArchivedIds] = useState<Set<string>>(new Set());
+  const [showArchived, setShowArchived] = useState(false);
+  const [pastExpanded, setPastExpanded] = useState(false);
+  const [undoSnackbar, setUndoSnackbar] = useState<{ id: string } | null>(null);
+  const undoTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // ── Conflict modal state ────────────────────────────────────────────────────
   const [conflictResult, setConflictResult] = useState<ConflictDetectionResult | null>(null);
@@ -128,7 +138,53 @@ const AppointmentScreen: React.FC = () => {
     void load();
   }, [load]);
 
+  useEffect(() => {
+    AsyncStorage.getItem(ARCHIVED_IDS_KEY)
+      .then((raw) => {
+        if (raw) setArchivedIds(new Set(JSON.parse(raw) as string[]));
+      })
+      .catch(() => {});
+  }, []);
+
+  const persistArchivedIds = async (ids: Set<string>) => {
+    await AsyncStorage.setItem(ARCHIVED_IDS_KEY, JSON.stringify(Array.from(ids))).catch(() => {});
+  };
+
+  // ─── Archive / unarchive ──────────────────────────────────────────────────────
+
+  const archiveAppointment = async (appt: Appointment) => {
+    const next = new Set(archivedIds);
+    next.add(appt.id);
+    setArchivedIds(next);
+    await persistArchivedIds(next);
+    // Best-effort sync to backend; UI state already reflects the archive locally.
+    await saveAppointment({ ...appt, archived: true } as Appointment & { archived: boolean }).catch(
+      () => {},
+    );
+
+    if (undoTimer.current) clearTimeout(undoTimer.current);
+    setUndoSnackbar({ id: appt.id });
+    undoTimer.current = setTimeout(() => setUndoSnackbar(null), 3000);
+  };
+
+  const undoArchive = async (id: string) => {
+    if (undoTimer.current) clearTimeout(undoTimer.current);
+    setUndoSnackbar(null);
+    const next = new Set(archivedIds);
+    next.delete(id);
+    setArchivedIds(next);
+    await persistArchivedIds(next);
+  };
+
   const displayed = tab === 'upcoming' ? getUpcoming(appointments) : getPast(appointments);
+  const pastTab = displayed.filter(
+    (a) => Date.now() - new Date(a.date).getTime() > PAST_THRESHOLD_MS,
+  );
+  const recentTab = displayed.filter(
+    (a) => Date.now() - new Date(a.date).getTime() <= PAST_THRESHOLD_MS,
+  );
+  const visiblePast = showArchived ? pastTab : pastTab.filter((a) => !archivedIds.has(a.id));
+  const visibleRecent = showArchived ? recentTab : recentTab.filter((a) => !archivedIds.has(a.id));
 
   // ─── Build appointment object from form ──────────────────────────────────────
 
@@ -357,6 +413,26 @@ const AppointmentScreen: React.FC = () => {
     [],
   );
 
+  const renderArchiveAction = () => (
+    <View style={styles.archiveAction}>
+      <Text style={styles.archiveActionText}>Archive</Text>
+    </View>
+  );
+
+  const renderSwipeableItem = useCallback(
+    (item: Appointment) => (
+      <Swipeable
+        key={item.id}
+        renderRightActions={renderArchiveAction}
+        onSwipeableOpen={() => void archiveAppointment(item)}
+        overshootRight={false}
+      >
+        {renderItem({ item })}
+      </Swipeable>
+    ),
+    [renderItem, archivedIds],
+  );
+
   // ─── Render ──────────────────────────────────────────────────────────────────
 
   return (
@@ -391,22 +467,61 @@ const AppointmentScreen: React.FC = () => {
             <SkeletonCard key={`skeleton-${index}`} />
           ))}
         </View>
-      ) : (
+      ) : tab === 'upcoming' ? (
         <FlatList
           data={displayed}
           keyExtractor={(a) => a.id}
           renderItem={renderItem}
           contentContainerStyle={displayed.length === 0 && styles.empty}
-          ListEmptyComponent={
-            <Text style={styles.emptyText}>
-              {tab === 'upcoming' ? 'No upcoming appointments.' : 'No past appointments.'}
-            </Text>
-          }
+          ListEmptyComponent={<Text style={styles.emptyText}>No upcoming appointments.</Text>}
           removeClippedSubviews
           maxToRenderPerBatch={10}
           windowSize={5}
           initialNumToRender={10}
         />
+      ) : (
+        <ScrollView contentContainerStyle={styles.list}>
+          <TouchableOpacity
+            style={styles.showArchivedRow}
+            onPress={() => setShowArchived((v) => !v)}
+            accessibilityLabel="Toggle show archived appointments"
+          >
+            <Text style={styles.showArchivedText}>
+              {showArchived ? '☑' : '☐'} Show archived
+            </Text>
+          </TouchableOpacity>
+
+          {visibleRecent.map((item) => renderSwipeableItem(item))}
+
+          {visiblePast.length > 0 && (
+            <>
+              <TouchableOpacity
+                style={styles.pastHeader}
+                onPress={() => setPastExpanded((v) => !v)}
+                accessibilityLabel="Toggle past appointments section"
+              >
+                <Text style={styles.pastHeaderText}>
+                  {pastExpanded ? '▾' : '▸'} Past Appointments ({visiblePast.length})
+                </Text>
+              </TouchableOpacity>
+              {pastExpanded && visiblePast.map((item) => renderSwipeableItem(item))}
+            </>
+          )}
+
+          {visibleRecent.length === 0 && visiblePast.length === 0 && (
+            <Text style={styles.emptyText}>No past appointments.</Text>
+          )}
+        </ScrollView>
+      )}
+
+      {/* ── Undo archive snackbar ── */}
+      {undoSnackbar && (
+        <View style={styles.snackbar}>
+          <Text style={styles.snackbarText}>Appointment archived</Text>
+          <TouchableOpacity onPress={() => void undoArchive(undoSnackbar.id)}>
+            <Text style={styles.snackbarAction}>UNDO</Text>
+          </TouchableOpacity>
+        </View>
       )}
 
       {/* ── Book Modal ── */}
@@ -816,6 +931,41 @@ const styles = StyleSheet.create({
   suggestionLabel: { fontSize: 12, color: '#065F46', fontWeight: '600', marginBottom: 4 },
   suggestionTime: { fontSize: 14, color: '#047857', fontWeight: '700' },
   list: { padding: 16 },
+  showArchivedRow: { paddingVertical: 8, paddingHorizontal: 4 },
+  showArchivedText: { fontSize: 13, color: '#374151', fontWeight: '600' },
+  pastHeader: {
+    backgroundColor: '#F3F4F6',
+    borderRadius: 8,
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+    marginTop: 8,
+    marginBottom: 4,
+  },
+  pastHeaderText: { fontSize: 14, fontWeight: '700', color: '#374151' },
+  archiveAction: {
+    backgroundColor: '#EF4444',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 90,
+    marginVertical: 4,
+    borderRadius: 12,
+  },
+  archiveActionText: { color: '#fff', fontWeight: '700', fontSize: 14 },
+  snackbar: {
+    position: 'absolute',
+    bottom: 20,
+    left: 16,
+    right: 16,
+    backgroundColor: '#1F2937',
+    borderRadius: 10,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  snackbarText: { color: '#fff', fontSize: 14 },
+  snackbarAction: { color: '#10B981', fontWeight: '700', fontSize: 14 },
 });
 
 export default AppointmentScreen;
