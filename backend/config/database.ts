@@ -9,13 +9,30 @@ const DATABASE_URL =
 // ── Connection pool ────────────────────────────────────────────────────────────
 export const pool = new Pool({
   connectionString: DATABASE_URL,
-  max: Number(process.env.DB_POOL_SIZE) || 20,
-  idleTimeoutMillis: Number(process.env.DB_IDLE_TIMEOUT) || 30000,
-  connectionTimeoutMillis: 5000,
+  max: Number(process.env.DB_POOL_MAX) || 20,
+  idleTimeoutMillis: Number(process.env.DB_IDLE_TIMEOUT_MS) || 10000,
+  connectionTimeoutMillis: Number(process.env.DB_CONNECTION_TIMEOUT_MS) || 3000,
 });
 
 pool.on('error', (err) => {
   console.error('[db] Unexpected pool error:', err.message);
+});
+
+/** Returns current pool stats: total, idle, and waiting client counts. */
+export function getPoolStats() {
+  return {
+    total: pool.totalCount,
+    idle: pool.idleCount,
+    waiting: pool.waitingCount,
+  };
+}
+
+// Log a warning when the waiting queue grows beyond 5
+pool.on('connect', () => {
+  const { waiting } = getPoolStats();
+  if (waiting > 5) {
+    console.warn(`[db] WARN: pool waiting count is ${waiting} — consider increasing DB_POOL_MAX`);
+  }
 });
 
 // ── Migration runner ───────────────────────────────────────────────────────────
