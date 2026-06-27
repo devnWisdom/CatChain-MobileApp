@@ -11,6 +11,10 @@ import {
   Platform,
 } from 'react-native';
 
+import HealthScoreChart, {
+  type HealthScoreDataPoint,
+  type MedicalEvent,
+} from '../components/HealthScoreChart';
 import WeightChart, { type WeightDataPoint } from '../components/WeightChart';
 import type { Appointment } from '../models/Appointment';
 import { AppointmentStatus } from '../models/Appointment';
@@ -18,6 +22,7 @@ import type { HealthMetricEntry } from '../models/HealthMetric';
 import type { Medication } from '../models/Medication';
 import { getUpcomingAppointments } from '../services/appointmentService';
 import { getHealthMetrics, activityLevelToScore } from '../services/healthMetricService';
+import healthScoringServiceV2 from '../services/healthScoringServiceV2';
 import type { MedicalRecord } from '../services/medicalRecordService';
 import { getMedicalRecords } from '../services/medicalRecordService';
 import { getMedications, isMedicationActive } from '../services/medicationService';
@@ -39,6 +44,8 @@ interface DashboardData {
   latestMetric: HealthMetricEntry | null;
   healthScore: number | null;
   weightHistory: WeightDataPoint[];
+  healthScoreHistory: HealthScoreDataPoint[];
+  medicalEvents: MedicalEvent[];
 }
 
 // ─── Health Score Calculation ──────────────────────────────────────────────
@@ -142,13 +149,15 @@ const PetHealthDashboardScreen: React.FC<Props> = ({ petId, petName, onBack, onO
     latestMetric: null,
     healthScore: null,
     weightHistory: [],
+    healthScoreHistory: [],
+    medicalEvents: [],
   });
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
   const load = useCallback(async () => {
     try {
-      const [recordsResp, medications, appointments, metrics] = await Promise.all([
+      const [recordsResp, medications, appointments, metrics, scoreHistory] = await Promise.all([
         getMedicalRecords(petId, { limit: 100 }).catch(() => ({
           data: [] as MedicalRecord[],
           total: 0,
@@ -159,6 +168,9 @@ const PetHealthDashboardScreen: React.FC<Props> = ({ petId, petName, onBack, onO
         getMedications().catch(() => [] as Medication[]),
         getUpcomingAppointments(petId).catch(() => [] as Appointment[]),
         getHealthMetrics(petId).catch(() => [] as HealthMetricEntry[]),
+        healthScoringServiceV2
+          .getScoreHistory(petId, 365)
+          .catch(() => [] as HealthScoreDataPoint[]),
       ]);
 
       const activeMeds = medications.filter((m) => isMedicationActive(m));
@@ -183,6 +195,20 @@ const PetHealthDashboardScreen: React.FC<Props> = ({ petId, petName, onBack, onO
           note: m.notes,
         }));
 
+      // Build medical events from records for chart annotations
+      const medicalEvents: MedicalEvent[] = sortedRecords
+        .filter((r) => r.type === 'vaccination' || r.type === 'treatment' || r.type === 'diagnosis')
+        .map((r) => ({
+          date: r.date,
+          type: r.type as 'vaccination' | 'treatment' | 'diagnosis',
+          label:
+            r.type === 'vaccination'
+              ? 'Vaccination'
+              : r.type === 'treatment'
+                ? 'Treatment'
+                : 'Diagnosis',
+        }));
+
       setData({
         recentRecords: sortedRecords.slice(0, 3),
         activeMedications: activeMeds.slice(0, 5),
@@ -195,6 +221,8 @@ const PetHealthDashboardScreen: React.FC<Props> = ({ petId, petName, onBack, onO
         latestMetric,
         healthScore,
         weightHistory,
+        healthScoreHistory: scoreHistory,
+        medicalEvents,
       });
     } finally {
       setLoading(false);
@@ -240,6 +268,8 @@ const PetHealthDashboardScreen: React.FC<Props> = ({ petId, petName, onBack, onO
     latestMetric,
     healthScore,
     weightHistory,
+    healthScoreHistory,
+    medicalEvents,
   } = data;
 
   return (
@@ -309,6 +339,19 @@ const PetHealthDashboardScreen: React.FC<Props> = ({ petId, petName, onBack, onO
             <EmptyState message="No health metrics recorded yet. Tap 'Metrics' to log data." />
           )}
         </Card>
+
+        {/* ── Health Score Trend ─────────────────────────────────── */}
+        {healthScoreHistory.length > 0 && (
+          <>
+            <SectionHeader title="Health Score History" icon="📊" />
+            <HealthScoreChart
+              data={healthScoreHistory}
+              medicalEvents={medicalEvents}
+              onExport={handleExportChart}
+              height={300}
+            />
+          </>
+        )}
 
         {/* ── Latest Metrics ─────────────────────────────────────── */}
         {latestMetric && (
