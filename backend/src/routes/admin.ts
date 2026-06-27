@@ -440,25 +440,14 @@ function getServerMetrics(req: AuthenticatedRequest) {
   };
 }
 
-
-// ─── Shelter sync results ─────────────────────────────────────────────────────
-
 /**
- * GET /admin/shelter/sync
- * Returns the last 10 sync results for every shelter that has run a sync.
+ * GET /api/admin/slow-queries
+ * Returns the 20 slowest DB queries from the last 24 hours.
+ * Requires admin authentication.
  */
-router.get('/shelter/sync', (_req, res) => {
-  return res.json(ok(getAllSyncResults(10), 'Shelter sync results loaded'));
-});
-
-/**
- * GET /admin/shelter/sync/:shelterId
- * Returns the last 10 sync results for the given shelter.
- */
-router.get('/shelter/sync/:shelterId', (req, res) => {
-  const { shelterId } = req.params;
-  const results = getSyncResults(shelterId, 10);
-  return res.json(ok({ shelterId, results }, 'Shelter sync results loaded'));
+router.get('/slow-queries', authenticate, requireAdmin, (_req, res: Response) => {
+  const { getSlowQueries } = require('../../middleware/performanceLogger') as typeof import('../../middleware/performanceLogger');
+  return res.json({ queries: getSlowQueries() });
 });
 
 export default router;
