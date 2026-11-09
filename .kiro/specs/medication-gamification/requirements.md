@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Add a gamification layer to PetChain's medication adherence workflow. Pet owners earn streaks and badges for consistently administering medications on time, can optionally join a community leaderboard, and see their progress at a glance on the home screen widget. Missed doses reset the active streak but a recovery mechanic lets owners rebuild momentum without losing their all-time best.
+Add a gamification layer to CatChain's medication adherence workflow. Pet owners earn streaks and badges for consistently administering medications on time, can optionally join a community leaderboard, and see their progress at a glance on the home screen widget. Missed doses reset the active streak but a recovery mechanic lets owners rebuild momentum without losing their all-time best.
 
 ---
 

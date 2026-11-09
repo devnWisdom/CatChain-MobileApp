@@ -29,8 +29,8 @@ jest.mock('@react-native-async-storage/async-storage', () => mockAsyncStorage);
 const mockResponse = {
   minimumVersion: '1.0.0',
   recommendedVersion: '1.0.0',
-  iosStoreUrl: 'https://apps.apple.com/app/petchain/id000000000',
-  androidStoreUrl: 'https://play.google.com/store/apps/details?id=app.petchain.mobile',
+  iosStoreUrl: 'https://apps.apple.com/app/catchain/id000000000',
+  androidStoreUrl: 'https://play.google.com/store/apps/details?id=app.catchain.mobile',
   message: 'Update available',
 };
 

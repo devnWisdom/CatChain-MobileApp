@@ -7,7 +7,7 @@ import { getAllSoapDrafts, queryAll } from './localDB';
 import syncEngine from './syncEngine';
 
 const EXPORT_PERMISSION_URL = '/privacy/export/permission';
-const EXPORT_FORMAT = 'petchain-local-drafts';
+const EXPORT_FORMAT = 'catchain-local-drafts';
 const EXPORT_VERSION = 1;
 const PBKDF2_ITERATIONS = 150_000;
 const MIN_PASSPHRASE_LENGTH = 12;
@@ -229,7 +229,7 @@ export async function exportLocalDrafts(passphrase: string): Promise<LocalDraftS
 
   const directory = FileSystem.cacheDirectory;
   if (!directory) throw new Error('Temporary storage is not available for the encrypted export');
-  const fileUri = `${directory}petchain-local-drafts-${Date.now()}.json`;
+  const fileUri = `${directory}catchain-local-drafts-${Date.now()}.json`;
 
   try {
     await FileSystem.writeAsStringAsync(
@@ -239,7 +239,7 @@ export async function exportLocalDrafts(passphrase: string): Promise<LocalDraftS
     );
     await Sharing.shareAsync(fileUri, {
       mimeType: 'application/json',
-      dialogTitle: 'Save your encrypted PetChain drafts',
+      dialogTitle: 'Save your encrypted CatChain drafts',
     });
   } finally {
     await FileSystem.deleteAsync(fileUri, { idempotent: true });

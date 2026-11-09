@@ -1,4 +1,4 @@
--- Audit Trail Schema for PetChain (append-only, immutable)
+-- Audit Trail Schema for CatChain (append-only, immutable)
 
 CREATE TABLE IF NOT EXISTS audit_trail (
   id UUID PRIMARY KEY,

@@ -1,6 +1,6 @@
-# PetChain API — OpenAPI Documentation
+# CatChain API — OpenAPI Documentation
 
-Complete OpenAPI 3.0 documentation for the PetChain backend API, with interactive Swagger UI, TypeScript client SDK generation, and spec validation.
+Complete OpenAPI 3.0 documentation for the CatChain backend API, with interactive Swagger UI, TypeScript client SDK generation, and spec validation.
 
 ---
 
@@ -38,7 +38,7 @@ Checks for broken `$ref` references, missing `operationId`s, and cross-validates
 npm run docs:generate-sdk
 ```
 
-Outputs a fully-typed Axios client to `backend/docs/sdk/generated/petchain-client.ts`.
+Outputs a fully-typed Axios client to `backend/docs/sdk/generated/catchain-client.ts`.
 
 ---
 
@@ -120,7 +120,7 @@ backend/docs/
 ├── sdk/
 │   ├── generateClient.ts        ← TypeScript SDK generator
 │   └── generated/               ← Auto-generated output (gitignored)
-│       ├── petchain-client.ts   ← Generated TypeScript client
+│       ├── catchain-client.ts   ← Generated TypeScript client
 │       └── openapi.json         ← Generated OpenAPI JSON
 │
 └── validate/

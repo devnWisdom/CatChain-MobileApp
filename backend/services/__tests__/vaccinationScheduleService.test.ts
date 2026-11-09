@@ -116,7 +116,7 @@ describe('vaccinationScheduleService', () => {
       new Date('2026-05-01T00:00:00.000Z'),
     );
 
-    expect(certificate).toContain('PetChain Vaccination Certificate');
+    expect(certificate).toContain('CatChain Vaccination Certificate');
     expect(certificate).toContain('Pet: Scout');
     expect(certificate).toContain('2026-02-12 | DA2PP | Vet: vet-1 | Blockchain: tx-abc');
     expect(certificate).toContain('Upcoming Schedule');

@@ -292,25 +292,25 @@ const getNotificationUrl = (data: Record<string, unknown> = {}): string => {
   const deepLink = data.deepLink ?? data.url;
   if (typeof deepLink === 'string' && deepLink.length > 0) return deepLink;
 
-  if (typeof data.petId === 'string') return `petchain://pets/${encodeURIComponent(data.petId)}`;
+  if (typeof data.petId === 'string') return `catchain://pets/${encodeURIComponent(data.petId)}`;
   if (data.type === 'medication' && typeof data.medicationId === 'string') {
-    return `petchain://medications?medicationId=${encodeURIComponent(data.medicationId)}`;
+    return `catchain://medications?medicationId=${encodeURIComponent(data.medicationId)}`;
   }
   if (data.type === 'appointment' && typeof data.appointmentId === 'string') {
-    return `petchain://appointments?appointmentId=${encodeURIComponent(data.appointmentId)}`;
+    return `catchain://appointments?appointmentId=${encodeURIComponent(data.appointmentId)}`;
   }
   if (data.type === 'vaccination' && typeof data.vaccinationId === 'string') {
-    return `petchain://vaccinations?vaccinationId=${encodeURIComponent(data.vaccinationId)}`;
+    return `catchain://vaccinations?vaccinationId=${encodeURIComponent(data.vaccinationId)}`;
   }
   if (data.type === 'sos' && typeof data.sosId === 'string') {
-    return `petchain://emergency?sosId=${encodeURIComponent(data.sosId)}`;
+    return `catchain://emergency?sosId=${encodeURIComponent(data.sosId)}`;
   }
-  if (data.type === 'medication') return 'petchain://medications';
-  if (data.type === 'appointment') return 'petchain://appointments';
-  if (data.type === 'vaccination') return 'petchain://vaccinations';
-  if (data.type === 'sos') return 'petchain://emergency';
+  if (data.type === 'medication') return 'catchain://medications';
+  if (data.type === 'appointment') return 'catchain://appointments';
+  if (data.type === 'vaccination') return 'catchain://vaccinations';
+  if (data.type === 'sos') return 'catchain://emergency';
 
-  return 'petchain://';
+  return 'catchain://';
 };
 
 export const registerNotificationActions = async (): Promise<void> => {

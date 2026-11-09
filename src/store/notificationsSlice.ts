@@ -32,7 +32,7 @@ import type { AppNotification } from '../services/notificationStore';
 
 // ─── Persistence key ──────────────────────────────────────────────────────────
 
-const UNREAD_COUNT_KEY = '@petchain_unread_notification_count';
+const UNREAD_COUNT_KEY = '@catchain_unread_notification_count';
 
 // ─── State ────────────────────────────────────────────────────────────────────
 

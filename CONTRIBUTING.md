@@ -1,6 +1,6 @@
-# Contributing to PetChain Mobile App
+# Contributing to CatChain Mobile App
 
-Thank you for your interest in contributing to **PetChain**! We welcome contributions from the community. This guide will help you get started with setting up the project, understanding the branch strategy, submitting pull requests, and following coding standards.
+Thank you for your interest in contributing to **CatChain**! We welcome contributions from the community. This guide will help you get started with setting up the project, understanding the branch strategy, submitting pull requests, and following coding standards.
 
 ---
 
@@ -34,8 +34,8 @@ Thank you for your interest in contributing to **PetChain**! We welcome contribu
 1. **Clone the repository:**
 
    ```bash
-   git clone https://github.com/devnWisdom/PetChain-MobileApp.git
-   cd PetChain-MobileApp
+   git clone https://github.com/devnWisdom/CatChain-MobileApp.git
+   cd CatChain-MobileApp
    ```
 
 2. **Install dependencies:**
@@ -285,13 +285,13 @@ When creating a new issue, please add relevant labels to help with triage.
 
 ## Backup Exclusion Policy
 
-PetChain stores sensitive health records, auth tokens, and PII locally. To prevent the OS from exporting this data through device backup transports (Google Drive Auto Backup on Android, iCloud on iOS), we configure explicit backup exclusions as part of the native build.
+CatChain stores sensitive health records, auth tokens, and PII locally. To prevent the OS from exporting this data through device backup transports (Google Drive Auto Backup on Android, iCloud on iOS), we configure explicit backup exclusions as part of the native build.
 
 ### What is excluded
 
 | Data | Location | Reason |
 |------|----------|--------|
-| `petchain.db` | `databases/` (Android) / `Library/Application Support/` (iOS) | expo-sqlite database: medications, health records, appointments, kv_store (tokens, PII) |
+| `catchain.db` | `databases/` (Android) / `Library/Application Support/` (iOS) | expo-sqlite database: medications, health records, appointments, kv_store (tokens, PII) |
 | RNCAsyncStorage | `shared_prefs/` (Android) / `Library/Preferences/` (iOS) | AsyncStorage: auth tokens, session, pet list, notification prefs, emergency contacts |
 | `Documents/` | expo-file-system documentDirectory | PDF medical exports, QR codes, travel certificates |
 
@@ -355,10 +355,10 @@ npm test -- --testPathPattern="backupExclusion"
 
 ## Getting Help
 
-- **GitHub Issues**: Use the [issue tracker](https://github.com/devnWisdom/PetChain-MobileApp/issues) for bug reports and feature requests.
+- **GitHub Issues**: Use the [issue tracker](https://github.com/devnWisdom/CatChain-MobileApp/issues) for bug reports and feature requests.
 - **Discussion**: Open a GitHub Discussion for questions or ideas.
 - **Security Issues**: See our [Security Policy](.github/SECURITY-README.md) for reporting vulnerabilities.
 
 ---
 
-Thank you for contributing to PetChain! 🐾
+Thank you for contributing to CatChain! 🐾

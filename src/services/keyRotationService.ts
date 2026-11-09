@@ -47,8 +47,8 @@ import { clearSecret } from './stellarAccountService';
 
 // ─── Storage keys ─────────────────────────────────────────────────────────────
 
-const CHECKPOINT_KEY = 'com.petchain.keyRotation.checkpoint';
-const PENDING_MNEMONIC_KEY = 'com.petchain.keyRotation.pendingMnemonic';
+const CHECKPOINT_KEY = 'com.catchain.keyRotation.checkpoint';
+const PENDING_MNEMONIC_KEY = 'com.catchain.keyRotation.pendingMnemonic';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 

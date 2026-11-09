@@ -252,7 +252,7 @@ const NotificationPreferencesScreen: React.FC<Props> = ({
               if (v)
                 void sendAlertNotification(
                   'Marketing Notifications On',
-                  'You will receive offers and updates from PetChain.',
+                  'You will receive offers and updates from CatChain.',
                 );
             }}
           />

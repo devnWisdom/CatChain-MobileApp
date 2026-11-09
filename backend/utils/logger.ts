@@ -58,7 +58,7 @@ function makeFallbackLogger(): LoggerLike {
       timestamp: new Date().toISOString(),
       level,
       requestId: store?.requestId,
-      service: store?.service ?? process.env.SERVICE_NAME ?? 'petchain-api',
+      service: store?.service ?? process.env.SERVICE_NAME ?? 'catchain-api',
       message: msg,
       env: process.env.APP_ENV ?? 'development',
       correlationId: store?.correlationId,
@@ -98,7 +98,7 @@ function createLogger(): LoggerLike {
           timestamp: info.timestamp,
           level: info.level,
           requestId: ctx.requestId,
-          service: ctx.service ?? process.env.SERVICE_NAME ?? 'petchain-api',
+          service: ctx.service ?? process.env.SERVICE_NAME ?? 'catchain-api',
           message: info.message,
           env: process.env.APP_ENV ?? 'development',
           correlationId: ctx.correlationId,
@@ -137,7 +137,7 @@ function createLogger(): LoggerLike {
       transports.push(
         new DailyRotateFile.default({
           dirname: LOG_DIR,
-          filename: 'petchain-%DATE%.log',
+          filename: 'catchain-%DATE%.log',
           datePattern: 'YYYY-MM-DD',
           zippedArchive: true,
           maxSize: process.env.LOG_MAX_SIZE ?? '20m',
@@ -148,7 +148,7 @@ function createLogger(): LoggerLike {
       transports.push(
         new DailyRotateFile.default({
           dirname: LOG_DIR,
-          filename: 'petchain-error-%DATE%.log',
+          filename: 'catchain-error-%DATE%.log',
           datePattern: 'YYYY-MM-DD',
           level: 'error',
           zippedArchive: true,

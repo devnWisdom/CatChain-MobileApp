@@ -24,7 +24,7 @@ export const petSchemas = {
       photoUrl: {
         type: 'string',
         format: 'uri',
-        example: 'https://storage.petchain.app/pets/buddy.jpg',
+        example: 'https://storage.catchain.app/pets/buddy.jpg',
       },
       ownerId: { $ref: '#/components/schemas/UUID' },
       owner: {
@@ -59,7 +59,7 @@ export const petSchemas = {
       photoUrl: {
         type: 'string',
         format: 'uri',
-        example: 'https://storage.petchain.app/pets/buddy.jpg',
+        example: 'https://storage.catchain.app/pets/buddy.jpg',
       },
       ownerId: { $ref: '#/components/schemas/UUID' },
     },

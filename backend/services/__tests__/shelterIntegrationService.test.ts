@@ -215,7 +215,7 @@ describe('shelterIntegrationService — syncShelter', () => {
   });
 
   it('does not send an alert email when consecutive failures are below the threshold', async () => {
-    process.env.ADMIN_ALERT_EMAIL = 'admin@petchain.app';
+    process.env.ADMIN_ALERT_EMAIL = 'admin@catchain.app';
     process.env.MAILER_MODULE = 'nodemailer-mock';
 
     const shelterId = 'shelter-low-fail';

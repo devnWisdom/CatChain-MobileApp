@@ -19,7 +19,7 @@ const BASE_URL = 'http://localhost:3000/api';
 export const MOCK_USER = {
   id: 'user-001',
   name: 'Jane Doe',
-  email: 'jane@petchain.app',
+  email: 'jane@catchain.app',
   role: 'owner',
   createdAt: '2024-01-01T00:00:00.000Z',
 };
@@ -36,8 +36,8 @@ export const MOCK_PETS = [
     dateOfBirth: '2020-03-15',
     weightKg: 28.5,
     microchipId: '985113000123456',
-    photoUrl: 'https://petchain.app/photos/buddy.jpg',
-    thumbnailUrl: 'https://petchain.app/photos/buddy_thumb.jpg',
+    photoUrl: 'https://catchain.app/photos/buddy.jpg',
+    thumbnailUrl: 'https://catchain.app/photos/buddy_thumb.jpg',
     ownerId: 'user-001',
     createdAt: '2024-01-10T10:00:00.000Z',
     updatedAt: '2024-06-01T12:00:00.000Z',

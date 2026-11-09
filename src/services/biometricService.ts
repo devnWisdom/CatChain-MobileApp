@@ -1,7 +1,7 @@
 /**
  * biometricService.ts
  *
- * Biometric authentication service for PetChain Mobile App.
+ * Biometric authentication service for CatChain Mobile App.
  *
  * Provides a clean, high-level API over `react-native-keychain` for:
  *  - Querying biometric hardware availability and type
@@ -33,17 +33,17 @@ import { logError } from '../utils/errorLogger';
 // ─── Constants ────────────────────────────────────────────────────────────────
 
 /** Keychain service name for the biometric-protected credential entry. */
-const BIOMETRIC_SERVICE = 'com.petchain.biometric.credential';
+const BIOMETRIC_SERVICE = 'com.catchain.biometric.credential';
 
 /** Username stored in Keychain alongside the encrypted credential reference. */
-const BIOMETRIC_USERNAME = 'petchain_biometric_user';
+const BIOMETRIC_USERNAME = 'catchain_biometric_user';
 
 /**
  * The value stored in Keychain under biometric protection.
  * This is an opaque marker, not the actual user password.
  * The real session token is retrieved separately via `authService.getToken()`.
  */
-const BIOMETRIC_CREDENTIAL_MARKER = 'petchain:biometric:enrolled';
+const BIOMETRIC_CREDENTIAL_MARKER = 'catchain:biometric:enrolled';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -175,7 +175,7 @@ export async function isBiometricAvailable(): Promise<BiometricAvailabilityResul
  * @returns `true` on successful enrollment, `false` otherwise.
  *
  * @example
- * const enrolled = await enrollBiometric('Enable Face ID for PetChain');
+ * const enrolled = await enrollBiometric('Enable Face ID for CatChain');
  * if (!enrolled) showFallbackSetupMessage();
  */
 export async function enrollBiometric(
@@ -253,7 +253,7 @@ export async function enrollBiometric(
  * }
  */
 export async function authenticateWithBiometrics(
-  promptMessage = 'Authenticate to access your PetChain account',
+  promptMessage = 'Authenticate to access your CatChain account',
 ): Promise<BiometricAuthResult> {
   // Check hardware availability first
   const { available } = await isBiometricAvailable();

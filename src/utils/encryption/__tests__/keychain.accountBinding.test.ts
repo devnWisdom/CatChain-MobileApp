@@ -112,7 +112,7 @@ describe('Keychain Account Binding (#905)', () => {
 
       // Mock that previous account data still exists
       let storedTokens: Record<string, any> = {
-        [`com.petchain.auth.tokens.${previousAccountId}`]: 'old-encrypted-token',
+        [`com.catchain.auth.tokens.${previousAccountId}`]: 'old-encrypted-token',
       };
 
       (SecureStore.getItemAsync as jest.Mock).mockImplementation((key) => {

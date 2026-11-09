@@ -48,7 +48,7 @@ router.post('/sessions', (req, res) => {
   const session = {
     id,
     userId: body.userId,
-    message: body.message ?? 'PetChain emergency SOS',
+    message: body.message ?? 'CatChain emergency SOS',
     latitude: body.latitude,
     longitude: body.longitude,
     accuracy: body.accuracy,
@@ -70,7 +70,7 @@ router.post('/sessions', (req, res) => {
     ok({
       ...publicSession(session),
       shareToken,
-      shareUrl: `https://petchain.app/emergency/${shareToken}`,
+      shareUrl: `https://catchain.app/emergency/${shareToken}`,
     }),
   );
 });
@@ -120,7 +120,7 @@ router.get('/sessions/:shareToken/view', (req, res) => {
   return res
     .type('html')
     .send(
-      `<!doctype html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"><title>PetChain Emergency SOS</title></head><body style="font-family:-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif;margin:0;background:#fff5f5;color:#1f2937"><main style="max-width:720px;margin:0 auto;padding:24px"><section style="background:white;border-radius:20px;padding:24px;box-shadow:0 12px 40px rgba(0,0,0,.08)"><h1>Emergency SOS</h1><p>${view.message}</p><p><strong>Status:</strong> ${view.active ? 'Active' : 'Inactive'}</p><p><strong>Last update:</strong> ${view.latestLocation.recordedAt}</p><p><a href="https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}">Open location in Google Maps</a></p><iframe title="location" width="100%" height="360" style="border:0;border-radius:16px" src="https://maps.google.com/maps?q=${latitude},${longitude}&z=15&output=embed"></iframe></section></main></body></html>`,
+      `<!doctype html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"><title>CatChain Emergency SOS</title></head><body style="font-family:-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif;margin:0;background:#fff5f5;color:#1f2937"><main style="max-width:720px;margin:0 auto;padding:24px"><section style="background:white;border-radius:20px;padding:24px;box-shadow:0 12px 40px rgba(0,0,0,.08)"><h1>Emergency SOS</h1><p>${view.message}</p><p><strong>Status:</strong> ${view.active ? 'Active' : 'Inactive'}</p><p><strong>Last update:</strong> ${view.latestLocation.recordedAt}</p><p><a href="https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}">Open location in Google Maps</a></p><iframe title="location" width="100%" height="360" style="border:0;border-radius:16px" src="https://maps.google.com/maps?q=${latitude},${longitude}&z=15&output=embed"></iframe></section></main></body></html>`,
     );
 });
 

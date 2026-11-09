@@ -107,13 +107,13 @@ jobs:
         with:
           payload: |
             {
-              "text": "✅ *PetChain Production Build Succeeded*",
+              "text": "✅ *CatChain Production Build Succeeded*",
               "blocks": [
                 {
                   "type": "header",
                   "text": {
                     "type": "plain_text",
-                    "text": "✅ PetChain — Production Build Succeeded",
+                    "text": "✅ CatChain — Production Build Succeeded",
                     "emoji": true
                   }
                 },
@@ -162,7 +162,7 @@ jobs:
                         "type": "plain_text",
                         "text": "View EAS Dashboard"
                       },
-                      "url": "https://expo.dev/accounts/petchain/projects/petchain-mobile/builds"
+                      "url": "https://expo.dev/accounts/catchain/projects/catchain-mobile/builds"
                     }
                   ]
                 }
@@ -185,13 +185,13 @@ jobs:
         with:
           payload: |
             {
-              "text": "❌ *PetChain Production Build FAILED*",
+              "text": "❌ *CatChain Production Build FAILED*",
               "blocks": [
                 {
                   "type": "header",
                   "text": {
                     "type": "plain_text",
-                    "text": "❌ PetChain — Production Build FAILED",
+                    "text": "❌ CatChain — Production Build FAILED",
                     "emoji": true
                   }
                 },

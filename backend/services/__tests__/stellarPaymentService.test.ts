@@ -186,7 +186,7 @@ describe('stellarPaymentService', () => {
       'GRECEIVINGACCOUNT',
       'GDESTINATION',
       '10',
-      'PetChain refund',
+      'CatChain refund',
       '101',
     );
     paymentRows.set(idempotencyKey, {
@@ -194,7 +194,7 @@ describe('stellarPaymentService', () => {
       sourceAccount: 'GRECEIVINGACCOUNT',
       destinationAccount: 'GDESTINATION',
       amountXlm: '10',
-      memo: 'PetChain refund',
+      memo: 'CatChain refund',
       sequenceNumber: '101',
       status: 'submitted',
       transactionHash: 'tx-cached',
@@ -214,7 +214,7 @@ describe('stellarPaymentService', () => {
       'GRECEIVINGACCOUNT',
       'GDESTINATION',
       '10',
-      'PetChain refund',
+      'CatChain refund',
       '101',
     );
     paymentRows.set(idempotencyKey, {
@@ -222,7 +222,7 @@ describe('stellarPaymentService', () => {
       sourceAccount: 'GRECEIVINGACCOUNT',
       destinationAccount: 'GDESTINATION',
       amountXlm: '10',
-      memo: 'PetChain refund',
+      memo: 'CatChain refund',
       sequenceNumber: '101',
       status: 'submitted',
       transactionHash: 'tx-old',

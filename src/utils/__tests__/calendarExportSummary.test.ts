@@ -189,9 +189,9 @@ describe('#1186 privacy and removal wording', () => {
     );
   });
 
-  it('says so when the calendar had no PetChain events', () => {
+  it('says so when the calendar had no CatChain events', () => {
     expect(calendarRemovalSummaryText({ removed: 0, alreadyGone: 0, failed: 0 })).toBe(
-      'No PetChain events were in your calendar.',
+      'No CatChain events were in your calendar.',
     );
   });
 });

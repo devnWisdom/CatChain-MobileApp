@@ -198,7 +198,7 @@ export class StreamManager extends EventEmitter {
   }
 }
 
-export interface PetChainTransaction {
+export interface CatChainTransaction {
   id: string;
   hash: string;
   ledger: number;
@@ -221,7 +221,7 @@ export interface PetChainTransaction {
 export interface StreamEvent {
   type: 'transaction' | 'ledger' | 'operation' | 'payment' | 'status';
   data:
-    | PetChainTransaction
+    | CatChainTransaction
     | Horizon.ServerApi.LedgerRecord
     | Horizon.ServerApi.OperationRecord
     | Horizon.ServerApi.PaymentOperationRecord
@@ -299,7 +299,7 @@ export class HorizonStreamService extends EventEmitter {
    * Replaces old polling-based approach
    */
   async startTransactionStream(accounts: string[]): Promise<void> {
-    const streamId = 'petchain-transactions';
+    const streamId = 'catchain-transactions';
 
     try {
       this.status.subscribedAccounts = new Set(accounts);
@@ -453,7 +453,7 @@ export class HorizonStreamService extends EventEmitter {
         return;
       }
 
-      // Transform to PetChain format
+      // Transform to CatChain format
       this.transformAndBroadcastTransaction(transaction, streamId);
     } catch (error) {
       loggerService.error('Error handling transaction', {
@@ -468,11 +468,11 @@ export class HorizonStreamService extends EventEmitter {
     streamId: string,
   ): Promise<void> {
     try {
-      const petChainTransaction = await this.transformTransaction(transaction);
+      const catChainTransaction = await this.transformTransaction(transaction);
 
       const streamEvent: StreamEvent = {
         type: 'transaction',
-        data: petChainTransaction,
+        data: catChainTransaction,
         cursor: transaction.paging_token,
         timestamp: new Date().toISOString(),
       };
@@ -525,7 +525,7 @@ export class HorizonStreamService extends EventEmitter {
 
   private async transformTransaction(
     transaction: Horizon.ServerApi.TransactionRecord,
-  ): Promise<PetChainTransaction> {
+  ): Promise<CatChainTransaction> {
     const operations = await this.fetchTransactionOperations(transaction.hash);
 
     return {

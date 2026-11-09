@@ -46,7 +46,7 @@ jest.mock('@react-native-community/netinfo', () => ({
 jest.mock('../apiClient', () => ({
   __esModule: true,
   default: {
-    defaults: { baseURL: 'https://api.petchain.test', headers: {} },
+    defaults: { baseURL: 'https://api.catchain.test', headers: {} },
     get: jest.fn(),
     post: jest.fn(),
     delete: jest.fn(),

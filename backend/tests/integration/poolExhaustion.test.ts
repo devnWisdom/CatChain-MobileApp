@@ -10,7 +10,7 @@ describe('PostgreSQL pool exhaustion', () => {
   it('rejects new requests fast (not hang) when pool is exhausted', async () => {
     const pool = new Pool({
       connectionString:
-        process.env.DATABASE_URL || 'postgresql://postgres:postgres@localhost:5432/petchain',
+        process.env.DATABASE_URL || 'postgresql://postgres:postgres@localhost:5432/catchain',
       max: 2,
       connectionTimeoutMillis: CONNECTION_TIMEOUT_MS,
       idleTimeoutMillis: 1000,

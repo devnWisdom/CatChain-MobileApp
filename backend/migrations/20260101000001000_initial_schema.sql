@@ -1,5 +1,5 @@
 -- Migration: 20260101000001_initial_schema
--- Description: Initial PetChain database schema
+-- Description: Initial CatChain database schema
 
 -- up migration
 -- Users table

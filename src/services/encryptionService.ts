@@ -3,8 +3,8 @@ import * as SecureStore from 'expo-secure-store';
 
 import { deriveKeyFromSecret, getStoredSalt } from '../utils/keyDerivation';
 
-const KEY_VERSION_KEY = 'com.petchain.encryption.keyVersion';
-const KEY_MATERIAL_PREFIX = 'com.petchain.encryption.key.';
+const KEY_VERSION_KEY = 'com.catchain.encryption.keyVersion';
+const KEY_MATERIAL_PREFIX = 'com.catchain.encryption.key.';
 
 export interface EncryptedPayload {
   ciphertext: string;

@@ -1,4 +1,4 @@
-package app.petchain.mobile.widget;
+package app.catchain.mobile.widget;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -14,13 +14,13 @@ import org.json.JSONObject;
 /**
  * Native module bridge for React Native to update Android App Widgets
  */
-public class PetChainWidgetModule extends ReactContextBaseJavaModule {
+public class CatChainWidgetModule extends ReactContextBaseJavaModule {
 
-    private static final String MODULE_NAME = "PetChainWidgetModule";
-    private static final String PREFS_NAME = "PetChainWidgetPrefs";
-    private static final String WIDGET_DATA_KEY = "petchain_widget_data";
+    private static final String MODULE_NAME = "CatChainWidgetModule";
+    private static final String PREFS_NAME = "CatChainWidgetPrefs";
+    private static final String WIDGET_DATA_KEY = "catchain_widget_data";
 
-    public PetChainWidgetModule(ReactApplicationContext reactContext) {
+    public CatChainWidgetModule(ReactApplicationContext reactContext) {
         super(reactContext);
     }
 
@@ -46,7 +46,7 @@ public class PetChainWidgetModule extends ReactContextBaseJavaModule {
             prefs.edit().putString(WIDGET_DATA_KEY, dataStr).apply();
             
             // Update widget display
-            PetChainWidgetProvider.updateWidgetData(context, dataStr);
+            CatChainWidgetProvider.updateWidgetData(context, dataStr);
             
             promise.resolve(true);
         } catch (Exception e) {
@@ -90,7 +90,7 @@ public class PetChainWidgetModule extends ReactContextBaseJavaModule {
     public void clearWidgetData(Promise promise) {
         try {
             Context context = getReactApplicationContext();
-            PetChainWidgetProvider.clearWidgetData(context);
+            CatChainWidgetProvider.clearWidgetData(context);
             promise.resolve(true);
         } catch (Exception e) {
             promise.reject("E_CLEAR_FAILED", "Failed to clear widget data", e);

@@ -253,7 +253,7 @@ export const medicalRecordSchemas = {
       url: {
         type: 'string',
         format: 'uri',
-        example: 'https://storage.petchain.app/docs/blood-panel.pdf',
+        example: 'https://storage.catchain.app/docs/blood-panel.pdf',
       },
       sizeBytes: { type: 'integer', example: 204800 },
       createdAt: { $ref: '#/components/schemas/ISODateTime' },

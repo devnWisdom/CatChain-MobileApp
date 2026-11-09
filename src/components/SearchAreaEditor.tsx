@@ -383,7 +383,7 @@ const SearchAreaEditor: React.FC<SearchAreaEditorProps> = ({
         <View style={styles.explanationContent}>
           <Text style={styles.explanationText}>
             When you set a search area, your approximate location (center of the circle) is
-            shared with the PetChain network to find nearby lost and found reports.
+            shared with the CatChain network to find nearby lost and found reports.
           </Text>
           <Text style={styles.explanationText}>
             <Text style={styles.bold}>What is shared:</Text> Only the center coordinate and radius —

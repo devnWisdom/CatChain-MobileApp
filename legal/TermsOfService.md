@@ -8,13 +8,13 @@
 
 ## 1. Acceptance of Terms
 
-By downloading, accessing, or using the PetChain mobile application and associated services ("App" or "Services"), you agree to be bound by these Terms of Service ("Terms"). If you do not agree to these Terms, you may not use the App.
+By downloading, accessing, or using the CatChain mobile application and associated services ("App" or "Services"), you agree to be bound by these Terms of Service ("Terms"). If you do not agree to these Terms, you may not use the App.
 
-These Terms constitute a legally binding agreement between you and PetChain, Inc. ("PetChain," "we," "us," or "our"). By using the App, you represent that you are at least 13 years of age or the age of digital consent in your jurisdiction, whichever is greater. If you are under 18, you must have a parent or guardian review and accept these Terms on your behalf.
+These Terms constitute a legally binding agreement between you and CatChain, Inc. ("CatChain," "we," "us," or "our"). By using the App, you represent that you are at least 13 years of age or the age of digital consent in your jurisdiction, whichever is greater. If you are under 18, you must have a parent or guardian review and accept these Terms on your behalf.
 
 ## 2. Description of Service
 
-PetChain provides a **pet health management platform** that allows users to:
+CatChain provides a **pet health management platform** that allows users to:
 
 - Store and organize pet medical records, vaccination history, and health data
 - Track medication schedules and receive reminders
@@ -81,7 +81,7 @@ You may use the App only for lawful purposes and in accordance with these Terms.
 
 ### 4.2 Medical Data Disclaimer
 
-**You are solely responsible for the accuracy of all information you enter into the App.** PetChain does not verify the correctness of user-provided medical data. Always confirm medical details with your veterinarian.
+**You are solely responsible for the accuracy of all information you enter into the App.** CatChain does not verify the correctness of user-provided medical data. Always confirm medical details with your veterinarian.
 
 The App is provided **"as is"** without warranty of any kind. We do not guarantee that the Services will meet your requirements or that reminders will always be delivered on time (notification delivery depends on device and network).
 
@@ -96,9 +96,9 @@ You retain **full ownership** of all data you input into the App, including:
 - Appointment information
 - Emergency contact details
 
-### 5.2 License Grant to PetChain
+### 5.2 License Grant to CatChain
 
-By using the App, you grant PetChain a **limited, non-exclusive, worldwide, royalty-free license** to:
+By using the App, you grant CatChain a **limited, non-exclusive, worldwide, royalty-free license** to:
 - Host, store, and transmit your data to provide the Service
 - Use aggregated, anonymized data for analytics and product improvement (e.g., "X% of users set reminders for dogs vs. cats")
 - Process data on blockchain networks (Stellar) for verification purposes
@@ -108,7 +108,7 @@ We will never sell your personal data to third parties. Your data is not used fo
 ### 5.3 Community Features (Optional)
 
 If you post content to community forums or social features:
-- You grant PetChain a non-exclusive license to display, distribute, and promote your posts within the App
+- You grant CatChain a non-exclusive license to display, distribute, and promote your posts within the App
 - You may delete your posts at any time, though cached copies may persist briefly
 - You represent you have the right to share the content (no copyrighted material without permission)
 
@@ -116,7 +116,7 @@ If you post content to community forums or social features:
 
 ### 6.1 Pricing
 
-PetChain offers:
+CatChain offers:
 - **Free Tier:** Basic features at no cost
 - **Premium Subscription:** Monthly ($X.XX) or Annual ($XX.XX) billing
 
@@ -143,24 +143,24 @@ If offered, free trials automatically convert to paid subscriptions unless cance
 
 ### 6.5 Refund Policy
 
-Refunds are managed by Apple/Google and are subject to their store policies. PetChain does not directly handle payments and cannot issue manual refunds. Contact store support for refund requests.
+Refunds are managed by Apple/Google and are subject to their store policies. CatChain does not directly handle payments and cannot issue manual refunds. Contact store support for refund requests.
 
 ## 7. Blockchain & Cryptocurrency
 
 ### 7.1 Stellar Integration
 
-PetChain uses the **Stellar blockchain** to create verifiable hashes of medical records. This does not involve:
+CatChain uses the **Stellar blockchain** to create verifiable hashes of medical records. This does not involve:
 - Buying, selling, or trading cryptocurrency
 - Digital wallet creation (we create and manage keys for you seamlessly)
 - Financial transactions (except for subscription payments via app stores)
 
 ### 7.2 No Financial Advice
 
-Any mention of blockchain, cryptocurrency, or tokens is purely technical (for record-verification purposes). PetChain does not provide investment, trading, or financial advice. Do not interpret blockchain integration as endorsement of any cryptocurrency.
+Any mention of blockchain, cryptocurrency, or tokens is purely technical (for record-verification purposes). CatChain does not provide investment, trading, or financial advice. Do not interpret blockchain integration as endorsement of any cryptocurrency.
 
 ### 7.3 Network Fees
 
-Standard Stellar network transaction fees apply (<$0.001 per record) and are covered by PetChain as part of the Service (no pass-through to users).
+Standard Stellar network transaction fees apply (<$0.001 per record) and are covered by CatChain as part of the Service (no pass-through to users).
 
 ## 8. Third-Party Services & Links
 
@@ -176,9 +176,9 @@ We are not responsible for the availability, accuracy, or content of third-party
 
 ### 9.1 Our intellectual property
 
-PetChain and the App are protected by copyright, trademark, and other laws. All rights not expressly granted are reserved by PetChain.
+CatChain and the App are protected by copyright, trademark, and other laws. All rights not expressly granted are reserved by CatChain.
 
-**Trademarks:** "PetChain" and associated logos are trademarks of PetChain, Inc. You may not use our trademarks without prior written consent.
+**Trademarks:** "CatChain" and associated logos are trademarks of CatChain, Inc. You may not use our trademarks without prior written consent.
 
 ### 9.2 Your Intellectual Property
 
@@ -199,7 +199,7 @@ Some jurisdictions do not allow disclaimers of warranties, so this may not apply
 
 ## 11. Limitation of Liability
 
-TO THE MAXIMUM EXTENT PERMITTED BY LAW, PETCHAIN, ITS AFFILIATES, AND ITS SERVICE PROVIDERS **WILL NOT BE LIABLE FOR:**
+TO THE MAXIMUM EXTENT PERMITTED BY LAW, CATCHAIN, ITS AFFILIATES, AND ITS SERVICE PROVIDERS **WILL NOT BE LIABLE FOR:**
 
 - **Indirect, incidental, special, consequential, or punitive damages** (including loss of profits, data, or goodwill) arising from your use of the App
 - **Errors or omissions** in medical records entered by you or others
@@ -214,7 +214,7 @@ Our total liability for any claim arising from these Terms or the App is limited
 
 ## 12. Indemnification
 
-You agree to defend, indemnify, and hold harmless PetChain, its officers, directors, employees, and agents from and against any claims, liabilities, damages, losses, or expenses (including reasonable attorneys' fees) arising out of or in any way connected with:
+You agree to defend, indemnify, and hold harmless CatChain, its officers, directors, employees, and agents from and against any claims, liabilities, damages, losses, or expenses (including reasonable attorneys' fees) arising out of or in any way connected with:
 
 - Your use or misuse of the App
 - Your violation of these Terms
@@ -230,11 +230,11 @@ This obligation survives termination of these Terms.
 
 You may stop using the App and delete your account at any time via Settings → Delete Account. Note the 30-day grace period before permanent deletion.
 
-### 13.2 By PetChain
+### 13.2 By CatChain
 
 We may suspend or terminate your access at any time, with or without notice, for conduct we believe:
 - Violates these Terms or our policies
-- Is harmful to other users, PetChain, or third parties
+- Is harmful to other users, CatChain, or third parties
 - Is illegal or fraudulent
 - Involves misuse of the Service (e.g., automated scripts, scraping)
 
@@ -279,7 +279,7 @@ The arbitration requirement does not prevent either party from:
 
 ### 16.1 Entire Agreement
 
-These Terms, together with our Privacy Policy and any additional terms for paid features, constitute the entire agreement between you and PetChain regarding the App, superseding all prior agreements or communications.
+These Terms, together with our Privacy Policy and any additional terms for paid features, constitute the entire agreement between you and CatChain regarding the App, superseding all prior agreements or communications.
 
 ### 16.2 Severability
 
@@ -300,7 +300,7 @@ We are not liable for failure or delay in performance due to causes beyond our r
 ### 16.6 Contact for Legal Notices
 
 All legal notices or questions about these Terms should be sent to:
-**legal@petchain.app**
+**legal@catchain.app**
 
 ---
 
@@ -308,7 +308,7 @@ All legal notices or questions about these Terms should be sent to:
 
 **IMPORTANT — PLEASE READ CAREFULLY:**
 
-PetChain is a **management tool** for pet health information and **is NOT a veterinary service, medical device, or diagnostic tool**.
+CatChain is a **management tool** for pet health information and **is NOT a veterinary service, medical device, or diagnostic tool**.
 
 - We do **not** provide veterinary advice, diagnosis, or treatment
 - The App does **not** replace regular veterinary check-ups or emergency veterinary care
@@ -317,7 +317,7 @@ PetChain is a **management tool** for pet health information and **is NOT a vete
 - In a medical emergency, call your veterinarian or 911 immediately — do **not** rely on the App
 
 **Liability Limitation for Veterinary Matters:**
-To the fullest extent permitted by law, PetChain is not liable for:
+To the fullest extent permitted by law, CatChain is not liable for:
 - Adverse outcomes resulting from medication errors (yours or ours)
 - Failure to detect health issues through the App's metrics
 - Delayed veterinary care due to reliance on App features
@@ -352,6 +352,6 @@ These terms apply to Premium subscriptions:
 
 ---
 
-**By using PetChain, you acknowledge that you have read, understood, and agree to be bound by these Terms of Service and our Privacy Policy.**
+**By using CatChain, you acknowledge that you have read, understood, and agree to be bound by these Terms of Service and our Privacy Policy.**
 
-If you have questions, contact us at **legal@petchain.app**.
+If you have questions, contact us at **legal@catchain.app**.

@@ -112,7 +112,7 @@ export async function generateHealthReport(opts: ReportOptions): Promise<ReportR
     generatedBy,
     dateFrom,
     dateTo,
-    blockchainBaseUrl = 'https://petchain.app/verify',
+    blockchainBaseUrl = 'https://catchain.app/verify',
   } = opts;
 
   const filteredRecords = filterByDateRange(records, dateFrom, dateTo);
@@ -146,7 +146,7 @@ export async function generateHealthReport(opts: ReportOptions): Promise<ReportR
     doc
       .fontSize(20)
       .fillColor('#1a56db')
-      .text('PetChain Health Report', { align: 'center' })
+      .text('CatChain Health Report', { align: 'center' })
       .moveDown(0.3)
       .fontSize(10)
       .fillColor('#555555')

@@ -96,8 +96,8 @@ jobs:
 
       - name: Configure Git
         run: |
-          git config --local user.email "security@petchain.app"
-          git config --local user.name "PetChain Security Bot"
+          git config --local user.email "security@catchain.app"
+          git config --local user.name "CatChain Security Bot"
 
       - name: Create feature branch
         id: create-branch

@@ -4,7 +4,7 @@
  *
  * Views:
  *  dashboard  — active trustlines, XLM balance/reserves, add/remove actions
- *  add        — pick a PetChain asset or enter custom asset to add trustline
+ *  add        — pick a CatChain asset or enter custom asset to add trustline
  *  history    — trustline + payment transaction history
  */
 
@@ -26,7 +26,7 @@ import type {
   TrustlineState,
   TrustlineAsset,
   TrustlineTransaction,
-  PetChainAssetDefinition,
+  CatChainAssetDefinition,
 } from '../models/Trustline';
 import {
   loadTrustlineState,
@@ -39,7 +39,7 @@ import {
   describeReserveImpact,
   canAffordNewTrustline,
   assertTrustlineRemovable,
-  PETCHAIN_ASSETS,
+  CATCHAIN_ASSETS,
   XLM_RESERVE_PER_TRUSTLINE,
   TrustlineError,
 } from '../services/trustlineService';
@@ -64,8 +64,8 @@ const TrustlineScreen: React.FC<Props> = ({ onBack }) => {
   const [actionLoading, setActionLoading] = useState(false);
 
   // Add form
-  const [addMode, setAddMode] = useState<'petchain' | 'custom'>('petchain');
-  const [selectedAsset, setSelectedAsset] = useState<PetChainAssetDefinition | null>(null);
+  const [addMode, setAddMode] = useState<'catchain' | 'custom'>('catchain');
+  const [selectedAsset, setSelectedAsset] = useState<CatChainAssetDefinition | null>(null);
   const [customCode, setCustomCode] = useState('');
   const [customIssuer, setCustomIssuer] = useState('');
   const [customLimit, setCustomLimit] = useState('');
@@ -134,7 +134,7 @@ const TrustlineScreen: React.FC<Props> = ({ onBack }) => {
     let assetCode = '';
     let issuerPublicKey = '';
 
-    if (addMode === 'petchain') {
+    if (addMode === 'catchain') {
       if (!selectedAsset) {
         Alert.alert('Select an asset first.');
         return;
@@ -253,7 +253,7 @@ const TrustlineScreen: React.FC<Props> = ({ onBack }) => {
       <View style={styles.tlRow}>
         <View style={styles.tlLeft}>
           <Text style={styles.tlCode}>
-            {item.isPetChainAsset ? '🐾 ' : ''}
+            {item.isCatChainAsset ? '🐾 ' : ''}
             {item.assetCode}
           </Text>
           {item.issuerLabel && <Text style={styles.tlLabel}>{item.issuerLabel}</Text>}
@@ -348,13 +348,13 @@ const TrustlineScreen: React.FC<Props> = ({ onBack }) => {
           {/* Mode toggle */}
           <View style={styles.modeRow}>
             <TouchableOpacity
-              style={[styles.modeBtn, addMode === 'petchain' && styles.modeBtnActive]}
-              onPress={() => setAddMode('petchain')}
+              style={[styles.modeBtn, addMode === 'catchain' && styles.modeBtnActive]}
+              onPress={() => setAddMode('catchain')}
             >
               <Text
-                style={[styles.modeBtnText, addMode === 'petchain' && styles.modeBtnTextActive]}
+                style={[styles.modeBtnText, addMode === 'catchain' && styles.modeBtnTextActive]}
               >
-                PetChain Assets
+                CatChain Assets
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -367,10 +367,10 @@ const TrustlineScreen: React.FC<Props> = ({ onBack }) => {
             </TouchableOpacity>
           </View>
 
-          {addMode === 'petchain' ? (
+          {addMode === 'catchain' ? (
             <>
               <Text style={styles.formLabel}>Select Asset</Text>
-              {PETCHAIN_ASSETS.map((asset) => (
+              {CATCHAIN_ASSETS.map((asset) => (
                 <TouchableOpacity
                   key={asset.assetCode}
                   style={[

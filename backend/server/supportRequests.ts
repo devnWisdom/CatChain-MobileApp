@@ -29,7 +29,7 @@ function seed(): void {
       id: 'sr-demo-1',
       userId: 'u-demo-1',
       name: 'Demo User',
-      email: 'demo@petchain.app',
+      email: 'demo@catchain.app',
       subject: 'Unable to sync vaccination history',
       message: 'My recent vaccination uploads are not appearing on the dashboard.',
       status: 'open',

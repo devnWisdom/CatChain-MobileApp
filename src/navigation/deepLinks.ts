@@ -8,8 +8,8 @@ export type ParsedDeepLink =
   | { route: 'DoseConfirmation'; params: { petId: string; medicationId: string } }
   | { route: 'PetCareTask'; params: { petId: string; taskId: string } };
 
-const TRUSTED_HTTPS_HOST = 'petchain.app';
-const APP_SCHEMES = new Set(['petchain', 'petchainapp']);
+const TRUSTED_HTTPS_HOST = 'catchain.app';
+const APP_SCHEMES = new Set(['catchain', 'catchainapp']);
 const SAFE_ID = /^[A-Za-z0-9_-]{1,128}$/;
 let pendingAuthenticatedLink: ParsedDeepLink | null = null;
 
@@ -61,7 +61,7 @@ export function parseDeepLink(url: string): ParsedDeepLink | null {
       params: { petId: segments[1], medicationId: segments[2] },
     };
   }
-  // Issue #1192: petchain://pets/:petId/tasks/:taskId
+  // Issue #1192: catchain://pets/:petId/tasks/:taskId
   if (
     segments.length === 4 &&
     segments[0] === 'pets' &&
@@ -77,7 +77,7 @@ export function parseDeepLink(url: string): ParsedDeepLink | null {
 
 export async function gateDeepLinkURL(url: string): Promise<string> {
   const parsed = parseDeepLink(url);
-  if (!parsed) return 'petchain://invalid-link';
+  if (!parsed) return 'catchain://invalid-link';
 
   try {
     if (await getSession()) return url;
@@ -86,7 +86,7 @@ export async function gateDeepLinkURL(url: string): Promise<string> {
   }
 
   pendingAuthenticatedLink = parsed;
-  return 'petchain://auth';
+  return 'catchain://auth';
 }
 
 export function takePendingAuthenticatedLink(): ParsedDeepLink | null {

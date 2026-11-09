@@ -28,7 +28,7 @@ export type PermissionResult =
   | { granted: true }
   | { granted: false; reason: 'denied' | 'unauthenticated' | 'error' };
 
-const DB_NAME = 'petchain.db';
+const DB_NAME = 'catchain.db';
 const TABLE = 'travel_packing_checklists';
 const CACHE_PREFIX = 'travelPackingChecklist:';
 const SYNC_ENTITY: SyncEntity = 'travelPackingChecklist';

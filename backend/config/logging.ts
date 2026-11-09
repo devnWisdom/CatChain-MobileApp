@@ -50,7 +50,7 @@ function loggingConfig(): LoggingConfig {
     papertrailHost: process.env.PAPERTRAIL_HOST,
     papertrailPort: process.env.PAPERTRAIL_PORT ? Number(process.env.PAPERTRAIL_PORT) : undefined,
     logstashUrl: process.env.LOGSTASH_URL,
-    serviceName: process.env.SERVICE_NAME ?? 'petchain-api',
+    serviceName: process.env.SERVICE_NAME ?? 'catchain-api',
   };
 }
 

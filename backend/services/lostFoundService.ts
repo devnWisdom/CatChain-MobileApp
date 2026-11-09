@@ -152,7 +152,7 @@ export async function notifyNearbyLostPetOwners(
           `A "found pet" was reported near your lost pet "${owner.title}". Tap to view.`,
           {
             type: 'lost_found_match',
-            deepLink: `petchain://lost-found/${encodeURIComponent(foundReportId)}`,
+            deepLink: `catchain://lost-found/${encodeURIComponent(foundReportId)}`,
             lostReportId: owner.reportId,
             foundReportId,
           },

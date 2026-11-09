@@ -74,7 +74,7 @@ function buildAppealMailto(claim: InsuranceClaim): string {
       .slice(0, 8)
       .toUpperCase()} for "${claim.description}" (amount: $${claim.amount}).\n\nPlease review my case.\n\nThank you.`,
   );
-  return `mailto:claims-appeals@petchain.app?subject=${subject}&body=${body}`;
+  return `mailto:claims-appeals@catchain.app?subject=${subject}&body=${body}`;
 }
 
 const InsuranceScreen: React.FC = () => {

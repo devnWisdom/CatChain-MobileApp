@@ -15,7 +15,7 @@ jest.mock('../../config', () => ({
   __esModule: true,
   default: {
     api: {
-      baseUrl: 'https://api.petchain.app/api',
+      baseUrl: 'https://api.catchain.app/api',
       timeoutMs: 10000,
     },
   },
@@ -60,11 +60,11 @@ jest.mock('react-native-keychain', () => ({
     return Promise.resolve(true);
   }),
   getGenericPassword: jest.fn((opts?: { service?: string }) => {
-    if (opts?.service === 'com.petchain.auth.biometric' && biometricAuthShouldFail) {
+    if (opts?.service === 'com.catchain.auth.biometric' && biometricAuthShouldFail) {
       return Promise.resolve(false);
     }
     const val = keychainStore[opts?.service ?? '__default__'];
-    return Promise.resolve(val ? { username: 'petchain_user', password: val } : false);
+    return Promise.resolve(val ? { username: 'catchain_user', password: val } : false);
   }),
   resetGenericPassword: jest.fn((opts?: { service?: string }) => {
     delete keychainStore[opts?.service ?? '__default__'];
@@ -663,7 +663,7 @@ describe('secure token storage (keychain, not AsyncStorage)', () => {
     mockAxiosPost.mockResolvedValueOnce({ data: MOCK_LOGIN_RESPONSE });
     await login('user@example.com', 'Password1');
     // The encrypted token blob key used by utils/encryption/keychain.ts
-    const TOKEN_BLOB_KEY = 'com.petchain.auth.tokens';
+    const TOKEN_BLOB_KEY = 'com.catchain.auth.tokens';
     expect(SecureStore.setItemAsync).toHaveBeenCalledWith(
       TOKEN_BLOB_KEY,
       expect.any(String),
@@ -675,7 +675,7 @@ describe('secure token storage (keychain, not AsyncStorage)', () => {
     const Keychain = require('react-native-keychain');
     mockAxiosPost.mockResolvedValueOnce({ data: MOCK_LOGIN_RESPONSE });
     await login('user@example.com', 'Password1');
-    const ENCRYPTION_KEY_SERVICE = 'com.petchain.auth.encryption';
+    const ENCRYPTION_KEY_SERVICE = 'com.catchain.auth.encryption';
     const keychainCalls = (Keychain.setGenericPassword as jest.Mock).mock.calls.filter(
       ([, , opts]: [unknown, unknown, { service?: string } | undefined]) =>
         opts?.service === ENCRYPTION_KEY_SERVICE,
@@ -698,7 +698,7 @@ describe('secure token storage (keychain, not AsyncStorage)', () => {
     mockAxiosPost.mockResolvedValueOnce({ data: MOCK_LOGIN_RESPONSE });
     await login('user@example.com', 'Password1');
     await logout();
-    const TOKEN_BLOB_KEY = 'com.petchain.auth.tokens';
+    const TOKEN_BLOB_KEY = 'com.catchain.auth.tokens';
     expect(SecureStore.deleteItemAsync).toHaveBeenCalledWith(
       TOKEN_BLOB_KEY,
       expect.anything(),

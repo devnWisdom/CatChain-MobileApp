@@ -4,7 +4,7 @@ import * as SQLite from 'expo-sqlite';
 
 import { encrypt, decrypt } from '../utils/encryption';
 
-const DATABASE_NAME = 'petchain.db';
+const DATABASE_NAME = 'catchain.db';
 const RECOVERY_STORAGE_KEY = '@local_database_recovery';
 const REQUIRED_COLUMNS: Record<string, string[]> = {
   kv_store: ['key', 'value'],
@@ -79,9 +79,9 @@ async function quarantineDatabase(database: SQLite.SQLiteDatabase): Promise<Loca
 
   const files: string[] = [];
   for (const [source, name] of [
-    [sourcePath, `petchain-corrupt-${suffix}.db`],
-    [`${sourcePath}-wal`, `petchain-corrupt-${suffix}.db-wal`],
-    [`${sourcePath}-shm`, `petchain-corrupt-${suffix}.db-shm`],
+    [sourcePath, `catchain-corrupt-${suffix}.db`],
+    [`${sourcePath}-wal`, `catchain-corrupt-${suffix}.db-wal`],
+    [`${sourcePath}-shm`, `catchain-corrupt-${suffix}.db-shm`],
   ]) {
     const sourceFile = new recoveryFileSystem.File(source);
     if (!sourceFile.exists) continue;

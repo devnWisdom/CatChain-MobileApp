@@ -59,20 +59,20 @@ const OAUTH_CONFIG = {
     userInfoUrl: 'https://www.googleapis.com/oauth2/v3/userinfo',
     clientId: process.env.GOOGLE_CLIENT_ID ?? '',
     clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? '',
-    redirectUri: process.env.GOOGLE_REDIRECT_URI ?? 'https://auth.expo.io/@petchain/petchain',
+    redirectUri: process.env.GOOGLE_REDIRECT_URI ?? 'https://auth.expo.io/@catchain/catchain',
   },
   apple: {
     tokenUrl: 'https://appleid.apple.com/auth/token',
     clientId: process.env.APPLE_CLIENT_ID ?? '',
     clientSecret: process.env.APPLE_CLIENT_SECRET ?? '', // signed JWT from Apple
-    redirectUri: process.env.APPLE_REDIRECT_URI ?? 'https://auth.expo.io/@petchain/petchain',
+    redirectUri: process.env.APPLE_REDIRECT_URI ?? 'https://auth.expo.io/@catchain/catchain',
   },
   facebook: {
     tokenUrl: 'https://graph.facebook.com/v18.0/oauth/access_token',
     userInfoUrl: 'https://graph.facebook.com/me?fields=id,email,name',
     clientId: process.env.FACEBOOK_APP_ID ?? '',
     clientSecret: process.env.FACEBOOK_APP_SECRET ?? '',
-    redirectUri: process.env.FACEBOOK_REDIRECT_URI ?? 'https://auth.expo.io/@petchain/petchain',
+    redirectUri: process.env.FACEBOOK_REDIRECT_URI ?? 'https://auth.expo.io/@catchain/catchain',
   },
 } as const;
 
@@ -301,7 +301,7 @@ router.post('/oauth/:provider', async (req, res) => {
     const t = new Date().toISOString();
     const newUser = {
       id: randomUUID(),
-      email: email ?? `${provider}_${providerUserId}@oauth.petchain.app`,
+      email: email ?? `${provider}_${providerUserId}@oauth.catchain.app`,
       name: resolvedName,
       role: UserRole.OWNER,
       pets: [],

@@ -45,7 +45,7 @@ export const BlockchainEventExample: React.FC = () => {
   const [eventLogs, setEventLogs] = useState<EventLog[]>([]);
   const [isRefreshing, setIsRefreshing] = useState(false);
 
-  // Sample PetChain accounts for demonstration
+  // Sample CatChain accounts for demonstration
   const SAMPLE_ACCOUNTS = [
     'GACCOUNT1EXAMPLE1234567890ABCDEF1234567890ABCDEF12',
     'GACCOUNT2EXAMPLE1234567890ABCDEF1234567890ABCDEF12',

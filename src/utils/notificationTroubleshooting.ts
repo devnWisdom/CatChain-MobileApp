@@ -100,23 +100,23 @@ export async function getNotificationChannelStatuses(): Promise<NotificationChan
 export function getNotificationFixSteps(platform: string): string[] {
   if (platform === 'ios') {
     return [
-      'Open the Settings app and tap PetChain.',
+      'Open the Settings app and tap CatChain.',
       'Tap Notifications and turn on Allow Notifications.',
       'Turn on Lock Screen, Banners, and Sounds so reminders are visible and audible.',
-      'Return to PetChain and tap Retry.',
+      'Return to CatChain and tap Retry.',
     ];
   }
   if (platform === 'android') {
     return [
-      'Open the Settings app, then go to Apps, PetChain, and Notifications.',
+      'Open the Settings app, then go to Apps, CatChain, and Notifications.',
       'Turn on Allow notifications.',
       'Make sure none of the channels listed below are set to Off.',
-      'Return to PetChain and tap Retry.',
+      'Return to CatChain and tap Retry.',
     ];
   }
   return [
-    'Check that notifications are allowed for PetChain in your device settings.',
-    'Return to PetChain and tap Retry.',
+    'Check that notifications are allowed for CatChain in your device settings.',
+    'Return to CatChain and tap Retry.',
   ];
 }
 

@@ -20,7 +20,7 @@
 import type { RequestHandler } from 'express';
 
 const REDIS_URL = process.env.REDIS_URL ?? 'redis://localhost:6379';
-const SESSION_SECRET = process.env.SESSION_SECRET ?? 'petchain-dev-session-secret';
+const SESSION_SECRET = process.env.SESSION_SECRET ?? 'catchain-dev-session-secret';
 const SESSION_MAX_AGE_MS = Number(process.env.SESSION_MAX_AGE_MS) || 86_400_000; // 24 h
 const IS_PROD = process.env.NODE_ENV === 'production';
 
@@ -57,7 +57,7 @@ export function createRedisSessionMiddleware(): RequestHandler {
       console.error('[redisSession] Redis client error:', err.message);
     });
 
-    const store = new RedisStore({ client: redisClient, prefix: 'petchain:sess:' });
+    const store = new RedisStore({ client: redisClient, prefix: 'catchain:sess:' });
 
     return session({
       store,

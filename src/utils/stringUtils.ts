@@ -1,5 +1,5 @@
 /**
- * Pure string formatting utilities for PetChain Mobile App.
+ * Pure string formatting utilities for CatChain Mobile App.
  *
  * All functions are side-effect-free and work in any JavaScript environment
  * (React Native, Node.js, Web Workers).
@@ -127,7 +127,7 @@ export function maskPhone(phone: string): string {
  * slugify('Hello World!')          // "hello-world"
  * slugify('Café au lait')          // "cafe-au-lait"
  * slugify('  multiple   spaces ')  // "multiple-spaces"
- * slugify('PetChain -- App')       // "petchain-app"
+ * slugify('CatChain -- App')       // "catchain-app"
  */
 export function slugify(str: string): string {
   if (!str) return '';

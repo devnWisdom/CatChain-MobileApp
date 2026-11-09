@@ -6,7 +6,7 @@
  * are zero-downtime.
  *
  * To obtain a fingerprint:
- *   openssl s_client -connect api.petchain.app:443 </dev/null 2>/dev/null \
+ *   openssl s_client -connect api.catchain.app:443 </dev/null 2>/dev/null \
  *     | openssl x509 -noout -fingerprint -sha256
  *
  * Expiry dates (ISO 8601) help monitor for upcoming rotation needs.
@@ -20,7 +20,7 @@ export interface PinSet {
 }
 
 export const SSL_PINS: Record<string, PinSet[]> = {
-  'api.petchain.app': [
+  'api.catchain.app': [
     {
       pin: 'sha256/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=',
       expiryDate: '2026-12-31',
@@ -32,7 +32,7 @@ export const SSL_PINS: Record<string, PinSet[]> = {
       role: 'backup',
     },
   ],
-  'staging.petchain.app': [
+  'staging.catchain.app': [
     {
       pin: 'sha256/CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC=',
       expiryDate: '2026-06-30',
@@ -69,7 +69,7 @@ export const PIN_EXPIRY_WARNING_DAYS = 7;
  * Support contact shown to the user when a pin failure occurs.
  * A pin failure almost always means a MITM attack or an expired cert.
  */
-export const PIN_FAILURE_SUPPORT_URL = 'https://petchain.app/support';
+export const PIN_FAILURE_SUPPORT_URL = 'https://catchain.app/support';
 
 /**
  * Certificate Transparency: minimum number of SCTs required.

@@ -18,7 +18,7 @@ import { resolvePetTaskLink } from '../petTaskDeepLinkService';
 
 const mockApi = api as unknown as { get: jest.Mock };
 const online = networkMonitor.isOnline as jest.Mock;
-const LINK = 'petchain://pets/pet_1/tasks/task-9';
+const LINK = 'catchain://pets/pet_1/tasks/task-9';
 
 beforeEach(() => {
   mockStore.clear();
@@ -28,12 +28,12 @@ beforeEach(() => {
 
 describe('resolvePetTaskLink', () => {
   it('parses supported task links and rejects malformed ones', () => {
-    expect(parseDeepLink('https://petchain.app/pets/p1/tasks/t1')).toEqual({
+    expect(parseDeepLink('https://catchain.app/pets/p1/tasks/t1')).toEqual({
       route: 'PetCareTask',
       params: { petId: 'p1', taskId: 't1' },
     });
-    expect(parseDeepLink('petchain://pets/p1/tasks/../x')).toBeNull();
-    expect(parseDeepLink('petchain://pets/p1/chores/t1')).toBeNull();
+    expect(parseDeepLink('catchain://pets/p1/tasks/../x')).toBeNull();
+    expect(parseDeepLink('catchain://pets/p1/chores/t1')).toBeNull();
   });
 
   it('opens the task when the server confirms access', async () => {

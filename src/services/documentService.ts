@@ -106,8 +106,8 @@ export interface QuotaInfo {
 
 // ─── Constants ────────────────────────────────────────────────────────────
 
-const KEY_VERSION_KEY = 'com.petchain.docvault.keyVersion';
-const KEY_MATERIAL_PREFIX = 'com.petchain.docvault.key.';
+const KEY_VERSION_KEY = 'com.catchain.docvault.keyVersion';
+const KEY_MATERIAL_PREFIX = 'com.catchain.docvault.key.';
 const MAX_UPLOAD_BYTES = 20 * 1024 * 1024; // 20 MB — must match server MAX_UPLOAD_BYTES
 const THUMBNAIL_SIZE = 200;
 const ALLOWED_MIME = new Set([

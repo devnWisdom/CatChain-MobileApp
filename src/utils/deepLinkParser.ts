@@ -1,7 +1,7 @@
 /**
  * Parses and handles deep links for QR code scans and external navigation.
- * Supports both custom scheme links (petchain://) and universal links
- * (https://petchain.app/...).
+ * Supports both custom scheme links (catchain://) and universal links
+ * (https://catchain.app/...).
  */
 
 export type DeepLinkType =
@@ -18,8 +18,8 @@ export interface ParsedDeepLink {
   raw: string;
 }
 
-const CUSTOM_SCHEME = 'petchain://';
-const UNIVERSAL_HOSTS = ['petchain.app', 'www.petchain.app'];
+const CUSTOM_SCHEME = 'catchain://';
+const UNIVERSAL_HOSTS = ['catchain.app', 'www.catchain.app'];
 
 const ROUTE_TYPE_MAP: Record<string, DeepLinkType> = {
   pet: 'pet-profile',

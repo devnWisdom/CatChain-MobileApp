@@ -118,8 +118,8 @@ export function CalendarExportSheet({
   const handleRemoveAll = useCallback(() => {
     Alert.alert(
       'Remove all synced events?',
-      'This deletes every appointment PetChain added to your calendar. ' +
-        'Your appointments stay in PetChain.',
+      'This deletes every appointment CatChain added to your calendar. ' +
+        'Your appointments stay in CatChain.',
       [
         { text: 'Keep them', style: 'cancel' },
         { text: 'Remove all', style: 'destructive', onPress: () => void removeAll() },
@@ -130,7 +130,7 @@ export function CalendarExportSheet({
   const handleRevoke = useCallback(() => {
     Alert.alert(
       'Revoke calendar sync?',
-      'Removes every PetChain event from your calendar and turns calendar export off, ' +
+      'Removes every CatChain event from your calendar and turns calendar export off, ' +
         'including the pet-name opt-in. Nothing is exported again until you switch it back on.',
       [
         { text: 'Cancel', style: 'cancel' },
@@ -229,7 +229,7 @@ export function CalendarExportSheet({
       <View key={eventId} style={[styles.row, { borderColor: colors.border }]}>
         <View style={styles.rowBody}>
           <Text style={[styles.rowTitle, { color: colors.text }]}>
-            {appt?.title ?? 'Appointment no longer in PetChain'}
+            {appt?.title ?? 'Appointment no longer in CatChain'}
           </Text>
           {appt ? (
             <Text style={[styles.rowMeta, secondary]}>
@@ -239,7 +239,7 @@ export function CalendarExportSheet({
             // Stale entry: the appointment is gone but the event it produced is
             // still on the device, and still removable.
             <Text style={[styles.rowMeta, { color: colors.warning }]}>
-              This appointment is no longer in PetChain.
+              This appointment is no longer in CatChain.
             </Text>
           )}
         </View>
@@ -371,7 +371,7 @@ export function CalendarExportSheet({
               onPress={handleRemoveAll}
               disabled={busy}
               accessibilityRole="button"
-              accessibilityLabel="Remove all PetChain events from my calendar"
+              accessibilityLabel="Remove all CatChain events from my calendar"
             >
               <Text style={[styles.linkText, { color: colors.text }]}>Remove all events</Text>
             </TouchableOpacity>

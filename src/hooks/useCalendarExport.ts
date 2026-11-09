@@ -75,7 +75,7 @@ export interface UseCalendarExportResult {
   preferences: CalendarExportPreferences;
   /** appointment ids currently selected in the sheet */
   selectedIds: string[];
-  /** events on the device that came from PetChain */
+  /** events on the device that came from CatChain */
   records: CalendarSyncRecord[];
   /** last export run, kept so the result summary survives closing the sheet */
   result: CalendarExportResult | null;

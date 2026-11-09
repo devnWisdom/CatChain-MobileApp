@@ -8,9 +8,9 @@
 
 ## 1. Introduction
 
-PetChain ("we," "our," or "us") is committed to protecting your privacy and personal data. This Privacy Policy explains how we collect, use, store, and share information when you use the PetChain mobile application ("App") and associated services.
+CatChain ("we," "our," or "us") is committed to protecting your privacy and personal data. This Privacy Policy explains how we collect, use, store, and share information when you use the CatChain mobile application ("App") and associated services.
 
-By using PetChain, you consent to the practices described in this policy. If you do not agree, please do not use the App.
+By using CatChain, you consent to the practices described in this policy. If you do not agree, please do not use the App.
 
 ## 2. Information We Collect
 
@@ -98,7 +98,7 @@ We use the collected information for the following purposes:
 
 ### 3.2 Blockchain Verification
 
-PetChain uses the **Stellar blockchain network** to create tamper-evident records of medical event hashes. **Important:** Only cryptographic hashes (not personally identifiable information) are written to the blockchain. This enables:
+CatChain uses the **Stellar blockchain network** to create tamper-evident records of medical event hashes. **Important:** Only cryptographic hashes (not personally identifiable information) are written to the blockchain. This enables:
 - Immutable audit trail of medical record modifications
 - Verification that records have not been altered
 - Timestamped proof of record existence
@@ -122,7 +122,7 @@ Your actual pet data remains encrypted and stored privately.
 - Comply with legal obligations
 - Enforce our Terms of Service
 - Detect and prevent fraud or abuse
-- Protect the rights, property, or safety of PetChain, our users, or the public
+- Protect the rights, property, or safety of CatChain, our users, or the public
 
 ## 4. Data Storage & Security
 
@@ -175,7 +175,7 @@ We share data only when you explicitly choose to:
 
 - **Emergency SOS:** When you tap the SOS button, we send your pet's profile, your location, and emergency contact information to the designated emergency contacts via SMS or email.
 
-- **Community Posts:** If you post in the community feed, that data is visible to other PetChain users based on your privacy settings.
+- **Community Posts:** If you post in the community feed, that data is visible to other CatChain users based on your privacy settings.
 
 - **Data Export:** When you export records as PDF or JSON, that file is saved to your device and can be shared via any method you choose.
 
@@ -202,7 +202,7 @@ We may disclose your information if required by law or to protect rights or safe
 
 ### 5.4 Business Transfers
 
-If PetChain undergoes a merger, acquisition, or asset sale, your data may be transferred as part of that transaction. We will notify you via email and in-App notification before such a transfer, and the new entity will honor this Privacy Policy.
+If CatChain undergoes a merger, acquisition, or asset sale, your data may be transferred as part of that transaction. We will notify you via email and in-App notification before such a transfer, and the new entity will honor this Privacy Policy.
 
 **We do NOT:**
 - Sell your personal data to advertisers or data brokers
@@ -225,7 +225,7 @@ You have the right to:
   - This initiates a 30-day grace period (during which you can cancel deletion)
   - After 30 days, all your data is permanently deleted from our servers
   - Note: Blockchain hashes cannot be deleted from the Stellar ledger (permanent by design), but they contain only cryptographic hashes, not your raw data
-- **Request correction** of inaccurate data by contacting support@petchain.app
+- **Request correction** of inaccurate data by contacting support@catchain.app
 
 ### 6.3 Privacy Controls
 
@@ -244,11 +244,11 @@ You have the right to:
 
 ### 6.5 Children's Privacy
 
-The App is **not directed at children under 13** (or the age of digital consent in your jurisdiction). We do not knowingly collect data from children. If we learn we have collected data from a child, we will delete it promptly. Parents who believe their child has provided data should contact us at support@petchain.app.
+The App is **not directed at children under 13** (or the age of digital consent in your jurisdiction). We do not knowingly collect data from children. If we learn we have collected data from a child, we will delete it promptly. Parents who believe their child has provided data should contact us at support@catchain.app.
 
 ## 7. International Data Transfers
 
-PetChain operates globally with cloud infrastructure in multiple regions. Your data may be stored and processed in the United States or other countries where our service providers operate. We ensure appropriate safeguards (Standard Contractual Clauses, GDPR-compliant agreements) are in place for cross-border data transfers.
+CatChain operates globally with cloud infrastructure in multiple regions. Your data may be stored and processed in the United States or other countries where our service providers operate. We ensure appropriate safeguards (Standard Contractual Clauses, GDPR-compliant agreements) are in place for cross-border data transfers.
 
 If you are in the European Economic Area (EEA), United Kingdom, or Switzerland, you have additional rights under GDPR:
 - Lodge a complaint with your supervisory authority
@@ -267,7 +267,7 @@ We may update this Privacy Policy periodically to reflect changes in our practic
 **Material changes** (e.g., new data categories, different sharing practices) will be communicated via:
 - In-App notification banner (for 7 days after update)
 - Email to your registered address (if we have it)
-- Updated policy published at https://petchain.app/privacy
+- Updated policy published at https://catchain.app/privacy
 
 Your continued use after changes constitutes acceptance of the revised policy.
 
@@ -275,9 +275,9 @@ Your continued use after changes constitutes acceptance of the revised policy.
 
 If you have questions, requests, or concerns about this Privacy Policy or our data practices, please contact:
 
-**Email:** privacy@petchain.app  
-**Postal Mail:** PetChain Legal Department, [Insert Physical Address]  
-**Data Protection Officer:** dpo@petchain.app
+**Email:** privacy@catchain.app  
+**Postal Mail:** CatChain Legal Department, [Insert Physical Address]  
+**Data Protection Officer:** dpo@catchain.app
 
 We will respond within 30 days of receiving your request.
 
@@ -321,4 +321,4 @@ For GDPR-related requests, you may also contact our EU representative if applica
 
 ---
 
-**Thank you for trusting PetChain with your pet's health information.**
+**Thank you for trusting CatChain with your pet's health information.**

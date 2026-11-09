@@ -69,7 +69,7 @@ describe('documentSharing (issue #965)', () => {
 
   it('watermark is deterministic and PHI-free', () => {
     expect(buildWatermark('user-1', T0)).toBe(
-      'PetChain • shared by user-1 • 2026-08-26 12:00 UTC • confidential',
+      'CatChain • shared by user-1 • 2026-08-26 12:00 UTC • confidential',
     );
   });
 });

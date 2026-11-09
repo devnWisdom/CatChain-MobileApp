@@ -1,8 +1,8 @@
 //
-//  PetChainWidget.swift
-//  PetChainWidget
+//  CatChainWidget.swift
+//  CatChainWidget
 //
-//  iOS WidgetKit implementation for PetChain home screen widgets
+//  iOS WidgetKit implementation for CatChain home screen widgets
 //  Shows today's medication schedule, upcoming appointments, and pet health scores
 //
 
@@ -73,19 +73,19 @@ struct WidgetDataModel: Codable {
 
 // MARK: - Widget Provider
 
-struct PetChainWidgetProvider: TimelineProvider {
-    func placeholder(in context: Context) -> PetChainWidgetEntry {
-        PetChainWidgetEntry(date: Date(), widgetData: nil, error: nil)
+struct CatChainWidgetProvider: TimelineProvider {
+    func placeholder(in context: Context) -> CatChainWidgetEntry {
+        CatChainWidgetEntry(date: Date(), widgetData: nil, error: nil)
     }
 
-    func getSnapshot(in context: Context, completion: @escaping (PetChainWidgetEntry) -> Void) {
-        let entry = PetChainWidgetEntry(date: Date(), widgetData: loadWidgetData(), error: nil)
+    func getSnapshot(in context: Context, completion: @escaping (CatChainWidgetEntry) -> Void) {
+        let entry = CatChainWidgetEntry(date: Date(), widgetData: loadWidgetData(), error: nil)
         completion(entry)
     }
 
-    func getTimeline(in context: Context, completion: @escaping (Timeline<PetChainWidgetEntry>) -> Void) {
+    func getTimeline(in context: Context, completion: @escaping (Timeline<CatChainWidgetEntry>) -> Void) {
         let widgetData = loadWidgetData()
-        let entry = PetChainWidgetEntry(date: Date(), widgetData: widgetData, error: nil)
+        let entry = CatChainWidgetEntry(date: Date(), widgetData: widgetData, error: nil)
         
         // Update widget every 15 minutes
         let calendar = Calendar.current
@@ -96,11 +96,11 @@ struct PetChainWidgetProvider: TimelineProvider {
     }
     
     private func loadWidgetData() -> WidgetDataModel? {
-        guard let appGroupDefaults = UserDefaults(suiteName: "group.app.petchain.mobile") else {
+        guard let appGroupDefaults = UserDefaults(suiteName: "group.app.catchain.mobile") else {
             return nil
         }
         
-        guard let data = appGroupDefaults.data(forKey: "petchain_widget_data") else {
+        guard let data = appGroupDefaults.data(forKey: "catchain_widget_data") else {
             return nil
         }
         
@@ -109,7 +109,7 @@ struct PetChainWidgetProvider: TimelineProvider {
     }
 }
 
-struct PetChainWidgetEntry: TimelineEntry {
+struct CatChainWidgetEntry: TimelineEntry {
     let date: Date
     let widgetData: WidgetDataModel?
     let error: String?
@@ -117,8 +117,8 @@ struct PetChainWidgetEntry: TimelineEntry {
 
 // MARK: - Widget Views
 
-struct PetChainSmallWidget: View {
-    let entry: PetChainWidgetProvider.Entry
+struct CatChainSmallWidget: View {
+    let entry: CatChainWidgetProvider.Entry
     @Environment(\.widgetFamily) var widgetFamily
     
     var body: some View {
@@ -126,7 +126,7 @@ struct PetChainSmallWidget: View {
             Color(UIColor { $0.userInterfaceStyle == .dark ? UIColor.black : UIColor.white })
             
             VStack(alignment: .leading, spacing: 8) {
-                Text("PetChain")
+                Text("CatChain")
                     .font(.system(size: 12, weight: .bold))
                     .foregroundColor(.blue)
                 
@@ -179,15 +179,15 @@ struct PetChainSmallWidget: View {
     }
 }
 
-struct PetChainMediumWidget: View {
-    let entry: PetChainWidgetProvider.Entry
+struct CatChainMediumWidget: View {
+    let entry: CatChainWidgetProvider.Entry
     
     var body: some View {
         ZStack {
             Color(UIColor { $0.userInterfaceStyle == .dark ? UIColor.black : UIColor.white })
             
             VStack(alignment: .leading, spacing: 12) {
-                Text("PetChain Daily")
+                Text("CatChain Daily")
                     .font(.system(size: 14, weight: .bold))
                     .foregroundColor(.blue)
                 
@@ -244,15 +244,15 @@ struct PetChainMediumWidget: View {
     }
 }
 
-struct PetChainLargeWidget: View {
-    let entry: PetChainWidgetProvider.Entry
+struct CatChainLargeWidget: View {
+    let entry: CatChainWidgetProvider.Entry
     
     var body: some View {
         ZStack {
             Color(UIColor { $0.userInterfaceStyle == .dark ? UIColor.black : UIColor.white })
             
             VStack(alignment: .leading, spacing: 12) {
-                Text("PetChain Health Overview")
+                Text("CatChain Health Overview")
                     .font(.system(size: 16, weight: .bold))
                     .foregroundColor(.blue)
                 
@@ -330,47 +330,47 @@ struct PetChainLargeWidget: View {
 // MARK: - Widget Bundle
 
 @main
-struct PetChainWidgetBundle: WidgetBundle {
+struct CatChainWidgetBundle: WidgetBundle {
     var body: some Widget {
-        PetChainWidget()
+        CatChainWidget()
     }
 }
 
-struct PetChainWidget: Widget {
-    let kind: String = "com.petchain.widget"
+struct CatChainWidget: Widget {
+    let kind: String = "com.catchain.widget"
 
     var body: some WidgetConfiguration {
-        StaticConfiguration(kind: kind, provider: PetChainWidgetProvider()) { entry in
-            PetChainWidgetEntryView(entry: entry)
+        StaticConfiguration(kind: kind, provider: CatChainWidgetProvider()) { entry in
+            CatChainWidgetEntryView(entry: entry)
                 .containerBackground(.fill, for: .widget)
         }
-        .configurationDisplayName("PetChain Health")
+        .configurationDisplayName("CatChain Health")
         .description("View your pet's health, medications, and appointments.")
         .supportedFamilies([.systemSmall, .systemMedium, .systemLarge])
     }
 }
 
-struct PetChainWidgetEntryView: View {
+struct CatChainWidgetEntryView: View {
     @Environment(\.widgetFamily) var widgetFamily
-    var entry: PetChainWidgetProvider.Entry
+    var entry: CatChainWidgetProvider.Entry
     
     @ViewBuilder
     var body: some View {
         switch widgetFamily {
         case .systemSmall:
-            PetChainAgendaWidget(entry: entry, taskLimit: 2)
+            CatChainAgendaWidget(entry: entry, taskLimit: 2)
         case .systemMedium:
-            PetChainAgendaWidget(entry: entry, taskLimit: 4)
+            CatChainAgendaWidget(entry: entry, taskLimit: 4)
         case .systemLarge:
-            PetChainAgendaWidget(entry: entry, taskLimit: 7)
+            CatChainAgendaWidget(entry: entry, taskLimit: 7)
         default:
-            PetChainAgendaWidget(entry: entry, taskLimit: 4)
+            CatChainAgendaWidget(entry: entry, taskLimit: 4)
         }
     }
 }
 
-struct PetChainAgendaWidget: View {
-    let entry: PetChainWidgetProvider.Entry
+struct CatChainAgendaWidget: View {
+    let entry: CatChainWidgetProvider.Entry
     let taskLimit: Int
 
     var body: some View {
@@ -405,7 +405,7 @@ struct PetChainAgendaWidget: View {
                     }
                 }
             } else {
-                Text("Open PetChain to refresh your agenda")
+                Text("Open CatChain to refresh your agenda")
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
             }
@@ -420,9 +420,9 @@ struct PetChainAgendaWidget: View {
 // MARK: - Preview
 
 #Preview(as: .systemMedium) {
-    PetChainWidget()
+    CatChainWidget()
 } timeline: {
-    PetChainWidgetEntry(date: .now, widgetData: nil, error: nil)
+    CatChainWidgetEntry(date: .now, widgetData: nil, error: nil)
 }
 
 // MARK: - Widget Background Modifier

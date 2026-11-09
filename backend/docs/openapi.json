@@ -1,13 +1,13 @@
 {
   "openapi": "3.0.3",
   "info": {
-    "title": "PetChain API",
+    "title": "CatChain API",
     "version": "1.0.0",
-    "description": "## Overview\n\nThe PetChain API powers the PetChain mobile app — a blockchain-backed pet health management platform.\n\n### Key capabilities\n- **Pet management** — register pets, upload photos, look up by QR code\n- **Medical records** — create and retrieve vet visit records with rich structured data\n- **Blockchain verification** — anchor medical record hashes on the Stellar network for tamper-proof integrity\n- **Appointments** — book, reschedule, and cancel vet appointments\n- **Medications** — track medication schedules and dosing history\n- **Offline sync** — queue-based sync with conflict resolution for offline-first mobile use\n\n### Authentication\n\nAll protected endpoints require a JWT access token in the `Authorization` header:\n\n```\nAuthorization: Bearer <token>\n```\n\nTokens are obtained via `POST /auth/login` or `POST /auth/register`.\nWhen a token expires, the client automatically calls `POST /auth/refresh` with the stored refresh token.\n\n### Rate limiting\n\n- Login/register endpoints: 10 requests per minute per IP\n- All other endpoints: 100 requests per minute per user\n\n### Error format\n\nAll errors follow a consistent shape:\n```json\n{\n  \"success\": false,\n  \"error\": {\n    \"code\": \"VALIDATION_ERROR\",\n    \"message\": \"Human-readable description\",\n    \"details\": { \"field\": \"email\", \"issue\": \"Invalid format\" }\n  },\n  \"timestamp\": \"2024-01-15T10:30:00Z\"\n}\n```",
+    "description": "## Overview\n\nThe CatChain API powers the CatChain mobile app — a blockchain-backed pet health management platform.\n\n### Key capabilities\n- **Pet management** — register pets, upload photos, look up by QR code\n- **Medical records** — create and retrieve vet visit records with rich structured data\n- **Blockchain verification** — anchor medical record hashes on the Stellar network for tamper-proof integrity\n- **Appointments** — book, reschedule, and cancel vet appointments\n- **Medications** — track medication schedules and dosing history\n- **Offline sync** — queue-based sync with conflict resolution for offline-first mobile use\n\n### Authentication\n\nAll protected endpoints require a JWT access token in the `Authorization` header:\n\n```\nAuthorization: Bearer <token>\n```\n\nTokens are obtained via `POST /auth/login` or `POST /auth/register`.\nWhen a token expires, the client automatically calls `POST /auth/refresh` with the stored refresh token.\n\n### Rate limiting\n\n- Login/register endpoints: 10 requests per minute per IP\n- All other endpoints: 100 requests per minute per user\n\n### Error format\n\nAll errors follow a consistent shape:\n```json\n{\n  \"success\": false,\n  \"error\": {\n    \"code\": \"VALIDATION_ERROR\",\n    \"message\": \"Human-readable description\",\n    \"details\": { \"field\": \"email\", \"issue\": \"Invalid format\" }\n  },\n  \"timestamp\": \"2024-01-15T10:30:00Z\"\n}\n```",
     "contact": {
-      "name": "PetChain Engineering",
-      "email": "engineering@petchain.app",
-      "url": "https://petchain.app"
+      "name": "CatChain Engineering",
+      "email": "engineering@catchain.app",
+      "url": "https://catchain.app"
     },
     "license": {
       "name": "MIT",
@@ -20,11 +20,11 @@
       "description": "Local development server"
     },
     {
-      "url": "https://staging.petchain.app/api",
+      "url": "https://staging.catchain.app/api",
       "description": "Staging environment"
     },
     {
-      "url": "https://api.petchain.app/api",
+      "url": "https://api.catchain.app/api",
       "description": "Production environment"
     }
   ],
@@ -1048,7 +1048,7 @@
               "type": "string"
             },
             "description": "URL-encoded QR code value from the pet's QR tag",
-            "example": "petchain%3A%2F%2Fpet%2Fa1b2c3d4-e5f6-7890-abcd-ef1234567890"
+            "example": "catchain%3A%2F%2Fpet%2Fa1b2c3d4-e5f6-7890-abcd-ef1234567890"
           }
         ],
         "responses": {
@@ -2856,7 +2856,7 @@
         "type": "apiKey",
         "in": "header",
         "name": "X-API-Key",
-        "description": "API key for server-to-server integrations. Contact engineering@petchain.app to obtain a key."
+        "description": "API key for server-to-server integrations. Contact engineering@catchain.app to obtain a key."
       }
     },
     "schemas": {
@@ -3107,7 +3107,7 @@
           "redirectUri": {
             "type": "string",
             "format": "uri",
-            "example": "petchain://auth/callback"
+            "example": "catchain://auth/callback"
           }
         }
       },
@@ -3352,7 +3352,7 @@
           "photoUrl": {
             "type": "string",
             "format": "uri",
-            "example": "https://storage.petchain.app/pets/buddy.jpg"
+            "example": "https://storage.catchain.app/pets/buddy.jpg"
           },
           "ownerId": {
             "$ref": "#/components/schemas/UUID"
@@ -3412,7 +3412,7 @@
           "photoUrl": {
             "type": "string",
             "format": "uri",
-            "example": "https://storage.petchain.app/pets/buddy.jpg"
+            "example": "https://storage.catchain.app/pets/buddy.jpg"
           },
           "ownerId": {
             "$ref": "#/components/schemas/UUID"
@@ -3662,7 +3662,7 @@
           "url": {
             "type": "string",
             "format": "uri",
-            "example": "https://storage.petchain.app/docs/blood-panel.pdf"
+            "example": "https://storage.catchain.app/docs/blood-panel.pdf"
           },
           "sizeBytes": {
             "type": "integer",
@@ -4323,7 +4323,7 @@
           },
           "memo": {
             "type": "string",
-            "example": "petchain:record:abc123"
+            "example": "catchain:record:abc123"
           },
           "operationCount": {
             "type": "integer",

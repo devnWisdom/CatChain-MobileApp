@@ -146,7 +146,7 @@ const APP_VERSION = '1.0.0';
 const STATIC_EXPO_PLUGINS = [
   [
     '@sentry/react-native/expo',
-    { organization: 'petchain', project: 'mobile-app' },
+    { organization: 'catchain', project: 'mobile-app' },
   ],
   [
     'expo-screen-capture',
@@ -162,9 +162,9 @@ const STATIC_EXPO_PLUGINS = [
 ];
 
 const APP_NAME_MAP = {
-  development: 'PetChain (Dev)',
-  staging: 'PetChain (Staging)',
-  production: 'PetChain',
+  development: 'CatChain (Dev)',
+  staging: 'CatChain (Staging)',
+  production: 'CatChain',
 };
 
 // The runtimeVersion is what expo-updates uses (natively, before any JS runs) to decide
@@ -289,11 +289,11 @@ const MIGRATION_POLICY = {
   phases: ['prepare', 'snapshot', 'apply', 'verify', 'commit'],
   // Marker key written before a migration starts and cleared only after commit.
   // A leftover marker on launch means the previous run crashed mid-migration.
-  failedMarkerKey: 'petchain.migration.failed',
+  failedMarkerKey: 'catchain.migration.failed',
   // Checkpoint key holding the last phase that completed successfully.
-  checkpointKey: 'petchain.migration.checkpoint',
+  checkpointKey: 'catchain.migration.checkpoint',
   // Key holding the last known-good database snapshot used for recovery.
-  snapshotKey: 'petchain.migration.snapshot',
+  snapshotKey: 'catchain.migration.snapshot',
   // Recovery strategy order. `restoreSnapshot` is preferred; `quarantineRecord`
   // is the fallback and only ever isolates the incompatible record.
   recovery: {
@@ -465,7 +465,7 @@ const DEEP_LINK_ROUTES = {
 
 // Hosts that are allowed to deep-link into the app. Anything else is treated as
 // untrusted and must not be routed.
-const DEEP_LINK_ALLOWED_HOSTS = ['petchain.app', 'www.petchain.app'];
+const DEEP_LINK_ALLOWED_HOSTS = ['catchain.app', 'www.catchain.app'];
 
 // ─── Sensitive-screen snapshot protection (issue #1036) ─────────────────────
 //
@@ -536,18 +536,18 @@ function resolveLegalUrl(urlEnv) {
     // Leave undefined so the release validator fails with a named error.
     return undefined;
   }
-  return `https://${APP_ENV}.petchain.app/legal`;
+  return `https://${APP_ENV}.catchain.app/legal`;
 }
 
 module.exports = {
   expo: {
     name: APP_NAME_MAP[APP_ENV] ?? APP_NAME_MAP.development,
-    slug: 'petchain',
+    slug: 'catchain',
     version: APP_VERSION,
     runtimeVersion: RUNTIME_VERSION,
     orientation: 'portrait',
     icon: './assets/icon.png',
-    scheme: 'petchain',
+    scheme: 'catchain',
     userInterfaceStyle: 'automatic',
     splash: {
       image: './assets/splash.png',
@@ -557,11 +557,11 @@ module.exports = {
     assetBundlePatterns: ['**/*'],
     ios: {
       supportsTablet: true,
-      bundleIdentifier: 'app.petchain.mobile',
+      bundleIdentifier: 'app.catchain.mobile',
       associatedDomains: DEEP_LINK_ALLOWED_HOSTS.map((host) => `applinks:${host}`),
     },
     android: {
-      package: 'app.petchain.mobile',
+      package: 'app.catchain.mobile',
       versionCode: VERSION_CODE,
       adaptiveIcon: {
         foregroundImage: './assets/adaptive-icon.png',
@@ -582,7 +582,7 @@ module.exports = {
         './expoWidgetPlugin',
         {
           android: {
-            widgetName: 'PetChainWidget',
+            widgetName: 'CatChainWidget',
           },
         },
       ],

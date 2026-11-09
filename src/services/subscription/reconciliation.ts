@@ -4,11 +4,11 @@
  * A restored App Store / Play purchase may arrive after sign-in, offline
  * startup, or account migration. Premium access must never be granted or
  * removed based solely on a stale local flag: every restore is reconciled
- * against server-side receipt verification and the PetChain account
+ * against server-side receipt verification and the CatChain account
  * entitlement.
  *
  * The state machine distinguishes store ownership (what the store says the
- * device owns) from account entitlement (what the signed-in PetChain account
+ * device owns) from account entitlement (what the signed-in CatChain account
  * is entitled to). Pending verification never unlocks premium permanently.
  */
 
@@ -33,7 +33,7 @@ export interface StoreReceipt {
 }
 
 export interface Entitlement {
-  /** PetChain account the entitlement belongs to. */
+  /** CatChain account the entitlement belongs to. */
   accountId: string;
   premium: boolean;
   expiresAt?: string | null;
@@ -89,7 +89,7 @@ const defaultSleep = (ms: number): Promise<void> =>
   new Promise((resolve) => setTimeout(resolve, ms));
 
 /**
- * Reconciles a restored store purchase with the signed-in PetChain account.
+ * Reconciles a restored store purchase with the signed-in CatChain account.
  *
  * Idempotent: repeating a restore for the same account/receipt converges on
  * the same verified entitlement and never double-grants premium. Pending

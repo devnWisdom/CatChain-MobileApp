@@ -1,7 +1,7 @@
 /**
  * keyboardNavigation.ts
  *
- * Utilities for complete keyboard navigation support in PetChain MobileApp.
+ * Utilities for complete keyboard navigation support in CatChain MobileApp.
  * Provides focus indicators, tab order management, keyboard shortcuts,
  * accessibility props, and focus trap helpers for external keyboard users.
  */
@@ -141,7 +141,7 @@ export class KeyboardShortcutRegistry {
 // ---------------------------------------------------------------------------
 
 /**
- * Subset of React Native accessibility roles relevant to PetChain screens.
+ * Subset of React Native accessibility roles relevant to CatChain screens.
  * Matches the AccessibilityRole type from @types/react-native.
  */
 export type AccessibilityRole =

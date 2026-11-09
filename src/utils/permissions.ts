@@ -287,7 +287,7 @@ export function describeNotificationDeliveryState(
     case 'deliverable':
       return null;
     case 'os-denied':
-      return 'Notifications are turned off for PetChain. Care reminders will not be delivered until you enable notifications in Settings.';
+      return 'Notifications are turned off for CatChain. Care reminders will not be delivered until you enable notifications in Settings.';
     case 'os-restricted':
       return 'Notifications are restricted on this device. Care reminders will not be delivered until the restriction is lifted.';
     case 'os-undetermined':
@@ -392,11 +392,11 @@ export function describeCalendarExportState(reason: CalendarExportState): string
     case 'available':
       return null;
     case 'os-denied':
-      return 'Calendar access is turned off for PetChain. Appointments cannot be exported until you allow calendar access in Settings.';
+      return 'Calendar access is turned off for CatChain. Appointments cannot be exported until you allow calendar access in Settings.';
     case 'os-restricted':
       return 'Calendar access is restricted on this device, so appointments cannot be exported. Contact your device administrator to lift the restriction.';
     case 'os-undetermined':
-      return 'PetChain has not been allowed to access your calendar yet. Allow access to export appointments.';
+      return 'CatChain has not been allowed to access your calendar yet. Allow access to export appointments.';
     case 'server-unconfirmed':
       return 'Your account has not confirmed calendar export yet. Connect to the internet so we can check, then try again.';
     case 'server-maintenance':

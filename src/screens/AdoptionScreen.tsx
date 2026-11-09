@@ -213,7 +213,7 @@ const AdoptionScreen: React.FC = () => {
       setSelectedPet(null);
       Alert.alert(
         'Pet profile created',
-        `${result.pet.name} was added to PetChain and shelter records were transferred.`,
+        `${result.pet.name} was added to CatChain and shelter records were transferred.`,
       );
       navigation.navigate('PetDetail', { petId: result.pet.id });
     } catch (error) {
@@ -559,7 +559,7 @@ const AdoptionScreen: React.FC = () => {
         </Text>
         <Text style={styles.subtitle}>
           Browse mock Petfinder and Adopt-a-Pet feeds in development, then transfer shelter
-          vaccination and medical records into PetChain with Stellar anchoring.
+          vaccination and medical records into CatChain with Stellar anchoring.
         </Text>
       </View>
 

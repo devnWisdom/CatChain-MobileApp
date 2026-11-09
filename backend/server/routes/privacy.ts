@@ -20,7 +20,7 @@ const CONSENT_CATEGORIES = ['necessary', 'functional', 'analytics', 'marketing']
 // GET /api/privacy/export — download all user data as JSON (immediate)
 router.get('/export', (req: AuthenticatedRequest, res) => {
   const data = exportUserData(req.user!.id);
-  res.setHeader('Content-Disposition', 'attachment; filename="petchain-data-export.json"');
+  res.setHeader('Content-Disposition', 'attachment; filename="catchain-data-export.json"');
   res.setHeader('Content-Type', 'application/json');
   return res.json(data);
 });

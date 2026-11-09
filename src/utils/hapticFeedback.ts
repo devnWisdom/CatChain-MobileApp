@@ -1,5 +1,5 @@
 /**
- * Haptic feedback utility for PetChain.
+ * Haptic feedback utility for CatChain.
  *
  * Wraps expo-haptics with a user-configurable enable/disable toggle
  * stored in AsyncStorage under the key `hapticFeedbackEnabled`.

@@ -250,7 +250,7 @@ const PetHealthDashboardScreen: React.FC<Props> = ({ petId, petName, onBack, onO
   const handleExportChart = useCallback(async () => {
     try {
       await Share.share({
-        message: `${petName}'s weight chart - exported from PetChain`,
+        message: `${petName}'s weight chart - exported from CatChain`,
         title: `${petName} Weight Chart`,
       });
     } catch (err) {

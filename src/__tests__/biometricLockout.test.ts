@@ -35,8 +35,8 @@ describe('Biometric lockout and fallback handling', () => {
     it('handles success: returns { success: true } and allows unlock', async () => {
       mockKeychain.getSupportedBiometryType.mockResolvedValue('FaceID');
       mockKeychain.getGenericPassword.mockResolvedValue({
-        username: 'petchain_biometric_user',
-        password: 'petchain:biometric:enrolled',
+        username: 'catchain_biometric_user',
+        password: 'catchain:biometric:enrolled',
       });
 
       const result = await authenticateWithBiometrics();
@@ -235,8 +235,8 @@ describe('Biometric lockout and fallback handling', () => {
       // First auth attempt: enrolled
       mockKeychain.getSupportedBiometryType.mockResolvedValue('Fingerprint');
       mockKeychain.getGenericPassword.mockResolvedValue({
-        username: 'petchain_biometric_user',
-        password: 'petchain:biometric:enrolled',
+        username: 'catchain_biometric_user',
+        password: 'catchain:biometric:enrolled',
       });
 
       let result = await authenticateWithBiometrics();

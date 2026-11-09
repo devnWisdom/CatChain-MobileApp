@@ -56,7 +56,7 @@ async function main(): Promise<void> {
 
   const baseClient = new Client({ connectionString: DATABASE_URL });
   await baseClient.connect();
-  const testDbName = `petchain_rollback_test_${Date.now()}`;
+  const testDbName = `catchain_rollback_test_${Date.now()}`;
   console.log(`[test:migrations] Creating temporary DB: ${testDbName}`);
   await baseClient.query(`CREATE DATABASE ${testDbName}`);
   await baseClient.end();

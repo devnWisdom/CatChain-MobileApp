@@ -78,7 +78,7 @@ export default {
     exportData: 'Export My Data',
     exportDataTitle: 'Export Your Data',
     exportDataMessage:
-      'We will prepare a complete export of all your PetChain data (pets, records, appointments, medications) in JSON and PDF formats. You will receive an email with a download link when ready (expires in 48 hours).',
+      'We will prepare a complete export of all your CatChain data (pets, records, appointments, medications) in JSON and PDF formats. You will receive an email with a download link when ready (expires in 48 hours).',
     exportFailed: 'Failed to request data export. Please try again.',
     requestExport: 'Request Export',
     syncStatus: 'Sync Status',
@@ -109,7 +109,7 @@ export default {
     draftExportFailed: 'Could not create the encrypted draft export.',
     draftExportPasswordTitle: 'Encrypt local drafts',
     draftExportPasswordMessage:
-      'Choose a passphrase with at least 12 characters. You will need it to open this export; PetChain cannot recover it.',
+      'Choose a passphrase with at least 12 characters. You will need it to open this export; CatChain cannot recover it.',
     draftExportPasswordPlaceholder: 'Export passphrase',
     draftExportPasswordConfirmPlaceholder: 'Confirm passphrase',
     createEncryptedExport: 'Create encrypted export',

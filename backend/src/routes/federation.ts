@@ -17,7 +17,7 @@ import {
 const router = express.Router();
 
 // ── Public: Stellar federation lookup ──────────────────────────────────────
-// GET /api/federation?q=dr.smith*petchain.app&type=name
+// GET /api/federation?q=dr.smith*catchain.app&type=name
 router.get('/', (req, res) => {
   const { q, type } = req.query as { q?: string; type?: string };
   if (!q || !type) {

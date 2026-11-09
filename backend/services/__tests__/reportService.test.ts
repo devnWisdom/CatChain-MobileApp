@@ -93,7 +93,7 @@ describe('filterByDateRange', () => {
 
 describe('generateQRCodeBuffer', () => {
   it('returns a non-empty Buffer', async () => {
-    const buf = await generateQRCodeBuffer('https://petchain.app/verify/p-1');
+    const buf = await generateQRCodeBuffer('https://catchain.app/verify/p-1');
     expect(Buffer.isBuffer(buf)).toBe(true);
     expect(buf.length).toBeGreaterThan(0);
   });

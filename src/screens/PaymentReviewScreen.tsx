@@ -168,7 +168,7 @@ const PaymentReviewScreen: React.FC<Props> = ({ plan, quote }) => {
         'Confirm Payment',
         `This will authorize a ${getCadenceLabel(plan)} payment of ${formatCurrency(
           planDetails.id === 'premium_annual' ? planDetails.priceAnnual : planDetails.priceMonthly
-        )} to PetChain for your ${planDetails.name} subscription.`,
+        )} to CatChain for your ${planDetails.name} subscription.`,
         [
           { text: 'Cancel', style: 'cancel' },
           {
@@ -234,7 +234,7 @@ const PaymentReviewScreen: React.FC<Props> = ({ plan, quote }) => {
         <Text style={styles.sectionTitle}>Payee</Text>
         <View style={styles.detailRow}>
           <Text style={styles.detailLabel}>Recipient</Text>
-          <Text style={styles.detailValue}>PetChain Premium</Text>
+          <Text style={styles.detailValue}>CatChain Premium</Text>
         </View>
         <View style={styles.detailRow}>
           <Text style={styles.detailLabel}>Payment Method</Text>

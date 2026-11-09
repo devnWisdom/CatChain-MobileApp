@@ -110,7 +110,7 @@ function describeMemo(memo: unknown): TransactionSimulation['memo'] {
   if (Buffer.isBuffer(raw)) {
     // The SDK hands back a Buffer for every memo type. A *text* memo must be
     // rendered as the text the sender wrote — showing a reviewer
-    // "706574636861696e" instead of "petchain" defeats the point of the review.
+    // "706574636861696e" instead of "catchain" defeats the point of the review.
     // Hash and return memos are genuinely binary, so those stay hex.
     return {
       type: typed.type,

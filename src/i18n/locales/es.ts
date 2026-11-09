@@ -78,7 +78,7 @@ export default {
     exportData: 'Exportar mis datos',
     exportDataTitle: 'Exportar tus datos',
     exportDataMessage:
-      'Prepararemos una exportación completa de todos tus datos de PetChain (mascotas, registros, citas, medicamentos) en formato JSON y PDF. Recibirás un correo con un enlace de descarga cuando esté listo (válido por 48 horas).',
+      'Prepararemos una exportación completa de todos tus datos de CatChain (mascotas, registros, citas, medicamentos) en formato JSON y PDF. Recibirás un correo con un enlace de descarga cuando esté listo (válido por 48 horas).',
     exportFailed: 'Error al solicitar la exportación de datos. Inténtalo de nuevo.',
     requestExport: 'Solicitar exportación',
     syncStatus: 'Estado de sincronización',
@@ -110,7 +110,7 @@ export default {
     draftExportFailed: 'No se pudo crear la exportación cifrada de borradores.',
     draftExportPasswordTitle: 'Cifrar borradores locales',
     draftExportPasswordMessage:
-      'Elige una frase de contraseña de al menos 12 caracteres. La necesitarás para abrir la exportación; PetChain no puede recuperarla.',
+      'Elige una frase de contraseña de al menos 12 caracteres. La necesitarás para abrir la exportación; CatChain no puede recuperarla.',
     draftExportPasswordPlaceholder: 'Frase de contraseña de exportación',
     draftExportPasswordConfirmPlaceholder: 'Confirmar frase de contraseña',
     createEncryptedExport: 'Crear exportación cifrada',

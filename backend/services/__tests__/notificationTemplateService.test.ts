@@ -14,7 +14,7 @@ const mockCacheSet = jest.fn().mockResolvedValue(undefined);
 const mockInvalidate = jest.fn().mockResolvedValue(undefined);
 
 jest.mock('../../services/cacheService', () => ({
-  cacheKey: (...parts: string[]) => `petchain:${parts.join(':')}`,
+  cacheKey: (...parts: string[]) => `catchain:${parts.join(':')}`,
   get: mockCacheGet,
   set: mockCacheSet,
   invalidate: mockInvalidate,

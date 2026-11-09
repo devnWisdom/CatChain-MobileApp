@@ -1,4 +1,4 @@
-package app.petchain.mobile.widget;
+package app.catchain.mobile.widget;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -18,16 +18,16 @@ import java.util.Date;
 import java.util.Locale;
 
 /**
- * PetChain App Widget Provider
+ * CatChain App Widget Provider
  * 
  * Shows today's medication schedule, upcoming appointments, and pet health scores
  * on Android home screen in small, medium, and large widget sizes.
  */
-public class PetChainWidgetProvider extends AppWidgetProvider {
+public class CatChainWidgetProvider extends AppWidgetProvider {
 
-    private static final String PREFS_NAME = "PetChainWidgetPrefs";
-    private static final String WIDGET_DATA_KEY = "petchain_widget_data";
-    private static final String ACTION_UPDATE_WIDGET = "app.petchain.mobile.UPDATE_WIDGET";
+    private static final String PREFS_NAME = "CatChainWidgetPrefs";
+    private static final String WIDGET_DATA_KEY = "catchain_widget_data";
+    private static final String ACTION_UPDATE_WIDGET = "app.catchain.mobile.UPDATE_WIDGET";
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -41,7 +41,7 @@ public class PetChainWidgetProvider extends AppWidgetProvider {
         ) {
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
             int[] appWidgetIds = appWidgetManager.getAppWidgetIds(
-                    new android.content.ComponentName(context, PetChainWidgetProvider.class)
+                    new android.content.ComponentName(context, CatChainWidgetProvider.class)
             );
             
             if (appWidgetIds.length > 0) {
@@ -109,7 +109,7 @@ public class PetChainWidgetProvider extends AppWidgetProvider {
                 (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
         boolean redact = hideDetailsOnLockScreen
                 && (keyguardManager == null || keyguardManager.isKeyguardLocked());
-        StringBuilder text = new StringBuilder("PetChain care agenda");
+        StringBuilder text = new StringBuilder("CatChain care agenda");
 
         if (agenda == null || agenda.length() == 0) {
             text.append("\nNo upcoming care tasks");
@@ -138,7 +138,7 @@ public class PetChainWidgetProvider extends AppWidgetProvider {
             }
         }
         views.setTextViewText(android.R.id.text1, text.toString());
-        views.setContentDescription(android.R.id.text1, "PetChain care agenda");
+        views.setContentDescription(android.R.id.text1, "CatChain care agenda");
     }
 
     private static void updateSmallWidget(RemoteViews views, Context context,
@@ -217,7 +217,7 @@ public class PetChainWidgetProvider extends AppWidgetProvider {
     }
 
     private static void setClickIntent(Context context, RemoteViews views) {
-        Intent intent = new Intent(context, PetChainWidgetProvider.class);
+        Intent intent = new Intent(context, CatChainWidgetProvider.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, 
                 PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         
@@ -241,7 +241,7 @@ public class PetChainWidgetProvider extends AppWidgetProvider {
         prefs.edit().putString(WIDGET_DATA_KEY, jsonData).apply();
         
         // Trigger widget update
-        Intent intent = new Intent(context, PetChainWidgetProvider.class);
+        Intent intent = new Intent(context, CatChainWidgetProvider.class);
         intent.setAction(ACTION_UPDATE_WIDGET);
         context.sendBroadcast(intent);
     }
@@ -254,7 +254,7 @@ public class PetChainWidgetProvider extends AppWidgetProvider {
         prefs.edit().remove(WIDGET_DATA_KEY).apply();
         
         // Trigger widget update
-        Intent intent = new Intent(context, PetChainWidgetProvider.class);
+        Intent intent = new Intent(context, CatChainWidgetProvider.class);
         intent.setAction(ACTION_UPDATE_WIDGET);
         context.sendBroadcast(intent);
     }

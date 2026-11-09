@@ -194,7 +194,7 @@ const ProfileScreen: React.FC = () => {
     try {
       const json = await exportBackupJson();
       setBackupJson(json);
-      await Share.share({ message: json, title: 'PetChain backup' });
+      await Share.share({ message: json, title: 'CatChain backup' });
     } catch (error) {
       Alert.alert(
         'Backup failed',
@@ -266,8 +266,8 @@ const ProfileScreen: React.FC = () => {
     }
 
     await Share.share({
-      title: 'Join PetChain',
-      message: `Use my PetChain referral code ${referralStats.code} and create your first pet record.`,
+      title: 'Join CatChain',
+      message: `Use my CatChain referral code ${referralStats.code} and create your first pet record.`,
     });
   };
 

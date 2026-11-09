@@ -87,13 +87,13 @@ export default function TwoFactorSetupScreen() {
   const handleDownload = useCallback(async () => {
     try {
       const content = [
-        'PetChain - 2FA Backup Codes',
+        'CatChain - 2FA Backup Codes',
         'Generated: ' + new Date().toISOString(),
         'Keep these codes safe. Each code can only be used once.',
         '',
         ...backupCodes,
       ].join('\n');
-      const uri = FileSystem.cacheDirectory + 'petchain-backup-codes.txt';
+      const uri = FileSystem.cacheDirectory + 'catchain-backup-codes.txt';
       await FileSystem.writeAsStringAsync(uri, content, { encoding: FileSystem.EncodingType.UTF8 });
       if (await Sharing.isAvailableAsync()) {
         await Sharing.shareAsync(uri, { mimeType: 'text/plain', UTI: 'public.plain-text' });

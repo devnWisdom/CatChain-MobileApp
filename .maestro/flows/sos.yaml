@@ -1,4 +1,4 @@
-appId: app.petchain.mobile.staging
+appId: app.catchain.mobile.staging
 ---
 # SOS happy path: tap button → countdown → contacts notified
 - launchApp

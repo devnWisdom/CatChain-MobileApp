@@ -18,8 +18,8 @@ export interface TrustlineAsset {
   sellingLiabilities: string;
   /** Amount locked by open buy offers on this asset (Horizon `buying_liabilities`) */
   buyingLiabilities: string;
-  /** Whether this is a PetChain-issued asset */
-  isPetChainAsset: boolean;
+  /** Whether this is a CatChain-issued asset */
+  isCatChainAsset: boolean;
 }
 
 export interface TrustlineTransaction {
@@ -61,8 +61,8 @@ export interface RemoveTrustlineParams {
   issuerPublicKey: string;
 }
 
-/** PetChain-issued assets available to add */
-export interface PetChainAssetDefinition {
+/** CatChain-issued assets available to add */
+export interface CatChainAssetDefinition {
   assetCode: string;
   issuerPublicKey: string;
   name: string;

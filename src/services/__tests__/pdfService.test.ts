@@ -121,13 +121,13 @@ describe('pdfService — Vaccination Certificate PDF Generator (Issue #417)', ()
 
       const content: string = mockWriteFile.mock.calls[0][1];
       expect(content).toContain('BLOCKCHAIN VERIFICATION');
-      expect(content).toContain('petchain.app/verify/');
+      expect(content).toContain('catchain.app/verify/');
     });
 
     it('generates a QR code', async () => {
       await generateVaccinationCertificate(mockPet, mockVaccinations);
       expect(mockQRCode).toHaveBeenCalledWith(
-        expect.stringContaining('petchain.app/verify/'),
+        expect.stringContaining('catchain.app/verify/'),
         expect.any(Object),
       );
     });

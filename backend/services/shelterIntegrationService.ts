@@ -488,7 +488,7 @@ function createTransferredRecord(
 export class ShelterIntegrationService {
   async getOAuthAuthorizationUrl(
     provider: ShelterProvider,
-    redirectUri = 'petchain://shelter/oauth/callback',
+    redirectUri = 'catchain://shelter/oauth/callback',
   ): Promise<ShelterAuthResult> {
     const state = randomUUID();
     const authorizationUrl = MOCK_MODE
@@ -677,7 +677,7 @@ export class ShelterIntegrationService {
           consecutive,
         });
         await sendAdminAlertEmail(
-          `[PetChain] Shelter sync failure alert: ${shelterId}`,
+          `[CatChain] Shelter sync failure alert: ${shelterId}`,
           [
             `Shelter ID: ${shelterId}`,
             `Consecutive failures: ${consecutive}`,

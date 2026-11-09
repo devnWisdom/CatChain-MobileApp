@@ -5,7 +5,7 @@ import { applySchemaMapping } from '../schemaMapper';
 describe('schemaMapper', () => {
   it('should map pet_name to name for /pets endpoint', () => {
     const mockResponse = {
-      config: { url: 'https://api.petchain.app/api/pets' },
+      config: { url: 'https://api.catchain.app/api/pets' },
       data: [
         { id: '1', pet_name: 'Buddy', species: 'dog' },
         { id: '2', name: 'Max', species: 'cat' },
@@ -19,7 +19,7 @@ describe('schemaMapper', () => {
 
   it('should provide default species if missing', () => {
     const mockResponse = {
-      config: { url: 'https://api.petchain.app/api/pets/1' },
+      config: { url: 'https://api.catchain.app/api/pets/1' },
       data: { id: '1', name: 'Buddy' },
     } as AxiosResponse;
 
@@ -30,7 +30,7 @@ describe('schemaMapper', () => {
   it('should not modify data if no mapper matches', () => {
     const mockData = { some: 'data' };
     const mockResponse = {
-      config: { url: 'https://api.petchain.app/api/unknown' },
+      config: { url: 'https://api.catchain.app/api/unknown' },
       data: mockData,
     } as AxiosResponse;
 

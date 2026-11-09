@@ -40,7 +40,7 @@ const QRCodeDisplay: React.FC<Props> = ({ pet, size = 240 }) => {
       <Image
         source={{ uri: getQRImageUrl(qrData, size) }}
         style={{ width: size, height: size }}
-        accessibilityLabel={`${pet.name} PetChain QR code`}
+        accessibilityLabel={`${pet.name} CatChain QR code`}
       />
       <Text style={styles.caption}>Scan for {pet.name}'s emergency profile</Text>
     </View>

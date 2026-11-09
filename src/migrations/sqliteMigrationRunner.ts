@@ -1,5 +1,5 @@
 /**
- * SQLite migration runner for the PetChain mobile app.
+ * SQLite migration runner for the CatChain mobile app.
  *
  * - Uses a `schema_migrations` table to track applied migrations.
  * - Migrations are identified by a timestamp-based version string (e.g. "20260101000001").

@@ -21,7 +21,7 @@ import { ok, sendError } from '../response';
 import { type StoredMedicalRecord, type StoredPet, store } from '../store';
 
 const router = express.Router();
-const QR_SECRET = process.env.QR_SIGNING_SECRET ?? 'petchain-dev-qr-secret';
+const QR_SECRET = process.env.QR_SIGNING_SECRET ?? 'catchain-dev-qr-secret';
 const ALLERGY_CORRECTION_STATUSES = ['pending', 'approved', 'rejected'] as const;
 type AllergyCorrectionStatus = (typeof ALLERGY_CORRECTION_STATUSES)[number];
 
@@ -233,8 +233,8 @@ router.post('/:id/qr-identity', (req: AuthenticatedRequest, res) => {
   return res.status(201).json(
     ok({
       token,
-      url: `https://petchain.app/pets/identity/${encodeURIComponent(token)}/view`,
-      deepLink: `petchain://pet/${encodeURIComponent(pet.id)}`,
+      url: `https://catchain.app/pets/identity/${encodeURIComponent(token)}/view`,
+      deepLink: `catchain://pet/${encodeURIComponent(pet.id)}`,
       issuedAt,
     }),
   );

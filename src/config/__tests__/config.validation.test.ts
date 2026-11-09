@@ -7,7 +7,7 @@ import {
 describe('Runtime Config Validation (Issue #900)', () => {
   describe('validateRuntimeConfig', () => {
     const validConfig = {
-      apiBaseUrl: 'https://api.petchain.app/api',
+      apiBaseUrl: 'https://api.catchain.app/api',
       apiTimeoutMs: 10000,
       cacheSizeMb: 50,
       paginationLimit: 20,
@@ -88,7 +88,7 @@ describe('Runtime Config Validation (Issue #900)', () => {
       });
 
       it('rejects HTTP URL for production', () => {
-        const config = { ...validConfig, apiBaseUrl: 'http://api.petchain.app/api' };
+        const config = { ...validConfig, apiBaseUrl: 'http://api.catchain.app/api' };
         const result = validateRuntimeConfig(config, 'production');
         expect(result.isValid).toBe(false);
         expect(result.error).toContain('HTTPS');
@@ -115,7 +115,7 @@ describe('Runtime Config Validation (Issue #900)', () => {
       });
 
       it('warns on HTTP for staging (but passes)', () => {
-        const config = { ...validConfig, apiBaseUrl: 'http://staging.petchain.app/api' };
+        const config = { ...validConfig, apiBaseUrl: 'http://staging.catchain.app/api' };
         const result = validateRuntimeConfig(config, 'staging');
         expect(result.isValid).toBe(true);
         expect(result.warnings.length).toBeGreaterThan(0);

@@ -112,4 +112,4 @@ export type PetStackScreenProps<T extends keyof PetStackParamList> = CompositeSc
 >;
 
 // ─── Deep link config ─────────────────────────────────────────────────────────
-export const DEEP_LINK_PREFIX = ['petchain://', 'petchainapp://', 'https://petchain.app'];
+export const DEEP_LINK_PREFIX = ['catchain://', 'catchainapp://', 'https://catchain.app'];

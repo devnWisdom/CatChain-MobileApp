@@ -81,7 +81,7 @@ jobs:
                 \"routing_key\": \"$PAGERDUTY_ROUTING_KEY\",
                 \"event_action\": \"trigger\",
                 \"payload\": {
-                  \"summary\": \"PetChain daily backup failed (run ${{ github.run_id }})\",
+                  \"summary\": \"CatChain daily backup failed (run ${{ github.run_id }})\",
                   \"severity\": \"critical\",
                   \"source\": \"github-actions\"
                 }

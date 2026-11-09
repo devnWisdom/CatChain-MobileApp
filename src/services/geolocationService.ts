@@ -117,7 +117,7 @@ export async function requestLocationPermission(): Promise<LocationPermissionSta
         {
           title: 'Location Permission',
           message:
-            'PetChain needs your location to find nearby vet clinics and emergency services.',
+            'CatChain needs your location to find nearby vet clinics and emergency services.',
           buttonPositive: 'Allow',
           buttonNegative: 'Deny',
           buttonNeutral: 'Ask Me Later',

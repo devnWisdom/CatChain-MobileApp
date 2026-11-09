@@ -1,11 +1,11 @@
-# PetChain Mobile App.......
+# CatChain Mobile App.......
 
 > Secure pet health records, medication reminders, QR scanning, and emergency SOS — powered by blockchain.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-1.0.0-blue)](https://github.com/devnWisdom/PetChain-MobileApp/releases)
+[![Version](https://img.shields.io/badge/version-1.0.0-blue)](https://github.com/devnWisdom/CatChain-MobileApp/releases)
 
-**PetChain** is a comprehensive mobile application for pet owners to securely manage their pets' medical records, medication schedules, vet appointments, and emergency contacts. Built with React Native and Expo, it integrates with the Stellar blockchain to provide immutable, verifiable health records.
+**CatChain** is a comprehensive mobile application for pet owners to securely manage their pets' medical records, medication schedules, vet appointments, and emergency contacts. Built with React Native and Expo, it integrates with the Stellar blockchain to provide immutable, verifiable health records.
 
 ---
 
@@ -23,8 +23,8 @@ Generated assets should be placed in:
 - `storelisting/screenshots/android/` — Google Play screenshots
 
 Legal documents:
-- `legal/PrivacyPolicy.md` — Upload to https://petchain.app/privacy
-- `legal/TermsOfService.md` — Upload to https://petchain.app/terms
+- `legal/PrivacyPolicy.md` — Upload to https://catchain.app/privacy
+- `legal/TermsOfService.md` — Upload to https://catchain.app/terms
 
 Metadata for store listings:
 - `storelisting/ios-subtitle.txt`
@@ -86,8 +86,8 @@ See [ARCHITECTURE.md](./ARCHITECTURE.md) for detailed system diagrams.
 ### Installation
 ```bash
 # Clone repository
-git clone https://github.com/devnWisdom/PetChain-MobileApp.git
-cd PetChain-MobileApp
+git clone https://github.com/devnWisdom/CatChain-MobileApp.git
+cd CatChain-MobileApp
 
 # Install dependencies
 npm install
@@ -172,7 +172,7 @@ Medications:  10 pets × 1 medication = 10 total
 
 ## 🔧 Pre-Commit Hooks (Husky + lint-staged)
 
-PetChain enforces code quality automatically on every commit using [Husky](https://typicode.github.io/husky/) and [lint-staged](https://github.com/lint-staged/lint-staged).
+CatChain enforces code quality automatically on every commit using [Husky](https://typicode.github.io/husky/) and [lint-staged](https://github.com/lint-staged/lint-staged).
 
 ### How it works
 
@@ -292,19 +292,19 @@ it('handles 401', async () => {
 
 ## 📄 Legal
 
-- [Privacy Policy](https://petchain.app/privacy) — How we handle your data
-- [Terms of Service](https://petchain.app/terms) — Usage agreement
+- [Privacy Policy](https://catchain.app/privacy) — How we handle your data
+- [Terms of Service](https://catchain.app/terms) — Usage agreement
 
-PetChain is not a substitute for professional veterinary care. Always consult a licensed veterinarian for medical advice.
+CatChain is not a substitute for professional veterinary care. Always consult a licensed veterinarian for medical advice.
 
 ---
 
 ## 📞 Support
 
-- Issues: https://github.com/devnWisdom/PetChain-MobileApp/issues
-- Email: support@petchain.app
-- Twitter: [@petchainapp](https://twitter.com/petchainapp)
-- Website: https://petchain.app
+- Issues: https://github.com/devnWisdom/CatChain-MobileApp/issues
+- Email: support@catchain.app
+- Twitter: [@catchainapp](https://twitter.com/catchainapp)
+- Website: https://catchain.app
 
 ---
 

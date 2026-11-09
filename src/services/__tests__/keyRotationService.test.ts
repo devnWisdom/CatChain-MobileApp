@@ -77,8 +77,8 @@ const mockKeyBackup = keyBackupService as jest.Mocked<typeof keyBackupService>;
 const mockMultisig = multisigService as jest.Mocked<typeof multisigService>;
 const mockClearSecret = clearSecret as jest.MockedFunction<typeof clearSecret>;
 
-const CHECKPOINT_KEY = 'com.petchain.keyRotation.checkpoint';
-const PENDING_MNEMONIC_KEY = 'com.petchain.keyRotation.pendingMnemonic';
+const CHECKPOINT_KEY = 'com.catchain.keyRotation.checkpoint';
+const PENDING_MNEMONIC_KEY = 'com.catchain.keyRotation.pendingMnemonic';
 
 const TEST_MNEMONIC = 'word1 word2 word3 word4 word5 word6 word7 word8 word9 word10 word11 word12';
 

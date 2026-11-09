@@ -24,7 +24,7 @@ function extractUser(authHeader: string | undefined): GraphQLContext['user'] {
   const token = authHeader.slice(7).trim();
   if (!token) return null;
   try {
-    const jwtSecret = process.env.JWT_SECRET || 'petchain-dev-secret-key-change-in-prod';
+    const jwtSecret = process.env.JWT_SECRET || 'catchain-dev-secret-key-change-in-prod';
     const payload = jwt.verify(token, jwtSecret) as { sub: string; email: string; role: UserRole };
     return { id: payload.sub, email: payload.email, role: payload.role };
   } catch {

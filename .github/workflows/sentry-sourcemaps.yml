@@ -50,7 +50,7 @@ jobs:
           VERSION=$(node -p "require('./package.json').version")
           GIT_SHA=$(echo "${{ github.event.workflow_run.head_sha }}" | cut -c1-8)
           BUILD_NUMBER="${{ github.run_number }}"
-          RELEASE="petchain-mobile@${VERSION}+${BUILD_NUMBER}.${GIT_SHA}"
+          RELEASE="catchain-mobile@${VERSION}+${BUILD_NUMBER}.${GIT_SHA}"
 
           npx sentry-cli releases new "$RELEASE" \
             --org "$SENTRY_ORG" \

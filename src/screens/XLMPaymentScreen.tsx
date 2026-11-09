@@ -81,7 +81,7 @@ export default function XLMPaymentScreen() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Pay with XLM</Text>
-      <Text style={styles.subtitle}>Unlock PetChain Premium</Text>
+      <Text style={styles.subtitle}>Unlock CatChain Premium</Text>
 
       {status === 'idle' && (
         <TouchableOpacity style={styles.button} onPress={createIntent}>

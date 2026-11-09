@@ -21,8 +21,8 @@ const IS_PROD = process.env.NODE_ENV === 'production';
  */
 const TRUSTED_ORIGINS: string[] = [
   "'self'",
-  'https://api.petchain.app',
-  'https://staging.petchain.app',
+  'https://api.catchain.app',
+  'https://staging.catchain.app',
   ...(process.env.ALLOWED_ORIGINS
     ? process.env.ALLOWED_ORIGINS.split(',').map((o) => o.trim())
     : []),
@@ -59,7 +59,7 @@ export function applySecurityHeaders(app: Express): void {
         defaultSrc: ["'none'"],
         scriptSrc: ["'self'"],
         styleSrc: ["'self'", "'unsafe-inline'"], // inline styles needed by Swagger UI
-        imgSrc: ["'self'", 'data:', 'https://cdn.petchain.app'],
+        imgSrc: ["'self'", 'data:', 'https://cdn.catchain.app'],
         fontSrc: ["'self'"],
         connectSrc: TRUSTED_ORIGINS,
         mediaSrc: ["'self'"],

@@ -2,9 +2,9 @@ import { Router } from 'express';
 
 const router = Router();
 
-const iosBundleId = process.env.IOS_BUNDLE_ID || 'app.petchain.mobile';
+const iosBundleId = process.env.IOS_BUNDLE_ID || 'app.catchain.mobile';
 const appleTeamId = process.env.APPLE_TEAM_ID || 'TEAMID';
-const androidPackageName = process.env.ANDROID_PACKAGE_NAME || 'app.petchain.mobile';
+const androidPackageName = process.env.ANDROID_PACKAGE_NAME || 'app.catchain.mobile';
 
 router.get('/.well-known/apple-app-site-association', (_req, res) => {
   res.type('application/json').json({
@@ -40,12 +40,12 @@ router.get(['/pets/:petId', '/appointments/:id', '/sos/:id'], (req, res) => {
     <!DOCTYPE html>
     <html>
     <head>
-      <title>PetChain</title>
-      <meta http-equiv="refresh" content="2;url=https://petchain.app/download">
+      <title>CatChain</title>
+      <meta http-equiv="refresh" content="2;url=https://catchain.app/download">
     </head>
     <body>
-      <p>Opening PetChain... <a href="petchain:/${deepLink}">Open App</a></p>
-      <p>Don't have PetChain? <a href="https://petchain.app/download">Download it</a></p>
+      <p>Opening CatChain... <a href="catchain:/${deepLink}">Open App</a></p>
+      <p>Don't have CatChain? <a href="https://catchain.app/download">Download it</a></p>
     </body>
     </html>
   `);

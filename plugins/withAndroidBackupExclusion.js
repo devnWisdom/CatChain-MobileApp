@@ -12,7 +12,7 @@
  *
  * 2. Injects android:fullBackupContent="@xml/backup_rules" for API 23 – 30.
  *    References android-config/backup_rules.xml which explicitly excludes
- *    databases/petchain.db, SharedPreferences, and the file-system documents.
+ *    databases/catchain.db, SharedPreferences, and the file-system documents.
  *
  * 3. Injects android:dataExtractionRules="@xml/data_extraction_rules" for API 31+.
  *    References android-config/data_extraction_rules.xml which applies the same
@@ -29,7 +29,7 @@
  * ─────────────
  * expo-secure-store writes to the Android Keystore which is never included in
  * any backup transport. This plugin handles the remaining local storage surfaces:
- * SQLite (petchain.db via expo-sqlite) and AsyncStorage (RNCAsyncStorage in
+ * SQLite (catchain.db via expo-sqlite) and AsyncStorage (RNCAsyncStorage in
  * SharedPreferences). Even though both are AES-256 encrypted, the ciphertext is
  * excluded from backup because the encryption key lives in the Keystore and would
  * not survive a cross-device restore.

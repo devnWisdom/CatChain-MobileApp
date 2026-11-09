@@ -14,7 +14,7 @@ import { AppointmentStatus, AppointmentType, type Appointment } from '../../mode
 import {
   DEFAULT_CALENDAR_EXPORT_PREFERENCES,
   GENERIC_EVENT_TITLE,
-  PETCHAIN_CALENDAR_TITLE,
+  CATCHAIN_CALENDAR_TITLE,
   appointmentRevision,
   buildEventDetails,
   exportAppointments,
@@ -113,7 +113,7 @@ function createdEvents(): { calendarId: string; details: Record<string, unknown>
 }
 
 describe('#1186 export — main flow', () => {
-  it('writes one event per selected appointment into the PetChain calendar', async () => {
+  it('writes one event per selected appointment into the CatChain calendar', async () => {
     const result = await exportAppointments([
       makeAppointment(),
       makeAppointment({ id: 'appt-2', title: 'Dental cleaning' }),
@@ -126,17 +126,17 @@ describe('#1186 export — main flow', () => {
     await expect(getSyncedAppointments()).resolves.toHaveLength(2);
   });
 
-  it('creates the dedicated PetChain calendar when the device has none', async () => {
+  it('creates the dedicated CatChain calendar when the device has none', async () => {
     await exportAppointments([makeAppointment()]);
 
     expect(Calendar.createCalendarAsync).toHaveBeenCalledWith(
-      expect.objectContaining({ title: PETCHAIN_CALENDAR_TITLE }),
+      expect.objectContaining({ title: CATCHAIN_CALENDAR_TITLE }),
     );
   });
 
-  it('reuses an existing PetChain calendar instead of creating a second one', async () => {
+  it('reuses an existing CatChain calendar instead of creating a second one', async () => {
     Calendar.getCalendarsAsync.mockResolvedValue([
-      { id: 'cal-existing', title: PETCHAIN_CALENDAR_TITLE },
+      { id: 'cal-existing', title: CATCHAIN_CALENDAR_TITLE },
     ]);
 
     await exportAppointments([makeAppointment()]);

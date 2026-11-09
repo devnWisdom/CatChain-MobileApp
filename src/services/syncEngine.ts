@@ -387,7 +387,7 @@ export class SyncEngine {
    */
   async listRetryRecords(): Promise<SyncRetryRecord[]> {
     await this.initialize();
-    const conn = ExpoSQLite.openDatabaseSync('petchain.db');
+    const conn = ExpoSQLite.openDatabaseSync('catchain.db');
     const rows = (await conn.getAllAsync(
       `SELECT id, entity_type, entity_id, action, updated_at, sync_version, attempts, last_error
        FROM dirty_records
@@ -405,7 +405,7 @@ export class SyncEngine {
   /** Reads one record's retry metadata, never its payload. */
   async getRetryRecord(id: string): Promise<SyncRetryRecord | null> {
     await this.initialize();
-    const conn = ExpoSQLite.openDatabaseSync('petchain.db');
+    const conn = ExpoSQLite.openDatabaseSync('catchain.db');
     const row = (await conn.getFirstAsync(
       `SELECT id, entity_type, entity_id, action, updated_at, sync_version, attempts, last_error
        FROM dirty_records WHERE id = ? LIMIT 1`,
@@ -484,7 +484,7 @@ export class SyncEngine {
   }
 
   private async getDirtyRecord(id: string): Promise<DirtyRecord | null> {
-    const conn = ExpoSQLite.openDatabaseSync('petchain.db');
+    const conn = ExpoSQLite.openDatabaseSync('catchain.db');
     const row = (await conn.getFirstAsync(`SELECT * FROM dirty_records WHERE id = ? LIMIT 1`, [
       id,
     ])) as DirtyRecordRow | null;
@@ -494,7 +494,7 @@ export class SyncEngine {
   }
 
   private async getBatch(): Promise<DirtyRecord[]> {
-    const conn = ExpoSQLite.openDatabaseSync('petchain.db');
+    const conn = ExpoSQLite.openDatabaseSync('catchain.db');
     const rows = (await conn.getAllAsync(
       `SELECT * FROM dirty_records WHERE attempts < ? ORDER BY updated_at ASC LIMIT ?`,
       [this.options.maxRetries, this.options.batchSize],

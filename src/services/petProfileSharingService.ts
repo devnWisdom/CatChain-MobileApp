@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Share } from 'react-native';
 
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'https://api.petchain.com';
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'https://api.catchain.com';
 
 export class PetSharingError extends Error {
   constructor(
@@ -72,8 +72,8 @@ export const generatePetQRCode = async (petId: string): Promise<PetQRCode> => {
  */
 export const nativeSharePetProfile = async (url: string, petName: string): Promise<void> => {
   await Share.share({
-    message: `Check out ${petName}'s profile on PetChain!\n${url}`,
+    message: `Check out ${petName}'s profile on CatChain!\n${url}`,
     url,
-    title: `${petName}'s PetChain Profile`,
+    title: `${petName}'s CatChain Profile`,
   });
 };

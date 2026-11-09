@@ -66,7 +66,7 @@ export class MedicalRecordError extends Error {
   }
 }
 
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'https://api.petchain.com';
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'https://api.catchain.com';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Error handler

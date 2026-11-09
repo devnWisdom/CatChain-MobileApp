@@ -23,7 +23,7 @@ interface CachedFederationEntry {
 }
 
 /**
- * Resolves a Stellar federation address (e.g. user*petchain.app) to a public key.
+ * Resolves a Stellar federation address (e.g. user*catchain.app) to a public key.
  * Results are cached: positive for 15 min (or less per Cache-Control), negative for 2 min.
  */
 export async function resolveFederationAddress(
@@ -89,7 +89,7 @@ export async function resolveFederationAddressWithCacheControl(
 
 export interface VetFederationRecord {
   vetId: string;
-  federatedAddress: string; // e.g. dr.smith*petchain.app
+  federatedAddress: string; // e.g. dr.smith*catchain.app
   stellarPublicKey: string;
   stellarSecretKey: string; // stored encrypted in prod; plaintext here for demo
   credentialHash: string; // SHA-256 of credential document
@@ -113,7 +113,7 @@ const signedRecords = new Map<string, SignedRecord>(); // key: recordId
 
 export function lookupFederation(q: string, type: string): VetFederationRecord | null {
   if (type !== 'name') return null;
-  // q is the full federated address e.g. dr.smith*petchain.app
+  // q is the full federated address e.g. dr.smith*catchain.app
   const record = federationRecords.get(q);
   if (!record || record.revokedAt) return null;
   return record;
@@ -124,7 +124,7 @@ export function claimFederatedAddress(
   username: string, // e.g. "dr.smith"
   credentialHash: string,
 ): VetFederationRecord {
-  const domain = 'petchain.app';
+  const domain = 'catchain.app';
   const federatedAddress = `${username}*${domain}`;
 
   if (federationRecords.has(federatedAddress)) {

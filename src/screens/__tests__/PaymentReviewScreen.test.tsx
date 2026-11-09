@@ -223,7 +223,7 @@ describe('PaymentReviewScreen UI', () => {
       expect(getByText('Payee')).toBeTruthy();
     });
     expect(getByText('Recipient')).toBeTruthy();
-    expect(getByText('PetChain Premium')).toBeTruthy();
+    expect(getByText('CatChain Premium')).toBeTruthy();
     expect(getByText('Payment Method')).toBeTruthy();
     expect(getByText('Stellar (USDC)')).toBeTruthy();
   });

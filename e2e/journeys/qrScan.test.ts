@@ -52,7 +52,7 @@ describe('Journey — QR Scan', () => {
     detoxExpect(denied).toBe(true);
   });
 
-  it('malformed input — a non-PetChain payload is rejected without crashing', async () => {
+  it('malformed input — a non-CatChain payload is rejected without crashing', async () => {
     await launchLoggedIn({ detoxQrPayload: SYNTHETIC.malformedQrPayload });
     if (!(await tapIfVisible('qr-scan-tab')) && !(await tapIfVisible('scan-qr-button'))) return;
     await tapIfVisible('qr-simulate-scan-button');
@@ -65,7 +65,7 @@ describe('Journey — QR Scan', () => {
   });
 
   it('failure path — unknown code returns a not-found message', async () => {
-    await launchLoggedIn({ detoxQrPayload: 'petchain://pet/unknown' });
+    await launchLoggedIn({ detoxQrPayload: 'catchain://pet/unknown' });
     if (!(await tapIfVisible('qr-scan-tab')) && !(await tapIfVisible('scan-qr-button'))) return;
     await tapIfVisible('qr-simulate-scan-button');
 

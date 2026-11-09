@@ -26,7 +26,7 @@ async function main() {
   console.log('[validate] Waiting for Postgres...');
   await waitForPostgres(DATABASE_URL, 30);
 
-  const testDbName = `petchain_migration_check_${Date.now()}`;
+  const testDbName = `catchain_migration_check_${Date.now()}`;
   console.log(`[validate] Creating temporary DB ${testDbName}`);
 
   await baseClient.connect();

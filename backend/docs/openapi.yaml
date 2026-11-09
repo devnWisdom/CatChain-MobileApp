@@ -1,9 +1,9 @@
 openapi: 3.1.0
 info:
-  title: PetChain API
+  title: CatChain API
   version: 2.0.0
   description: |
-    PetChain REST API.
+    CatChain REST API.
 
     **v1** (`/api/v1`) is deprecated and will be removed on 2026-12-01.
     Migrate to **v2** (`/api/v2`) — see [migration guide](./migration-v1-to-v2.md).

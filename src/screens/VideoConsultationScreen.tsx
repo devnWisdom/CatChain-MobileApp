@@ -267,7 +267,7 @@ const VideoConsultationScreen: React.FC<Props> = ({
       void submitConsent('microphone', 'denied');
       Alert.alert(
         'Camera / Microphone',
-        'PetChain needs camera and microphone access for this consultation. ' +
+        'CatChain needs camera and microphone access for this consultation. ' +
           'You can grant them in Settings and rejoin.',
       );
       return null;

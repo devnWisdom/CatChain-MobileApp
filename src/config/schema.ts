@@ -45,7 +45,7 @@ function isValidUrl(url: unknown, env: string): ValidationResult {
     // Production must use HTTPS, never HTTP or localhost
     if (env === 'production') {
       if (parsed.protocol !== 'https:') {
-        return invalid('Production API URL must use HTTPS (e.g. https://api.petchain.app/api).');
+        return invalid('Production API URL must use HTTPS (e.g. https://api.catchain.app/api).');
       }
       if (parsed.hostname === 'localhost' || parsed.hostname === '127.0.0.1') {
         return invalid('Production builds cannot point to localhost. Use a real HTTPS endpoint.');

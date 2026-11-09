@@ -1,6 +1,6 @@
 # Mobile App Architecture
 
-This document gives a high-level overview of the PetChain mobile app's architecture for contributors: data flow, service layer responsibilities, offline strategy, and state management.
+This document gives a high-level overview of the CatChain mobile app's architecture for contributors: data flow, service layer responsibilities, offline strategy, and state management.
 
 ## High-Level Layers
 

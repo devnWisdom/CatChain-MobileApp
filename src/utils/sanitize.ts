@@ -1,7 +1,7 @@
 /**
  * sanitize.ts
  *
- * Client-side input sanitization utilities for PetChain Mobile App.
+ * Client-side input sanitization utilities for CatChain Mobile App.
  *
  * These functions strip or neutralise characters that could be dangerous
  * when interpolated into queries, HTML, or system commands.  They should

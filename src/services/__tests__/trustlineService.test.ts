@@ -8,7 +8,7 @@
  * - addTrustline rejects invalid secret key
  * - removeTrustline rejects non-zero balance
  * - loadTrustlineState throws TrustlineError on missing account
- * - PETCHAIN_ASSETS registry is non-empty and well-formed
+ * - CATCHAIN_ASSETS registry is non-empty and well-formed
  */
 
 import * as StellarSdk from '@stellar/stellar-sdk';
@@ -20,7 +20,7 @@ import {
   addTrustline,
   removeTrustline,
   loadTrustlineState,
-  PETCHAIN_ASSETS,
+  CATCHAIN_ASSETS,
   XLM_RESERVE_PER_TRUSTLINE,
   TrustlineError,
 } from '../trustlineService';
@@ -62,15 +62,15 @@ describe('isValidSecretKey', () => {
   });
 });
 
-// ─── PETCHAIN_ASSETS registry ─────────────────────────────────────────────────
+// ─── CATCHAIN_ASSETS registry ─────────────────────────────────────────────────
 
-describe('PETCHAIN_ASSETS', () => {
+describe('CATCHAIN_ASSETS', () => {
   it('contains at least one asset', () => {
-    expect(PETCHAIN_ASSETS.length).toBeGreaterThan(0);
+    expect(CATCHAIN_ASSETS.length).toBeGreaterThan(0);
   });
 
   it('each asset has required fields', () => {
-    for (const asset of PETCHAIN_ASSETS) {
+    for (const asset of CATCHAIN_ASSETS) {
       expect(asset.assetCode).toBeTruthy();
       expect(asset.issuerPublicKey).toBeTruthy();
       expect(asset.name).toBeTruthy();
@@ -79,7 +79,7 @@ describe('PETCHAIN_ASSETS', () => {
   });
 
   it('asset codes are uppercase', () => {
-    for (const asset of PETCHAIN_ASSETS) {
+    for (const asset of CATCHAIN_ASSETS) {
       expect(asset.assetCode).toBe(asset.assetCode.toUpperCase());
     }
   });

@@ -4,7 +4,7 @@ import { runner } from 'node-pg-migrate';
 import { Pool, type QueryConfig, type QueryResult } from 'pg';
 
 const DATABASE_URL =
-  process.env.DATABASE_URL || 'postgresql://postgres:postgres@localhost:5432/petchain';
+  process.env.DATABASE_URL || 'postgresql://postgres:postgres@localhost:5432/catchain';
 
 // ── Connection pool ────────────────────────────────────────────────────────────
 export const pool = new Pool({

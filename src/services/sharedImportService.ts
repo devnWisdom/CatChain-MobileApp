@@ -6,7 +6,7 @@ import {
 } from '../utils/medicalFileValidation';
 
 /**
- * Import of documents shared into PetChain from other apps (share extension).
+ * Import of documents shared into CatChain from other apps (share extension).
  *
  * Shared files are untrusted. Every file is quarantined on arrival, validated
  * before it can be used, and kept in memory only. Nothing is imported until the

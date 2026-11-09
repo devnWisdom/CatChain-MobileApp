@@ -11,11 +11,11 @@ jest.mock('../../config', () => ({
   __esModule: true,
   default: {
     api: {
-      baseUrl: 'https://api.petchain.app/api',
+      baseUrl: 'https://api.catchain.app/api',
       timeoutMs: 10000,
     },
     app: {
-      name: 'PetChain',
+      name: 'CatChain',
       version: '1.2.3',
     },
     monitoring: {

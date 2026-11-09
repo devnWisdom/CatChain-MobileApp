@@ -487,7 +487,7 @@ export async function getStoredTokens(): Promise<StoredSession | null> {
 
 export async function authenticateWithBiometric(): Promise<boolean> {
   try {
-    return await authenticateWithBiometricGate('Authenticate to access PetChain');
+    return await authenticateWithBiometricGate('Authenticate to access CatChain');
   } catch {
     return false;
   }
@@ -576,7 +576,7 @@ export async function authenticateWithPin(): Promise<boolean> {
   return false; // Placeholder — actual PIN prompting is handled in the UI
 }
 
-const PIN_HASH_KEY = 'com.petchain.auth.pin.hash';
+const PIN_HASH_KEY = 'com.catchain.auth.pin.hash';
 let pinFailures = 0;
 let biometricFailures = 0;
 let lastForegroundAt = Date.now();
@@ -623,7 +623,7 @@ export async function authenticateOnForeground(
 
 // ─── Biometric fallback (Issue #404) ─────────────────────────────────────────
 
-const FALLBACK_PREF_KEY = 'com.petchain.auth.biometric.fallback.pref';
+const FALLBACK_PREF_KEY = 'com.catchain.auth.biometric.fallback.pref';
 const MAX_BIOMETRIC_ATTEMPTS = 3;
 
 export type BiometricFallbackReason = 'unavailable' | 'max_attempts_reached' | 'user_preference';

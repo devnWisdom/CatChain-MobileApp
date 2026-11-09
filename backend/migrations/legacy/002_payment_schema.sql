@@ -1,4 +1,4 @@
--- Payment & Subscription Schema for PetChain
+-- Payment & Subscription Schema for CatChain
 -- FUTURE FEATURE: Architecture in place, not connected to a live provider yet.
 
 -- Payments table

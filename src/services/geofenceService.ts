@@ -200,7 +200,7 @@ async function _fireFoundNotification(
       body: `A "found pet" report near your lost ${alert.petName} was filed: "${foundTitle}". Tap to view.`,
       data: {
         type: 'lost_found_match',
-        deepLink: `petchain://lost-found/${encodeURIComponent(foundReportId)}`,
+        deepLink: `catchain://lost-found/${encodeURIComponent(foundReportId)}`,
         lostReportId: alert.reportId,
         foundReportId,
       },
@@ -222,7 +222,7 @@ async function _fireExpiryNotification(alert: GeofenceAlert): Promise<void> {
       body: `Your geofence alert for ${alert.petName} has expired after 30 days. Tap to renew.`,
       data: {
         type: 'geofence_expired',
-        deepLink: `petchain://lost-found/renew/${encodeURIComponent(alert.reportId)}`,
+        deepLink: `catchain://lost-found/renew/${encodeURIComponent(alert.reportId)}`,
         reportId: alert.reportId,
       },
       categoryIdentifier: 'alert',

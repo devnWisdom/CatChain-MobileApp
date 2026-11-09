@@ -55,10 +55,10 @@ describe('correlationStore / runWithContext', () => {
 
   it('supports arbitrary extra fields on the context', () => {
     runWithContext(
-      { correlationId: 'cid', service: 'petchain-api', requestPath: '/api/pets' },
+      { correlationId: 'cid', service: 'catchain-api', requestPath: '/api/pets' },
       () => {
         const ctx = correlationStore.getStore();
-        expect(ctx?.service).toBe('petchain-api');
+        expect(ctx?.service).toBe('catchain-api');
         expect(ctx?.requestPath).toBe('/api/pets');
       },
     );

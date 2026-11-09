@@ -1,6 +1,6 @@
 # Accessibility guidelines
 
-Shared building blocks that keep PetChain usable with screen readers, reduced
+Shared building blocks that keep CatChain usable with screen readers, reduced
 motion, and non-colour perception. All are unit-testable pure modules plus thin
 React wrappers.
 

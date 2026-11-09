@@ -1,5 +1,5 @@
 /**
- * PetChain API — OpenAPI 3.0 Specification
+ * CatChain API — OpenAPI 3.0 Specification
  *
  * This file assembles the complete OpenAPI spec from modular path and schema
  * definitions. It is the single source of truth for the API contract.
@@ -31,12 +31,12 @@ export const openApiSpec = {
   // ─── Info ──────────────────────────────────────────────────────────────────
 
   info: {
-    title: 'PetChain API',
+    title: 'CatChain API',
     version: '1.0.0',
     description: `
 ## Overview
 
-The PetChain API powers the PetChain mobile app — a blockchain-backed pet health management platform.
+The CatChain API powers the CatChain mobile app — a blockchain-backed pet health management platform.
 
 ### Key capabilities
 - **Pet management** — register pets, upload photos, look up by QR code
@@ -78,9 +78,9 @@ All errors follow a consistent shape:
 \`\`\`
     `.trim(),
     contact: {
-      name: 'PetChain Engineering',
-      email: 'engineering@petchain.app',
-      url: 'https://petchain.app',
+      name: 'CatChain Engineering',
+      email: 'engineering@catchain.app',
+      url: 'https://catchain.app',
     },
     license: {
       name: 'MIT',
@@ -96,11 +96,11 @@ All errors follow a consistent shape:
       description: 'Local development server',
     },
     {
-      url: 'https://staging.petchain.app/api',
+      url: 'https://staging.catchain.app/api',
       description: 'Staging environment',
     },
     {
-      url: 'https://api.petchain.app/api',
+      url: 'https://api.catchain.app/api',
       description: 'Production environment',
     },
   ],
@@ -177,7 +177,7 @@ Tokens expire after 7 days. Use \`POST /auth/refresh\` to obtain a new token.
         in: 'header',
         name: 'X-API-Key',
         description:
-          'API key for server-to-server integrations. Contact engineering@petchain.app to obtain a key.',
+          'API key for server-to-server integrations. Contact engineering@catchain.app to obtain a key.',
       },
     },
 

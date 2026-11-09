@@ -90,8 +90,8 @@ const TEST_KEY_VERSION = 1;
 
 function setupKey() {
   mockSecureStore.getItemAsync.mockImplementation(async (key: string) => {
-    if (key === 'com.petchain.docvault.keyVersion') return String(TEST_KEY_VERSION);
-    if (key === `com.petchain.docvault.key.${TEST_KEY_VERSION}`) return TEST_KEY;
+    if (key === 'com.catchain.docvault.keyVersion') return String(TEST_KEY_VERSION);
+    if (key === `com.catchain.docvault.key.${TEST_KEY_VERSION}`) return TEST_KEY;
     return null;
   });
 }
@@ -121,11 +121,11 @@ describe('provisionDocumentKey', () => {
   it('derives and stores a key', async () => {
     await provisionDocumentKey('my-secret', 1);
     expect(mockSecureStore.setItemAsync).toHaveBeenCalledWith(
-      'com.petchain.docvault.key.1',
+      'com.catchain.docvault.key.1',
       expect.any(String),
     );
     expect(mockSecureStore.setItemAsync).toHaveBeenCalledWith(
-      'com.petchain.docvault.keyVersion',
+      'com.catchain.docvault.keyVersion',
       '1',
     );
   });
@@ -133,7 +133,7 @@ describe('provisionDocumentKey', () => {
   it('produces different keys for different secrets', async () => {
     const calls: string[] = [];
     mockSecureStore.setItemAsync.mockImplementation(async (k, v) => {
-      if (k === 'com.petchain.docvault.key.1') calls.push(v as string);
+      if (k === 'com.catchain.docvault.key.1') calls.push(v as string);
     });
     await provisionDocumentKey('secret-a', 1);
     await provisionDocumentKey('secret-b', 1);

@@ -8,7 +8,7 @@ const app = createApp();
 
 const makeUser = (overrides = {}) => ({
   id: 'user-2fa',
-  email: 'user@petchain.app',
+  email: 'user@catchain.app',
   name: 'Test User',
   role: UserRole.OWNER,
   pets: [],
@@ -231,7 +231,7 @@ describe('POST /api/auth/2fa/recovery/request', () => {
     store.users.set('user-2fa', makeUser({ twoFactorEnabled: true, twoFactorSecret: 'S' }));
     const res = await request(app)
       .post('/api/auth/2fa/recovery/request')
-      .send({ email: 'user@petchain.app' });
+      .send({ email: 'user@catchain.app' });
     expect(res.status).toBe(200);
     expect(res.body.data.recoveryToken).toBeTruthy();
     expect(store.users.get('user-2fa')?.recoveryToken).toBeTruthy();
@@ -242,7 +242,7 @@ describe('POST /api/auth/2fa/recovery/verify', () => {
   it('returns 400 for missing fields', async () => {
     const res = await request(app)
       .post('/api/auth/2fa/recovery/verify')
-      .send({ email: 'user@petchain.app' });
+      .send({ email: 'user@catchain.app' });
     expect(res.status).toBe(400);
     expect(res.body.error.code).toBe('VALIDATION_ERROR');
   });
@@ -250,7 +250,7 @@ describe('POST /api/auth/2fa/recovery/verify', () => {
   it('returns 400 for invalid token', async () => {
     const res = await request(app)
       .post('/api/auth/2fa/recovery/verify')
-      .send({ email: 'user@petchain.app', token: 'badtoken' });
+      .send({ email: 'user@catchain.app', token: 'badtoken' });
     expect(res.status).toBe(400);
     expect(res.body.error.code).toBe('INVALID_TOKEN');
   });
@@ -260,12 +260,12 @@ describe('POST /api/auth/2fa/recovery/verify', () => {
     store.users.set('user-2fa', makeUser({ twoFactorEnabled: true, twoFactorSecret: 'S' }));
     const reqRes = await request(app)
       .post('/api/auth/2fa/recovery/request')
-      .send({ email: 'user@petchain.app' });
+      .send({ email: 'user@catchain.app' });
     const { recoveryToken } = reqRes.body.data;
 
     const verifyRes = await request(app)
       .post('/api/auth/2fa/recovery/verify')
-      .send({ email: 'user@petchain.app', token: recoveryToken });
+      .send({ email: 'user@catchain.app', token: recoveryToken });
     expect(verifyRes.status).toBe(200);
     expect(store.users.get('user-2fa')?.twoFactorEnabled).toBe(false);
     expect(store.users.get('user-2fa')?.twoFactorSecret).toBeUndefined();

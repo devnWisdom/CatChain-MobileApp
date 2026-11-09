@@ -106,7 +106,7 @@ export async function invalidate(...keys: string[]): Promise<void> {
 }
 
 /**
- * Deletes all keys matching a glob pattern (e.g. `petchain:cache:owner:*`).
+ * Deletes all keys matching a glob pattern (e.g. `catchain:cache:owner:*`).
  * Uses SCAN to avoid blocking the Redis event loop.
  */
 export async function invalidatePattern(pattern: string): Promise<void> {

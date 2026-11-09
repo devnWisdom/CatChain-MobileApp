@@ -85,7 +85,7 @@ export class BlockchainIntegrationService extends EventEmitter {
   /**
    * Initialize the integration service
    */
-  async initialize(petChainAccounts: string[]): Promise<void> {
+  async initialize(catChainAccounts: string[]): Promise<void> {
     if (this.isInitialized) {
       loggerService.debug('Blockchain integration already initialized');
       return;
@@ -93,7 +93,7 @@ export class BlockchainIntegrationService extends EventEmitter {
 
     try {
       loggerService.info('Initializing blockchain integration', {
-        accounts: petChainAccounts,
+        accounts: catChainAccounts,
         config: this.config,
       });
 
@@ -102,7 +102,7 @@ export class BlockchainIntegrationService extends EventEmitter {
 
       // Connect to blockchain events if auto-connect is enabled
       if (this.config.autoConnect) {
-        await blockchainEventService.connect(petChainAccounts);
+        await blockchainEventService.connect(catChainAccounts);
       }
 
       // Start verification polling
@@ -111,7 +111,7 @@ export class BlockchainIntegrationService extends EventEmitter {
       this.isInitialized = true;
 
       loggerService.info('Blockchain integration initialized successfully');
-      this.emit('initialized', { accounts: petChainAccounts });
+      this.emit('initialized', { accounts: catChainAccounts });
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Initialization failed';
       loggerService.error('Failed to initialize blockchain integration', { error: errorMessage });
@@ -467,7 +467,7 @@ export class BlockchainIntegrationService extends EventEmitter {
 // contract suite and must be updated in lockstep.
 
 /** Domain-separation tag mixed into every commitment pre-image. */
-export const MEDICAL_COMMITMENT_DOMAIN = 'petchain.medical.commitment';
+export const MEDICAL_COMMITMENT_DOMAIN = 'catchain.medical.commitment';
 
 /** Schema version of the commitment pre-image. */
 export const MEDICAL_COMMITMENT_VERSION = 1;

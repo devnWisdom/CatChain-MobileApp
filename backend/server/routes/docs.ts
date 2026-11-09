@@ -10,7 +10,7 @@ const router = express.Router();
 const openApiSpec = require(path.join(__dirname, '../../docs/openapi.json'));
 
 const swaggerOptions: swaggerUi.SwaggerUiOptions = {
-  customSiteTitle: 'PetChain API Docs',
+  customSiteTitle: 'CatChain API Docs',
   customCss: '.swagger-ui .topbar { background-color: #1a1a2e; }',
   swaggerOptions: {
     persistAuthorization: true,

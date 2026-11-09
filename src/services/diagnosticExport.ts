@@ -334,7 +334,7 @@ export function assertBundleUsable(
 }
 
 export function bundleFileName(bundleId: string): string {
-  return `petchain-diagnostics-${bundleId}.json`;
+  return `catchain-diagnostics-${bundleId}.json`;
 }
 
 export function bundleUri(bundleId: string): string {

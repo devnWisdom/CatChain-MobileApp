@@ -5,7 +5,7 @@ export enum VerificationStatus {
 }
 
 /**
- * Stellar blockchain transaction record linked to a PetChain record.
+ * Stellar blockchain transaction record linked to a CatChain record.
  */
 export interface BlockchainRecord {
   txHash: string;

@@ -19,8 +19,8 @@ const APP_ENV = env('APP_ENV', 'development') as Environment;
 
 const API_URLS: Record<Environment, string> = {
   development: env('API_BASE_URL', 'http://localhost:3000/api'),
-  staging: env('STAGING_API_URL', 'https://staging.petchain.app/api'),
-  production: env('PROD_API_URL', 'https://api.petchain.app/api'),
+  staging: env('STAGING_API_URL', 'https://staging.catchain.app/api'),
+  production: env('PROD_API_URL', 'https://api.catchain.app/api'),
 };
 
 const API_TIMEOUT_MS = Number(env('API_TIMEOUT', '10000'));
@@ -71,7 +71,7 @@ const config = {
   },
 
   app: {
-    name: env('APP_NAME', 'PetChain'),
+    name: env('APP_NAME', 'CatChain'),
     version: (Constants.expoConfig?.version as string | undefined) ?? env('APP_VERSION', '1.0.0'),
   },
 

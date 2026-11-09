@@ -51,7 +51,7 @@ export const extractVersion = (payload: Record<string, unknown>): number => {
  * Builds the deep-link URI for a pet.
  */
 export const buildPetDeepLink = (petId: string): string =>
-  `petchain://pet/${encodeURIComponent(petId)}`;
+  `catchain://pet/${encodeURIComponent(petId)}`;
 
 /**
  * Safely base64-encodes a JSON-serialisable object.

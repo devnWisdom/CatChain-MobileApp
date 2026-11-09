@@ -1,5 +1,5 @@
 /**
- * Expo Plugin for PetChain Widgets
+ * Expo Plugin for CatChain Widgets
  *
  * Integrates iOS WidgetKit and Android App Widget support
  * - iOS: Creates app groups for shared data
@@ -48,7 +48,7 @@ const withIosWidgetSources = (config) =>
 const iosWidgetTargetConfig = async (config, options) =>
   withXcodeProject(config, (config) => {
     const project = config.modResults;
-    const targetName = options.widgetTargetName || 'PetChainWidget';
+    const targetName = options.widgetTargetName || 'CatChainWidget';
     const nativeTargets = project.pbxNativeTargetSection();
     const existingTarget = Object.entries(nativeTargets).find(
       ([, target]) =>
@@ -62,7 +62,7 @@ const iosWidgetTargetConfig = async (config, options) =>
       targetName,
       'app_extension',
       targetName,
-      `${config.ios.bundleIdentifier || 'app.petchain.mobile'}.widget`,
+      `${config.ios.bundleIdentifier || 'app.catchain.mobile'}.widget`,
     );
     const targetUuid = target.uuid;
     project.addBuildPhase([], 'PBXSourcesBuildPhase', 'Sources', targetUuid);
@@ -78,7 +78,7 @@ const iosWidgetTargetConfig = async (config, options) =>
         buildConfiguration.isa !== 'XCBuildConfiguration' ||
         !buildConfiguration.buildSettings ||
         buildConfiguration.buildSettings.PRODUCT_BUNDLE_IDENTIFIER !==
-          `"${config.ios.bundleIdentifier || 'app.petchain.mobile'}.widget"`
+          `"${config.ios.bundleIdentifier || 'app.catchain.mobile'}.widget"`
       ) {
         return;
       }
@@ -98,17 +98,17 @@ const iosWidgetTargetConfig = async (config, options) =>
 const iosWidgetSourcesConfig = async (config) => {
   const projectRoot = config.modRequest.projectRoot;
   const iosRoot = config.modRequest.platformProjectRoot;
-  const widgetName = config.ios?.widgetTargetName || 'PetChainWidget';
+  const widgetName = config.ios?.widgetTargetName || 'CatChainWidget';
   const targetRoot = path.join(iosRoot, widgetName);
-  const appGroup = config.ios?.appGroup || 'group.app.petchain.mobile';
+  const appGroup = config.ios?.appGroup || 'group.app.catchain.mobile';
   fs.mkdirSync(targetRoot, { recursive: true });
   fs.copyFileSync(
-    path.join(projectRoot, 'ios-widget/PetChainWidget.swift'),
+    path.join(projectRoot, 'ios-widget/CatChainWidget.swift'),
     path.join(targetRoot, `${widgetName}.swift`),
   );
   fs.writeFileSync(
     path.join(targetRoot, `${widgetName}-Info.plist`),
-    `<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">\n<plist version="1.0"><dict><key>CFBundleDisplayName</key><string>PetChain Care Agenda</string><key>CFBundleIdentifier</key><string>$(PRODUCT_BUNDLE_IDENTIFIER)</string><key>CFBundlePackageType</key><string>XPC!</string><key>NSExtension</key><dict><key>NSExtensionPointIdentifier</key><string>com.apple.widgetkit-extension</string></dict></dict></plist>\n`,
+    `<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">\n<plist version="1.0"><dict><key>CFBundleDisplayName</key><string>CatChain Care Agenda</string><key>CFBundleIdentifier</key><string>$(PRODUCT_BUNDLE_IDENTIFIER)</string><key>CFBundlePackageType</key><string>XPC!</string><key>NSExtension</key><dict><key>NSExtensionPointIdentifier</key><string>com.apple.widgetkit-extension</string></dict></dict></plist>\n`,
   );
   fs.writeFileSync(
     path.join(targetRoot, `${widgetName}.entitlements`),
@@ -120,7 +120,7 @@ const iosWidgetSourcesConfig = async (config) => {
 // ─── iOS Configuration ─────────────────────────────────────────────────────
 
 const iosEntitlementsConfig = async (config, options) => {
-  const appGroup = options.appGroup || 'group.app.petchain.mobile';
+  const appGroup = options.appGroup || 'group.app.catchain.mobile';
 
   return withEntitlementsPlist(config, (config) => {
     if (!config.modResults['com.apple.security.application-groups']) {
@@ -150,7 +150,7 @@ const iosInfoPlistConfig = async (config, options) => {
 // ─── Android Configuration ─────────────────────────────────────────────────
 
 const androidManifestConfig = async (config, options) => {
-  const widgetName = options.widgetName || 'PetChainWidget';
+  const widgetName = options.widgetName || 'CatChainWidget';
 
   return withAndroidManifest(config, (config) => {
     const manifest = config.modResults;
@@ -163,8 +163,8 @@ const androidManifestConfig = async (config, options) => {
     // Add widget provider receiver
     const receiver = {
       $: {
-        'android:name': `app.petchain.mobile.widget.${widgetName}Provider`,
-        'android:label': 'PetChain Widget',
+        'android:name': `app.catchain.mobile.widget.${widgetName}Provider`,
+        'android:label': 'CatChain Widget',
         'android:exported': 'true',
       },
       'intent-filter': [
@@ -173,7 +173,7 @@ const androidManifestConfig = async (config, options) => {
             {
               $: { 'android:name': 'android.appwidget.action.APPWIDGET_UPDATE' },
             },
-            { $: { 'android:name': 'app.petchain.mobile.UPDATE_WIDGET' } },
+            { $: { 'android:name': 'app.catchain.mobile.UPDATE_WIDGET' } },
             { $: { 'android:name': 'android.intent.action.SCREEN_OFF' } },
             { $: { 'android:name': 'android.intent.action.USER_PRESENT' } },
           ],
@@ -201,15 +201,15 @@ const withAndroidWidgetSources = (config) =>
     async (config) => {
       const projectRoot = config.modRequest.projectRoot;
       const androidRoot = config.modRequest.platformProjectRoot;
-      const javaTarget = path.join(androidRoot, 'app/src/main/java/app/petchain/mobile/widget');
+      const javaTarget = path.join(androidRoot, 'app/src/main/java/app/catchain/mobile/widget');
       const xmlTarget = path.join(androidRoot, 'app/src/main/res/xml');
       fs.mkdirSync(javaTarget, { recursive: true });
       fs.mkdirSync(xmlTarget, { recursive: true });
 
       for (const source of [
-        'PetChainWidgetModule.java',
-        'PetChainWidgetProvider.java',
-        'PetChainWidgetPackage.java',
+        'CatChainWidgetModule.java',
+        'CatChainWidgetProvider.java',
+        'CatChainWidgetPackage.java',
       ]) {
         fs.copyFileSync(
           path.join(projectRoot, 'android-widget', source),
@@ -228,7 +228,7 @@ const withAndroidWidgetPackage = (config) =>
   withMainApplication(config, (config) => {
     const { language } = config.modResults;
     let { contents } = config.modResults;
-    const importLine = 'import app.petchain.mobile.widget.PetChainWidgetPackage';
+    const importLine = 'import app.catchain.mobile.widget.CatChainWidgetPackage';
 
     if (!contents.includes(importLine)) {
       contents = contents.replace(/^(package [^\n]+\n)/, `$1\n${importLine}\n`);
@@ -236,18 +236,18 @@ const withAndroidWidgetPackage = (config) =>
 
     if (language === 'kt') {
       const packageList = 'PackageList(this).packages.apply {';
-      if (contents.includes(packageList) && !contents.includes('add(PetChainWidgetPackage())')) {
+      if (contents.includes(packageList) && !contents.includes('add(CatChainWidgetPackage())')) {
         contents = contents.replace(
           packageList,
-          `${packageList}\n        add(PetChainWidgetPackage())`,
+          `${packageList}\n        add(CatChainWidgetPackage())`,
         );
       }
     } else {
       const packageList = 'List<ReactPackage> packages = new PackageList(this).getPackages();';
-      if (contents.includes(packageList) && !contents.includes('packages.add(new PetChainWidgetPackage())')) {
+      if (contents.includes(packageList) && !contents.includes('packages.add(new CatChainWidgetPackage())')) {
         contents = contents.replace(
           packageList,
-          `${packageList}\n        packages.add(new PetChainWidgetPackage());`,
+          `${packageList}\n        packages.add(new CatChainWidgetPackage());`,
         );
       }
     }

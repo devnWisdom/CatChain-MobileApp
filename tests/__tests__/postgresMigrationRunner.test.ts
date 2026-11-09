@@ -172,8 +172,8 @@ async function dropDatabase(dbName: string): Promise<void> {
 async function withTestDb<T>(
   callback: (databaseUrl: string, migrationsDir: string) => Promise<T>,
 ): Promise<T> {
-  const migrationsDir = fs.mkdtempSync(path.join(os.tmpdir(), 'petchain-postgres-migrations-'));
-  const dbName = `petchain_migration_test_${Date.now()}_${Math.floor(Math.random() * 100000)}`;
+  const migrationsDir = fs.mkdtempSync(path.join(os.tmpdir(), 'catchain-postgres-migrations-'));
+  const dbName = `catchain_migration_test_${Date.now()}_${Math.floor(Math.random() * 100000)}`;
 
   await createDatabase(dbName);
   const url = new URL(BASE_DATABASE_URL);

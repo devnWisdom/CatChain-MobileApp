@@ -1,5 +1,5 @@
 /**
- * Veterinarian & Clinic data models for the PetChain mobile app.
+ * Veterinarian & Clinic data models for the CatChain mobile app.
  *
  * Captures contact information, location, and specialisations for vets and the
  * clinics they practise at. Kept dependency-free so it can be shared across

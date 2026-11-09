@@ -9,8 +9,8 @@ import apiClient from './apiClient';
 import type { Subscription } from '../models/Payment';
 
 export const PRODUCT_IDS = {
-  monthly: 'petchain_premium_monthly',
-  annual: 'petchain_premium_annual',
+  monthly: 'catchain_premium_monthly',
+  annual: 'catchain_premium_annual',
 } as const;
 
 export type ProductId = (typeof PRODUCT_IDS)[keyof typeof PRODUCT_IDS];

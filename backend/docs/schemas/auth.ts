@@ -129,7 +129,7 @@ export const authSchemas = {
       redirectUri: {
         type: 'string',
         format: 'uri',
-        example: 'petchain://auth/callback',
+        example: 'catchain://auth/callback',
       },
     },
   },

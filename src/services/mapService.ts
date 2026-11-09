@@ -179,7 +179,7 @@ class MapService {
         PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
         {
           title: 'Location Permission',
-          message: 'PetChain needs your location to show nearby vet clinics.',
+          message: 'CatChain needs your location to show nearby vet clinics.',
           buttonPositive: 'Allow',
           buttonNegative: 'Deny',
         },

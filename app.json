@@ -1,12 +1,12 @@
 {
   "expo": {
-    "name": "PetChain",
-    "slug": "petchain-mobile",
+    "name": "CatChain",
+    "slug": "catchain-mobile",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
-    "scheme": "petchain",
+    "scheme": "catchain",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -17,10 +17,10 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "app.petchain.mobile",
+      "bundleIdentifier": "app.catchain.mobile",
       "buildNumber": "1",
       "associatedDomains": [
-        "applinks:petchain.app"
+        "applinks:catchain.app"
       ],
       "infoPlist": {
         "UIBackgroundModes": [
@@ -28,12 +28,12 @@
           "processing"
         ],
         "BGTaskSchedulerPermittedIdentifiers": [
-          "app.petchain.mobile.refresh",
-          "app.petchain.mobile.processing"
+          "app.catchain.mobile.refresh",
+          "app.catchain.mobile.processing"
         ],
-        "NSCalendarsUsageDescription": "PetChain writes to your calendar only the appointments you choose to export, so vet visits appear alongside your other events.",
-        "NSCalendarsFullAccessUsageDescription": "PetChain writes to your calendar only the appointments you choose to export, so vet visits appear alongside your other events.",
-        "NSRemindersUsageDescription": "PetChain adds reminders to exported appointment events so you do not miss a vet visit."
+        "NSCalendarsUsageDescription": "CatChain writes to your calendar only the appointments you choose to export, so vet visits appear alongside your other events.",
+        "NSCalendarsFullAccessUsageDescription": "CatChain writes to your calendar only the appointments you choose to export, so vet visits appear alongside your other events.",
+        "NSRemindersUsageDescription": "CatChain adds reminders to exported appointment events so you do not miss a vet visit."
       },
       "privacyManifests": {
         "NSPrivacyTracking": false,
@@ -114,7 +114,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "app.petchain.mobile",
+      "package": "app.catchain.mobile",
       "versionCode": 1,
       "intentFilters": [
         {
@@ -123,7 +123,7 @@
           "data": [
             {
               "scheme": "https",
-              "host": "petchain.app",
+              "host": "catchain.app",
               "pathPrefix": "/"
             }
           ],
@@ -150,7 +150,7 @@
       [
         "@sentry/react-native/expo",
         {
-          "organization": "petchain",
+          "organization": "catchain",
           "project": "mobile-app"
         }
       ],
@@ -207,8 +207,8 @@
       },
       "backgroundRefresh": {
         "enabled": true,
-        "taskIdentifier": "app.petchain.mobile.refresh",
-        "processingTaskIdentifier": "app.petchain.mobile.processing",
+        "taskIdentifier": "app.catchain.mobile.refresh",
+        "processingTaskIdentifier": "app.catchain.mobile.processing",
         "minimumIntervalSeconds": 900,
         "requiresBackgroundModes": [
           "fetch",
@@ -219,8 +219,8 @@
         "iosConfigurationChecklist": [
           "Enable the 'Background Modes' capability in Xcode for the app target.",
           "Check 'Background fetch' and 'Background processing' under Background Modes.",
-          "Ensure the device setting Settings > General > Background App Refresh is ON for PetChain.",
-          "Verify BGTaskSchedulerPermittedIdentifiers includes app.petchain.mobile.refresh and app.petchain.mobile.processing.",
+          "Ensure the device setting Settings > General > Background App Refresh is ON for CatChain.",
+          "Verify BGTaskSchedulerPermittedIdentifiers includes app.catchain.mobile.refresh and app.catchain.mobile.processing.",
           "Confirm UIBackgroundModes includes fetch and processing in Info.plist.",
           "Do not re-prompt for permission; surface registration status to support instead."
         ]
@@ -251,8 +251,8 @@
         }
       },
       "deepLink": {
-        "scheme": "petchain",
-        "universalLinkHost": "petchain.app",
+        "scheme": "catchain",
+        "universalLinkHost": "catchain.app",
         "routes": [
           {
             "path": "/pets/:petId",
@@ -334,7 +334,7 @@
         "policyVersion": 1,
         "channels": [
           {
-            "id": "petchain.medication.v1",
+            "id": "catchain.medication.v1",
             "name": "Medication reminders",
             "description": "Reminders to give your pet scheduled medication.",
             "importance": "high",
@@ -346,7 +346,7 @@
             "sound": "default"
           },
           {
-            "id": "petchain.appointment.v1",
+            "id": "catchain.appointment.v1",
             "name": "Appointment reminders",
             "description": "Reminders for upcoming vet appointments.",
             "importance": "default",
@@ -358,7 +358,7 @@
             "sound": "default"
           },
           {
-            "id": "petchain.sos.v1",
+            "id": "catchain.sos.v1",
             "name": "Emergency (SOS) alerts",
             "description": "Critical emergency alerts for your pet.",
             "importance": "max",
@@ -371,26 +371,26 @@
           }
         ],
         "reminderChannelMap": {
-          "medication": "petchain.medication.v1",
-          "appointment": "petchain.appointment.v1",
-          "sos": "petchain.sos.v1"
+          "medication": "catchain.medication.v1",
+          "appointment": "catchain.appointment.v1",
+          "sos": "catchain.sos.v1"
         },
         "deprecatedChannels": [
           {
-            "id": "petchain.medication",
-            "replacedBy": "petchain.medication.v1",
+            "id": "catchain.medication",
+            "replacedBy": "catchain.medication.v1",
             "retire": true,
             "reuse": false
           },
           {
-            "id": "petchain.appointment",
-            "replacedBy": "petchain.appointment.v1",
+            "id": "catchain.appointment",
+            "replacedBy": "catchain.appointment.v1",
             "retire": true,
             "reuse": false
           },
           {
-            "id": "petchain.sos",
-            "replacedBy": "petchain.sos.v1",
+            "id": "catchain.sos",
+            "replacedBy": "catchain.sos.v1",
             "retire": true,
             "reuse": false
           }

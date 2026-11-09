@@ -3,7 +3,7 @@ import { Share } from 'react-native';
 
 import { MedicalRecordError } from './medicalRecordService';
 
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'https://api.petchain.com';
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'https://api.catchain.com';
 
 export interface ShareableLink {
   url: string;

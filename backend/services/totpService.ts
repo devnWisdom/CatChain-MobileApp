@@ -50,7 +50,7 @@ export function migrateSeedException(rawSeedValue: string): string {
 export async function generateQRCodeDataURL(
   secret: string,
   email: string,
-  issuer = 'PetChain',
+  issuer = 'CatChain',
 ): Promise<string> {
   const otpauth = generateURI({
     issuer,

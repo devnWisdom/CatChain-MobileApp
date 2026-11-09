@@ -61,7 +61,7 @@ const mockRedisClient = {
 
 jest.mock('../../config/redis', () => ({
   getRedisClient: () => mockRedisClient,
-  REDIS_KEY_PREFIX: 'petchain:',
+  REDIS_KEY_PREFIX: 'catchain:',
 }));
 
 jest.mock('node-fetch');

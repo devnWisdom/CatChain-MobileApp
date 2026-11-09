@@ -118,14 +118,14 @@ describe('Notification Deep Linking - URL Generation', () => {
 
   describe('Deep link parameter extraction', () => {
     it('extracts query parameters from notification URL', () => {
-      const url = 'petchain://medications?medicationId=med-123';
+      const url = 'catchain://medications?medicationId=med-123';
       const params = new URL(url).searchParams;
 
       expect(params.get('medicationId')).toBe('med-123');
     });
 
     it('handles multiple query parameters', () => {
-      const url = 'petchain://vaccinations?vaccinationId=vac-789&petId=pet-001&dueDate=2026-07-10';
+      const url = 'catchain://vaccinations?vaccinationId=vac-789&petId=pet-001&dueDate=2026-07-10';
       const params = new URL(url).searchParams;
 
       expect(params.get('vaccinationId')).toBe('vac-789');
@@ -136,7 +136,7 @@ describe('Notification Deep Linking - URL Generation', () => {
     it('handles encoded special characters in parameters', () => {
       const id = 'med-with-special-@-#';
       const encoded = encodeURIComponent(id);
-      const url = `petchain://medications?medicationId=${encoded}`;
+      const url = `catchain://medications?medicationId=${encoded}`;
       const params = new URL(url).searchParams;
 
       expect(params.get('medicationId')).toBe(id);
@@ -146,17 +146,17 @@ describe('Notification Deep Linking - URL Generation', () => {
   describe('Path-based deep links', () => {
     it('generates pet detail deep link', () => {
       const petId = 'pet-123';
-      const url = `petchain://pets/${encodeURIComponent(petId)}`;
+      const url = `catchain://pets/${encodeURIComponent(petId)}`;
 
-      expect(url).toContain('petchain://pets/');
+      expect(url).toContain('catchain://pets/');
       expect(url).toContain('pet-123');
     });
 
     it('generates emergency deep link', () => {
       const sosId = 'sos-911';
-      const url = `petchain://emergency?sosId=${encodeURIComponent(sosId)}`;
+      const url = `catchain://emergency?sosId=${encodeURIComponent(sosId)}`;
 
-      expect(url).toContain('petchain://emergency');
+      expect(url).toContain('catchain://emergency');
       expect(url).toContain('sos-911');
     });
   });

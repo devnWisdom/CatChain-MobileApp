@@ -213,7 +213,7 @@ const PrivacyDashboardScreen: React.FC<Props> = ({ onDeleteAccount, onManageSess
       }
       await Sharing.shareAsync(fileUri, {
         mimeType: 'application/vnd.sqlite3',
-        dialogTitle: 'Export preserved PetChain database file',
+        dialogTitle: 'Export preserved CatChain database file',
       });
     } catch {
       Alert.alert('Error', 'Failed to export the preserved database file.');
@@ -252,7 +252,7 @@ const PrivacyDashboardScreen: React.FC<Props> = ({ onDeleteAccount, onManageSess
       const res = await resilientRequest<object>({ method: 'GET', url: '/privacy/export' });
 
       const json = JSON.stringify(res.data, null, 2);
-      const fileUri = `${FileSystem.cacheDirectory}petchain-data-export.json`;
+      const fileUri = `${FileSystem.cacheDirectory}catchain-data-export.json`;
       await FileSystem.writeAsStringAsync(fileUri, json, {
         encoding: FileSystem.EncodingType.UTF8,
       });
@@ -261,7 +261,7 @@ const PrivacyDashboardScreen: React.FC<Props> = ({ onDeleteAccount, onManageSess
       if (canShare) {
         await Sharing.shareAsync(fileUri, {
           mimeType: 'application/json',
-          dialogTitle: 'Save your PetChain data export',
+          dialogTitle: 'Save your CatChain data export',
         });
         const now = new Date().toISOString();
         setLastExportDate(now);
@@ -292,7 +292,7 @@ const PrivacyDashboardScreen: React.FC<Props> = ({ onDeleteAccount, onManageSess
     setExportingAudit(true);
     try {
       const csv = await exportLocalAuditCsv();
-      const fileUri = `${FileSystem.cacheDirectory}petchain-local-audit.csv`;
+      const fileUri = `${FileSystem.cacheDirectory}catchain-local-audit.csv`;
       await FileSystem.writeAsStringAsync(fileUri, csv, {
         encoding: FileSystem.EncodingType.UTF8,
       });
@@ -368,7 +368,7 @@ const PrivacyDashboardScreen: React.FC<Props> = ({ onDeleteAccount, onManageSess
       const snapshot = await collectDiagnosticSnapshot();
       Alert.alert(
         'Export Diagnostics for Support',
-        `This creates a short-lived, redacted diagnostic bundle for PetChain support. Tokens, pet IDs, health details, and precise locations are removed.\n\nIncluded:\n${buildDiagnosticPreview(snapshot)}\n\nContinue?`,
+        `This creates a short-lived, redacted diagnostic bundle for CatChain support. Tokens, pet IDs, health details, and precise locations are removed.\n\nIncluded:\n${buildDiagnosticPreview(snapshot)}\n\nContinue?`,
         [
           { text: 'Cancel', style: 'cancel' },
           { text: 'Confirm', onPress: () => void runDiagnosticExport(snapshot) },
@@ -411,7 +411,7 @@ const PrivacyDashboardScreen: React.FC<Props> = ({ onDeleteAccount, onManageSess
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
       <Text style={styles.title}>Privacy Dashboard</Text>
       <Text style={styles.subtitle}>
-        Manage how PetChain uses your data. Changes are logged for compliance.
+        Manage how CatChain uses your data. Changes are logged for compliance.
       </Text>
 
       {dataCategories.length > 0 && (

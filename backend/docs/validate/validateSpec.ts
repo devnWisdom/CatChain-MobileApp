@@ -1,5 +1,5 @@
 /**
- * OpenAPI spec validator for PetChain API.
+ * OpenAPI spec validator for CatChain API.
  *
  * Validates:
  *  1. All documented endpoints have operationIds
@@ -172,7 +172,7 @@ export function validateOpenApiSpec(): ValidationResult {
   const errors: string[] = [];
   const warnings: string[] = [];
 
-  console.log('🔍 Validating PetChain OpenAPI spec...\n');
+  console.log('🔍 Validating CatChain OpenAPI spec...\n');
 
   // 1. Validate operation IDs and required fields
   const totalEndpoints = validateOperationIds(openApiSpec, errors, warnings);

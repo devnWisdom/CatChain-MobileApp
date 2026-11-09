@@ -19,7 +19,7 @@ const NETWORK_PASSPHRASE =
 const RECEIVING_SECRET = process.env.STELLAR_RECEIVING_SECRET || '';
 const PREMIUM_PRICE_XLM = canonicalDecimal(process.env.PREMIUM_PRICE_XLM || '10', 7);
 const OVERPAYMENT_TOLERANCE_STROOPS = decimalToUnits('0.001', 7);
-const REFUND_MEMO = 'PetChain refund';
+const REFUND_MEMO = 'CatChain refund';
 
 const server = new Horizon.Server(HORIZON_URL);
 

@@ -21,7 +21,7 @@ jobs:
         image: postgres:15
         env:
           POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: petchain_restore_test
+          POSTGRES_DB: catchain_restore_test
         ports:
           - 5432:5432
         options: >-
@@ -53,7 +53,7 @@ jobs:
 
       - name: Create test backup
         env:
-          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/petchain_restore_test
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/catchain_restore_test
           BACKUP_S3_BUCKET: ${{ secrets.BACKUP_S3_BUCKET }}
           BACKUP_S3_PREFIX: restore-test/${{ github.run_id }}
           BACKUP_S3_REGION: ${{ secrets.BACKUP_S3_REGION || 'us-east-1' }}
@@ -62,16 +62,16 @@ jobs:
           BACKUP_RETENTION_DAYS: '1'
         run: |
           # Seed minimal test data
-          PGPASSWORD=postgres psql -h localhost -U postgres -d petchain_restore_test \
+          PGPASSWORD=postgres psql -h localhost -U postgres -d catchain_restore_test \
             -c "CREATE TABLE IF NOT EXISTS restore_probe (id serial PRIMARY KEY, val text, created_at timestamptz DEFAULT now());"
-          PGPASSWORD=postgres psql -h localhost -U postgres -d petchain_restore_test \
+          PGPASSWORD=postgres psql -h localhost -U postgres -d catchain_restore_test \
             -c "INSERT INTO restore_probe (val) VALUES ('restore-test-${{ github.run_id }}');"
 
           npx ts-node backend/scripts/backup.ts
 
       - name: Drop and restore database
         env:
-          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/petchain_restore_test
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/catchain_restore_test
           BACKUP_S3_BUCKET: ${{ secrets.BACKUP_S3_BUCKET }}
           BACKUP_S3_PREFIX: restore-test/${{ github.run_id }}
           BACKUP_S3_REGION: ${{ secrets.BACKUP_S3_REGION || 'us-east-1' }}
@@ -81,7 +81,7 @@ jobs:
 
       - name: Verify restored data
         run: |
-          COUNT=$(PGPASSWORD=postgres psql -h localhost -U postgres -d petchain_restore_test \
+          COUNT=$(PGPASSWORD=postgres psql -h localhost -U postgres -d catchain_restore_test \
             -t -c "SELECT COUNT(*) FROM restore_probe WHERE val = 'restore-test-${{ github.run_id }}';" | tr -d ' ')
           echo "Restored row count: $COUNT"
           if [ "$COUNT" -lt "1" ]; then
@@ -113,7 +113,7 @@ jobs:
                 \"routing_key\": \"$PAGERDUTY_ROUTING_KEY\",
                 \"event_action\": \"trigger\",
                 \"payload\": {
-                  \"summary\": \"PetChain restore test failed (run ${{ github.run_id }})\",
+                  \"summary\": \"CatChain restore test failed (run ${{ github.run_id }})\",
                   \"severity\": \"critical\",
                   \"source\": \"github-actions\"
                 }

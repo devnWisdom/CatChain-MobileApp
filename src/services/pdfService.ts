@@ -117,8 +117,8 @@ function buildCertificateText(
     `[QR: ${qrDataUrl.slice(0, 40)}...]`,
     '',
     '='.repeat(60),
-    'This certificate is blockchain-verified via PetChain.',
-    'Verify at: https://petchain.app/verify/' + hash,
+    'This certificate is blockchain-verified via CatChain.',
+    'Verify at: https://catchain.app/verify/' + hash,
     '='.repeat(60),
   ].filter((l) => l !== undefined);
 
@@ -139,7 +139,7 @@ export async function generateVaccinationCertificate(
   const contentForHash = `${pet.petId}-${pet.petName}-${generatedAt}`;
   const hash = await sha256(contentForHash);
 
-  const blockchainUrl = `https://petchain.app/verify/${hash}`;
+  const blockchainUrl = `https://catchain.app/verify/${hash}`;
   const qrDataUrl = await generateQRDataUrl(blockchainUrl);
 
   const content = buildCertificateText(pet, vaccinations, qrDataUrl, hash, generatedAt);

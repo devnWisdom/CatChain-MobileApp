@@ -23,7 +23,7 @@ import { useSecureScreen } from '../utils/secureScreen';
 
 /** Unlock annual discount after this many successful referrals. */
 const MILESTONE_TARGET = 5;
-const REFERRAL_LINK_BASE = 'https://petchain.app/join?ref=';
+const REFERRAL_LINK_BASE = 'https://catchain.app/join?ref=';
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
@@ -69,8 +69,8 @@ const ReferralScreen: React.FC = () => {
     if (!stats?.code) return;
     const referralLink = `${REFERRAL_LINK_BASE}${stats.code}`;
     await Share.share({
-      title: 'Join PetChain',
-      message: `Join me on PetChain — the smartest pet health app! Use my referral link to get started:\n${referralLink}`,
+      title: 'Join CatChain',
+      message: `Join me on CatChain — the smartest pet health app! Use my referral link to get started:\n${referralLink}`,
       url: referralLink,
     });
   };

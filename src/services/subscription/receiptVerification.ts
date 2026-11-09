@@ -106,7 +106,7 @@ export async function verifyReceiptWithServer(
 }
 
 /**
- * Reconciles a restored store purchase against the PetChain account entitlement.
+ * Reconciles a restored store purchase against the CatChain account entitlement.
  *
  * - Idempotent: repeating with the same receipt/account yields the same result.
  * - Pending verification never unlocks premium permanently.

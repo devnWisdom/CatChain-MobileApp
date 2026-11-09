@@ -20,9 +20,9 @@ const MIN_NATIVE_VERSION = {
 };
 
 const STORE_URLS = {
-  ios: extra.IOS_STORE_URL ?? 'https://apps.apple.com/app/petchain/id000000000',
+  ios: extra.IOS_STORE_URL ?? 'https://apps.apple.com/app/catchain/id000000000',
   android:
-    extra.ANDROID_STORE_URL ?? 'https://play.google.com/store/apps/details?id=app.petchain.mobile',
+    extra.ANDROID_STORE_URL ?? 'https://play.google.com/store/apps/details?id=app.catchain.mobile',
 };
 
 // Each environment is only ever built and published with one EAS Update channel

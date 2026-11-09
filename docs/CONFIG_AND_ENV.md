@@ -19,8 +19,8 @@ All env vars are resolved in priority order:
 
 #### Production (`APP_ENV=production`)
 - **PROD_API_URL** (required): Absolute HTTPS URL, no localhost
-  - Example: `https://api.petchain.app/api`
-  - Default: `https://api.petchain.app/api`
+  - Example: `https://api.catchain.app/api`
+  - Default: `https://api.catchain.app/api`
   - Validation: must be HTTPS, cannot be localhost, must be absolute
   - Failure: app startup fails hard
 
@@ -31,7 +31,7 @@ All env vars are resolved in priority order:
   - Range: 0.0–1.0
 
 #### Staging (`APP_ENV=staging`)
-- **STAGING_API_URL** (optional, default: `https://staging.petchain.app/api`)
+- **STAGING_API_URL** (optional, default: `https://staging.catchain.app/api`)
   - Can use HTTP (will warn)
   - Validation: soft failure (logs warning, app continues)
 
@@ -77,7 +77,7 @@ eas build --profile development
 eas build --profile staging
 
 # Production (HTTPS required, hard validation, app won't start if invalid)
-PROD_API_URL=https://api.petchain.app/api eas build --profile production
+PROD_API_URL=https://api.catchain.app/api eas build --profile production
 ```
 
 ## Validation and Failure Modes
@@ -112,12 +112,12 @@ If you see `[Config] Validation failed` errors:
 
 1. **Production**: set `PROD_API_URL` to your HTTPS API endpoint
    ```bash
-   PROD_API_URL=https://api.petchain.app/api eas build --profile production
+   PROD_API_URL=https://api.catchain.app/api eas build --profile production
    ```
 
 2. **Staging**: set `STAGING_API_URL` if using non-standard endpoint
    ```bash
-   STAGING_API_URL=https://staging-custom.petchain.app/api eas build --profile staging
+   STAGING_API_URL=https://staging-custom.catchain.app/api eas build --profile staging
    ```
 
 3. **Development**: use default `http://localhost:3000/api` or set `API_BASE_URL`

@@ -30,14 +30,14 @@ Google Play also requires:
 ## Splash Screen
 
 - `splash.png` - 1284×2778px (iPhone 14 Pro Max portrait)
-  - Background: #4A90A4 (PetChain brand color)
+  - Background: #4A90A4 (CatChain brand color)
   - Logo centered, white color
   - Alternatively: provide vector source for generation
 
 ### Design Guidelines
 - No rounded corners — Apple applies mask automatically
 - No transparency in final PNG (flat background)
-- Use official PetChain brand guidelines if available
+- Use official CatChain brand guidelines if available
 - Icons should be recognizable at smallest size (20×20px)
 
 ### Generation

@@ -32,7 +32,7 @@ export interface ChatMessage {
   attachments?: { id: string; name: string; contentType: string; sizeBytes: number }[];
 }
 
-const KEY_PREFIX = 'com.petchain.telemedicine.chatKey.';
+const KEY_PREFIX = 'com.catchain.telemedicine.chatKey.';
 const CACHE_PREFIX = 'telemedicine.chatHistory.';
 
 export class InMemoryStore implements SecureKeystore, CacheStore {

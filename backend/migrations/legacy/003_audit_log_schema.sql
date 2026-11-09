@@ -1,4 +1,4 @@
--- Audit Log Schema for PetChain
+-- Audit Log Schema for CatChain
 
 CREATE TABLE IF NOT EXISTS audit_logs (
   id UUID PRIMARY KEY,

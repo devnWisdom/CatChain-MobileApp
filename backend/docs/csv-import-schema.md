@@ -1,6 +1,6 @@
-# PetChain CSV Import Schema
+# CatChain CSV Import Schema
 
-This document defines the CSV format accepted by the PetChain bulk import tool.
+This document defines the CSV format accepted by the CatChain bulk import tool.
 
 Header row is required. Columns (order-insensitive, case-insensitive):
 

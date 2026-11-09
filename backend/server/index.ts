@@ -47,7 +47,7 @@ async function start(): Promise<void> {
   process.on('SIGINT', () => shutdown('SIGINT', server));
 
   server.listen(PORT, () => {
-    logger.info(`PetChain REST API listening on http://localhost:${PORT}/api`);
+    logger.info(`CatChain REST API listening on http://localhost:${PORT}/api`);
     logger.info(`Health:  http://localhost:${PORT}/api/health`);
     logger.info(`Ready:   http://localhost:${PORT}/api/ready`);
     logger.info(`Admin:   http://localhost:${PORT}/admin/api-keys.html`);

@@ -47,7 +47,7 @@ export interface VerificationResult {
 
 // ─── Verification logic (pure, exported for tests) ───────────────────────────
 
-export const EXPECTED_NETWORK = 'petchain-mainnet';
+export const EXPECTED_NETWORK = 'catchain-mainnet';
 
 export function verifyCoSignPayload(
   payload: CoSignPayload,

@@ -9,7 +9,7 @@ export interface VideoCallLink {
 }
 
 function createJitsiLink(appointmentId: string): VideoCallLink {
-  const roomId = `PetChain-${appointmentId}-${randomUUID().slice(0, 8)}`;
+  const roomId = `CatChain-${appointmentId}-${randomUUID().slice(0, 8)}`;
   return {
     provider: 'jitsi',
     roomId,

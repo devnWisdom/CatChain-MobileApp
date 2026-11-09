@@ -26,7 +26,7 @@ const OnboardingScreen: React.FC<OnboardingScreenProps> = ({ onComplete, onSkip 
   const slides = [
     {
       id: 1,
-      title: 'Welcome to PetChain',
+      title: 'Welcome to CatChain',
       subtitle: 'Your trusted companion for pet healthcare management',
       image: '🐕',
       description: "Securely manage your pet's medical records with blockchain technology",

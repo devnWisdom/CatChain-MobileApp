@@ -25,7 +25,7 @@ export const blockchainSchemas = {
         example: '100',
         description: 'Fee in stroops (1 XLM = 10,000,000 stroops)',
       },
-      memo: { type: 'string', example: 'petchain:record:abc123' },
+      memo: { type: 'string', example: 'catchain:record:abc123' },
       operationCount: { type: 'integer', example: 1 },
     },
   },

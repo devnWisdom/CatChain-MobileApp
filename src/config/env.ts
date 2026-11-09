@@ -129,8 +129,8 @@ const APP_ENV = readWithDefault('APP_ENV', 'development') as AppEnvironment;
 
 const ENV_API_URLS: Record<AppEnvironment, string> = {
   development: API_BASE_URL,
-  staging: readWithDefault('STAGING_API_URL', 'https://staging.petchain.app/api'),
-  production: readWithDefault('PROD_API_URL', 'https://api.petchain.app/api'),
+  staging: readWithDefault('STAGING_API_URL', 'https://staging.catchain.app/api'),
+  production: readWithDefault('PROD_API_URL', 'https://api.catchain.app/api'),
 };
 
 // ─── Exported config ──────────────────────────────────────────────────────────
@@ -145,7 +145,7 @@ const appConfig: AppConfig = {
   },
 
   app: {
-    name: readWithDefault('APP_NAME', 'PetChain'),
+    name: readWithDefault('APP_NAME', 'CatChain'),
     version:
       (Constants.expoConfig?.version as string | undefined) ??
       readWithDefault('APP_VERSION', '1.0.0'),
@@ -159,7 +159,7 @@ const appConfig: AppConfig = {
   sentry: {
     dsn: readWithDefault('SENTRY_DSN', ''),
     authToken: readWithDefault('SENTRY_AUTH_TOKEN', ''),
-    org: readWithDefault('SENTRY_ORG', 'petchain'),
+    org: readWithDefault('SENTRY_ORG', 'catchain'),
     project: readWithDefault('SENTRY_PROJECT', 'mobile-app'),
     enableInDev: readWithDefault('SENTRY_ENABLE_IN_DEV', 'false') === 'true',
   },
@@ -180,11 +180,11 @@ const appConfig: AppConfig = {
   store: {
     iosUrl: readWithDefault(
       'IOS_STORE_URL',
-      'https://apps.apple.com/app/petchain/id000000000',
+      'https://apps.apple.com/app/catchain/id000000000',
     ),
     androidUrl: readWithDefault(
       'ANDROID_STORE_URL',
-      'https://play.google.com/store/apps/details?id=app.petchain.mobile',
+      'https://play.google.com/store/apps/details?id=app.catchain.mobile',
     ),
     minNativeVersionIos: readWithDefault('MIN_NATIVE_VERSION_IOS', '1.0.0'),
     minNativeVersionAndroid: readWithDefault('MIN_NATIVE_VERSION_ANDROID', '1.0.0'),

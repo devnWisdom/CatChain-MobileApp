@@ -205,7 +205,7 @@ export const petPaths = {
           required: true,
           schema: { type: 'string' },
           description: "URL-encoded QR code value from the pet's QR tag",
-          example: 'petchain%3A%2F%2Fpet%2Fa1b2c3d4-e5f6-7890-abcd-ef1234567890',
+          example: 'catchain%3A%2F%2Fpet%2Fa1b2c3d4-e5f6-7890-abcd-ef1234567890',
         },
       ],
       responses: {

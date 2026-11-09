@@ -2,15 +2,15 @@ import type * as SQLite from 'expo-sqlite';
 
 function installDatabaseMocks(initialIntegrity: 'ok' | 'corrupt') {
   const files = new Map<string, string>([
-    ['file:///local/petchain.db', 'database'],
-    ['file:///local/petchain.db-wal', 'wal'],
-    ['file:///local/petchain.db-shm', 'shm'],
+    ['file:///local/catchain.db', 'database'],
+    ['file:///local/catchain.db-wal', 'wal'],
+    ['file:///local/catchain.db-shm', 'shm'],
   ]);
   const storedValues = new Map<string, string>();
   let openCount = 0;
 
   const createDb = (integrity: 'ok' | 'corrupt') => ({
-    databasePath: 'file:///local/petchain.db',
+    databasePath: 'file:///local/catchain.db',
     getFirstAsync: jest.fn((sql: string) =>
       Promise.resolve(sql.includes('quick_check') ? { quick_check: integrity === 'ok' ? 'ok' : 'malformed' } : null),
     ),
@@ -90,7 +90,7 @@ describe('local database recovery', () => {
     expect(mocks.openDatabase.corruptDb.closeAsync).toHaveBeenCalledTimes(1);
     expect(recovery?.supportCode).toMatch(/^DB-/);
     expect(recovery?.files).toHaveLength(3);
-    expect([...mocks.files.keys()].filter((path) => path.includes('petchain-corrupt-'))).toHaveLength(3);
+    expect([...mocks.files.keys()].filter((path) => path.includes('catchain-corrupt-'))).toHaveLength(3);
 
     const { runSqliteMigrations } = await import('../../migrations/sqliteMigrationRunner');
     await expect(runSqliteMigrations(replacement as SQLite.SQLiteDatabase, [])).resolves.toMatchObject({

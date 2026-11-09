@@ -582,7 +582,7 @@ const LostPetReportScreen: React.FC<LostPetReportScreenProps> = ({
             <ConsentBlock
               title="Consent to submit"
               description={
-                'By consenting, you confirm all details are accurate and authorise PetChain ' +
+                'By consenting, you confirm all details are accurate and authorise CatChain ' +
                 'to store this report under your account.'
               }
               consented={submitConsentGiven}
@@ -595,7 +595,7 @@ const LostPetReportScreen: React.FC<LostPetReportScreenProps> = ({
             <ConsentBlock
               title="Consent to share (optional)"
               description={
-                'Share an approximate-location summary with the PetChain community network. ' +
+                'Share an approximate-location summary with the CatChain community network. ' +
                 'Your contact details and sensitive pet data are excluded unless you opt in ' +
                 'separately later.'
               }

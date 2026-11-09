@@ -1,12 +1,12 @@
 {
-  "name": "petchain-mobile",
+  "name": "catchain-mobile",
   "version": "1.0.0",
-  "description": "PetChain — Secure pet health records, medication reminders, QR scanning, and emergency SOS, all powered by blockchain verification.",
-  "author": "PetChain, Inc. <support@petchain.app> (https://petchain.app)",
-  "homepage": "https://petchain.app",
+  "description": "CatChain — Secure pet health records, medication reminders, QR scanning, and emergency SOS, all powered by blockchain verification.",
+  "author": "CatChain, Inc. <support@catchain.app> (https://catchain.app)",
+  "homepage": "https://catchain.app",
   "repository": {
     "type": "git",
-    "url": "https://github.com/devnWisdom/PetChain-MobileApp.git"
+    "url": "https://github.com/devnWisdom/CatChain-MobileApp.git"
   },
   "license": "MIT",
   "keywords": [

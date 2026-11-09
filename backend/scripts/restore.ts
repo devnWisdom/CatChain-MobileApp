@@ -39,7 +39,7 @@ const execFileAsync = promisify(execFile);
 // ─── Configuration ────────────────────────────────────────────────────────────
 
 const DATABASE_URL =
-  process.env.DATABASE_URL || 'postgresql://postgres:postgres@localhost:5432/petchain';
+  process.env.DATABASE_URL || 'postgresql://postgres:postgres@localhost:5432/catchain';
 const S3_BUCKET = process.env.BACKUP_S3_BUCKET || '';
 const S3_PREFIX = (process.env.BACKUP_S3_PREFIX || 'backups').replace(/\/$/, '');
 const S3_REGION = process.env.BACKUP_S3_REGION || 'us-east-1';
@@ -264,7 +264,7 @@ export async function runRestore(options: {
 
   logger.info('[restore] Restoring from', { s3Key });
 
-  const dumpPath = path.join(TEMP_DIR, `petchain-restore-${Date.now()}.dump`);
+  const dumpPath = path.join(TEMP_DIR, `catchain-restore-${Date.now()}.dump`);
 
   try {
     // 1. Download compressed backup
@@ -304,7 +304,7 @@ export async function runRestore(options: {
     const message = err instanceof Error ? err.message : String(err);
     logger.error('[restore] Restore failed', { error: message });
 
-    await sendAlert('PetChain restore failed', { error: message, s3Key }).catch(() => {});
+    await sendAlert('CatChain restore failed', { error: message, s3Key }).catch(() => {});
 
     try {
       await unlink(dumpPath);

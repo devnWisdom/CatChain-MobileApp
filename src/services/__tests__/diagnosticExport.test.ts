@@ -57,7 +57,7 @@ const syncLog: DiagnosticLogEntry = {
   message: 'Sync failed for medical records',
   data: {
     recordCount: 12,
-    endpoint: 'https://user:secretpass@api.petchain.app/v1/sync',
+    endpoint: 'https://user:secretpass@api.catchain.app/v1/sync',
     medicalHistory: ['allergy:penicillin'],
     latitude: 37.7749,
     longitude: -122.4194,
@@ -273,7 +273,7 @@ describe('diagnosticExport (issue #1035)', () => {
       expect(FileSystem.writeAsStringAsync).toHaveBeenCalled();
       expect(share).toHaveBeenCalled();
       expect(FileSystem.deleteAsync).toHaveBeenCalledWith(
-        expect.stringContaining('petchain-diagnostics-'),
+        expect.stringContaining('catchain-diagnostics-'),
         { idempotent: true },
       );
     });

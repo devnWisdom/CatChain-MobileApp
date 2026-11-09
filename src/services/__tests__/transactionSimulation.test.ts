@@ -87,7 +87,7 @@ function quoteFixture(overrides: Partial<PathPaymentQuote> = {}): PathPaymentQuo
 
 describe('decoding the envelope', () => {
   it('reports destination, asset, amount, fee, memo and network', () => {
-    const sim = simulateTransactionXdr(buildPaymentXdr({ memo: 'petchain' }), TESTNET);
+    const sim = simulateTransactionXdr(buildPaymentXdr({ memo: 'catchain' }), TESTNET);
 
     expect(sim.sourceAccount).toBe(source.publicKey());
     expect(sim.operationCount).toBe(1);
@@ -96,7 +96,7 @@ describe('decoding the envelope', () => {
     expect(sim.operations[0].destinationAmount).toBe('25.0000000');
     expect(sim.feeStroops).toBe('100');
     expect(sim.feeXlm).toBe('0.00001');
-    expect(sim.memo).toEqual({ type: 'text', value: 'petchain' });
+    expect(sim.memo).toEqual({ type: 'text', value: 'catchain' });
     expect(sim.network).toBe('TESTNET');
   });
 

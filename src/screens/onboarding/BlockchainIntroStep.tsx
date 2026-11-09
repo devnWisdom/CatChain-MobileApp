@@ -8,7 +8,7 @@ interface Props {
   isLast?: boolean;
 }
 
-const HOW_IT_WORKS_URL = 'https://petchain.app/how-it-works';
+const HOW_IT_WORKS_URL = 'https://catchain.app/how-it-works';
 
 const SLIDES = [
   {

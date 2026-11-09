@@ -18,7 +18,7 @@ describe('Admin user management', () => {
     store.users.clear();
     store.users.set(adminId, {
       id: adminId,
-      email: 'admin@petchain.app',
+      email: 'admin@catchain.app',
       name: 'Admin',
       role: UserRole.ADMIN,
       pets: [],
@@ -29,7 +29,7 @@ describe('Admin user management', () => {
     });
     store.users.set(ownerId, {
       id: ownerId,
-      email: 'owner@petchain.app',
+      email: 'owner@catchain.app',
       name: 'Owner',
       role: UserRole.OWNER,
       pets: [],
@@ -40,7 +40,7 @@ describe('Admin user management', () => {
     });
 
     adminToken = jwt.sign(
-      { sub: adminId, email: 'admin@petchain.app', role: UserRole.ADMIN },
+      { sub: adminId, email: 'admin@catchain.app', role: UserRole.ADMIN },
       secret,
     );
   });

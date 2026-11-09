@@ -98,8 +98,8 @@ const KNOWN_INTERACTIONS: DrugInteraction[] = [
 
 // ─── Cache helpers ────────────────────────────────────────────────────────────
 
-const CACHE_KEY = 'com.petchain.drug.interactions.cache';
-const OVERRIDE_KEY = 'com.petchain.drug.interactions.overrides';
+const CACHE_KEY = 'com.catchain.drug.interactions.cache';
+const OVERRIDE_KEY = 'com.catchain.drug.interactions.overrides';
 
 async function getCachedInteractions(): Promise<DrugInteraction[] | null> {
   try {

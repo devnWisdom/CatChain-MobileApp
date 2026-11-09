@@ -1,7 +1,7 @@
 /**
  * Migration tests for every production database schema (issue #993).
  *
- * PetChain ships two independently-versioned schemas:
+ * CatChain ships two independently-versioned schemas:
  *  - Postgres backend schema, migrated with node-pg-migrate from `backend/migrations`
  *    (plus a `legacy/` tree of pre-node-pg-migrate SQL + hand-written rollbacks).
  *  - On-device SQLite schema, migrated by `src/migrations/sqliteMigrationRunner.ts`
@@ -155,7 +155,7 @@ describe('Postgres legacy migrations (backend/migrations/legacy) — round-trip 
 });
 
 describe('SQLite production migrations (src/migrations) — round-trip on the real schema', () => {
-  const mockDb = SQLite.openDatabaseSync('petchain.db') as any;
+  const mockDb = SQLite.openDatabaseSync('catchain.db') as any;
 
   beforeEach(async () => {
     await mockDb.execAsync('DROP TABLE IF EXISTS schema_migrations');

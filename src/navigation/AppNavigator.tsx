@@ -601,7 +601,7 @@ const linking: LinkingOptions<RootStackParamList> = {
     if (normalizedPath === 'auth' || normalizedPath === 'invalid-link') {
       return getNavigationStateFromPath(normalizedPath, options);
     }
-    if (!parseDeepLink(`https://petchain.app/${normalizedPath}`)) {
+    if (!parseDeepLink(`https://catchain.app/${normalizedPath}`)) {
       return { routes: [{ name: 'InvalidLink' }] };
     }
     return getNavigationStateFromPath(normalizedPath, options);
@@ -778,7 +778,7 @@ export default function AppNavigator() {
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', padding: 24 }}>
                   <Text>This link cannot be opened.</Text>
                   <TouchableOpacity onPress={() => navigation.replace('Onboarding')}>
-                    <Text style={{ marginTop: 16 }}>Return to PetChain</Text>
+                    <Text style={{ marginTop: 16 }}>Return to CatChain</Text>
                   </TouchableOpacity>
                 </View>
               )}

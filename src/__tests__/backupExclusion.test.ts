@@ -56,9 +56,9 @@ describe('android-config/backup_rules.xml (API 23-30)', () => {
     expect(xml).toMatch('</full-backup-content>');
   });
 
-  it('excludes petchain.db from database domain', () => {
+  it('excludes catchain.db from database domain', () => {
     expect(xml).toMatch('domain="database"');
-    expect(xml).toMatch('path="petchain.db"');
+    expect(xml).toMatch('path="catchain.db"');
   });
 
   it('excludes RNCAsyncStorage directory from sharedpref domain', () => {
@@ -125,19 +125,19 @@ describe('android-config/data_extraction_rules.xml (API 31+)', () => {
     expect(xml).toMatch('</device-transfer>');
   });
 
-  it('excludes petchain.db in cloud-backup section', () => {
+  it('excludes catchain.db in cloud-backup section', () => {
     const cloudBackup = xml.slice(xml.indexOf('<cloud-backup>'), xml.indexOf('</cloud-backup>'));
     expect(cloudBackup).toMatch('domain="database"');
-    expect(cloudBackup).toMatch('path="petchain.db"');
+    expect(cloudBackup).toMatch('path="catchain.db"');
   });
 
-  it('excludes petchain.db in device-transfer section', () => {
+  it('excludes catchain.db in device-transfer section', () => {
     const deviceTransfer = xml.slice(
       xml.indexOf('<device-transfer>'),
       xml.indexOf('</device-transfer>'),
     );
     expect(deviceTransfer).toMatch('domain="database"');
-    expect(deviceTransfer).toMatch('path="petchain.db"');
+    expect(deviceTransfer).toMatch('path="catchain.db"');
   });
 
   it('excludes RNCAsyncStorage in both sections', () => {

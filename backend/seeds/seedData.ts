@@ -566,7 +566,7 @@ export async function seed(
 ): Promise<ReturnType<typeof buildSeedSummary>> {
   const finalConfig = resolveSeedConfig(config);
 
-  console.log('\n🌱 Starting PetChain database seeding...');
+  console.log('\n🌱 Starting CatChain database seeding...');
   console.log('Configuration:', finalConfig);
 
   const seededIds: SeededRecordIds = {

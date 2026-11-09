@@ -4,13 +4,13 @@ import * as Keychain from 'react-native-keychain';
 
 import { EncryptionError } from './types';
 
-const ENCRYPTION_KEY_USERNAME = 'PETCHAIN_ENCRYPTION_KEY';
-const ENCRYPTION_KEY_SERVICE = 'com.petchain.auth.encryption';
-const TOKEN_BLOB_KEY = 'com.petchain.auth.tokens';
-const BIOMETRIC_FLAG_KEY = 'com.petchain.auth.biometric.enabled';
-const BIOMETRIC_KEYCHAIN_SERVICE = 'com.petchain.auth.biometric';
-const BIOMETRIC_USERNAME = 'petchain_biometric_user';
-const BIOMETRIC_SECRET = 'petchain_biometric_unlock';
+const ENCRYPTION_KEY_USERNAME = 'CATCHAIN_ENCRYPTION_KEY';
+const ENCRYPTION_KEY_SERVICE = 'com.catchain.auth.encryption';
+const TOKEN_BLOB_KEY = 'com.catchain.auth.tokens';
+const BIOMETRIC_FLAG_KEY = 'com.catchain.auth.biometric.enabled';
+const BIOMETRIC_KEYCHAIN_SERVICE = 'com.catchain.auth.biometric';
+const BIOMETRIC_USERNAME = 'catchain_biometric_user';
+const BIOMETRIC_SECRET = 'catchain_biometric_unlock';
 
 // Account-namespaced keys (for #905: bind credentials to active account)
 let currentAccountId: string | null = null;
@@ -297,7 +297,7 @@ export const enableBiometricAuthentication = async (
 };
 
 export const authenticateWithBiometricGate = async (
-  promptMessage = 'Authenticate to access your PetChain account',
+  promptMessage = 'Authenticate to access your CatChain account',
 ): Promise<boolean> => {
   if (!(await isBiometricAuthenticationEnabled())) {
     return false;

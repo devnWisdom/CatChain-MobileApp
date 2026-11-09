@@ -103,7 +103,7 @@ export function calendarPrivacyText(includePetDetails: boolean): string {
 /** Wording for a bulk removal (remove all / revoke). */
 export function calendarRemovalSummaryText(summary: CalendarRemovalSummary): string {
   if (summary.removed === 0 && summary.alreadyGone === 0 && summary.failed === 0) {
-    return 'No PetChain events were in your calendar.';
+    return 'No CatChain events were in your calendar.';
   }
   const parts: string[] = [];
   if (summary.removed) parts.push(`${summary.removed} removed from your calendar`);

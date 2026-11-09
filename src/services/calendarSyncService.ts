@@ -12,7 +12,7 @@
  *    no-op and a changed appointment updates in place instead of duplicating.
  *  - **Self-healing.** An event the user deleted in the calendar app is
  *    detected (stale record) and re-created; an event that exists in the
- *    PetChain calendar without a record — e.g. after a reinstall wiped local
+ *    CatChain calendar without a record — e.g. after a reinstall wiped local
  *    storage — is adopted rather than duplicated, and surplus copies of the
  *    same slot are removed.
  *  - **Revocable.** Synced entries can be removed one at a time or all at once,
@@ -34,8 +34,8 @@ import type { Appointment } from '../models/Appointment';
 /** Key used before #1186, when only `appointmentId → eventId` was remembered. */
 const LEGACY_EVENT_ID_KEY = '@calendarEventIds';
 
-/** Title of the dedicated device calendar PetChain writes into. */
-export const PETCHAIN_CALENDAR_TITLE = 'PetChain';
+/** Title of the dedicated device calendar CatChain writes into. */
+export const CATCHAIN_CALENDAR_TITLE = 'CatChain';
 
 /** Appointment duration used when the record does not carry one. */
 export const DEFAULT_APPOINTMENT_DURATION_MINUTES = 30;
@@ -253,13 +253,13 @@ export async function requestCalendarPermission(): Promise<boolean> {
   }
 }
 
-// ─── Get or create the PetChain calendar ─────────────────────────────────────
+// ─── Get or create the CatChain calendar ─────────────────────────────────────
 
-async function getPetChainCalendarId(): Promise<string | null> {
+async function getCatChainCalendarId(): Promise<string | null> {
   try {
     const Calendar = await import('expo-calendar');
     const calendars = await Calendar.getCalendarsAsync(Calendar.EntityTypes.EVENT);
-    const existing = calendars.find((c) => c.title === PETCHAIN_CALENDAR_TITLE);
+    const existing = calendars.find((c) => c.title === CATCHAIN_CALENDAR_TITLE);
     if (existing) return existing.id;
 
     // Create a new calendar
@@ -267,12 +267,12 @@ async function getPetChainCalendarId(): Promise<string | null> {
       calendars.find((c) => c.source?.isLocalAccount)?.source ?? calendars[0]?.source;
 
     const id = await Calendar.createCalendarAsync({
-      title: PETCHAIN_CALENDAR_TITLE,
+      title: CATCHAIN_CALENDAR_TITLE,
       color: '#10B981',
       entityType: Calendar.EntityTypes.EVENT,
       sourceId: defaultSource?.id,
-      source: defaultSource ?? { isLocalAccount: true, name: PETCHAIN_CALENDAR_TITLE, type: '' },
-      name: PETCHAIN_CALENDAR_TITLE,
+      source: defaultSource ?? { isLocalAccount: true, name: CATCHAIN_CALENDAR_TITLE, type: '' },
+      name: CATCHAIN_CALENDAR_TITLE,
       ownerAccount: 'personal',
       accessLevel: Calendar.CalendarAccessLevel.OWNER,
     });
@@ -417,7 +417,7 @@ function eventStartMs(startDate: Date | number | string): number {
 }
 
 /**
- * Find an event already occupying this slot in the PetChain calendar.
+ * Find an event already occupying this slot in the CatChain calendar.
  *
  * Reached only when no record exists for the appointment (lost cache, reinstall,
  * or an export started on another install). Matching on title plus exact start
@@ -546,7 +546,7 @@ async function exportOne(
       return { appointmentId, outcome: 'updated', eventId: existing.eventId };
     }
 
-    // Stale record: the event was deleted outside PetChain.
+    // Stale record: the event was deleted outside CatChain.
     const reclaimed = await findExistingEventId(Calendar, calendarId, details);
     const recreatedId = reclaimed ?? (await Calendar.createEventAsync(calendarId, details));
     records[appointmentId] = recordFor(appointmentId, recreatedId, revision, includePetDetails);
@@ -589,9 +589,9 @@ export async function exportAppointments(
     return summarize(allOutcome(appointments, 'permission_denied'), 'permission_denied');
   }
 
-  const calendarId = await getPetChainCalendarId();
+  const calendarId = await getCatChainCalendarId();
   if (!calendarId) {
-    // The PetChain calendar could not be found or created. Reported as failures
+    // The CatChain calendar could not be found or created. Reported as failures
     // rather than an empty success, so the sheet offers a retry.
     return summarize(allOutcome(appointments, 'failed'), null);
   }
@@ -689,7 +689,7 @@ export async function removeSyncedAppointment(
   return existed === true ? 'removed' : 'already_gone';
 }
 
-/** Remove every event PetChain created, leaving the opt-in untouched. */
+/** Remove every event CatChain created, leaving the opt-in untouched. */
 export async function removeAllSyncedAppointments(): Promise<CalendarRemovalSummary> {
   const records = await loadRecords();
   const summary: CalendarRemovalSummary = { removed: 0, alreadyGone: 0, failed: 0 };

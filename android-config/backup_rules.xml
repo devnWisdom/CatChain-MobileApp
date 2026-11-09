@@ -13,7 +13,7 @@
 
   Excluded paths
   ──────────────
-  databases/petchain.db
+  databases/catchain.db
     expo-sqlite local database: stores medications, dose logs, appointments,
     health metrics, SOAP note drafts, and the kv_store containing auth
     tokens, pet data, notification prefs, emergency contacts, and pet photos.
@@ -43,7 +43,7 @@
 <full-backup-content>
 
   <!-- ── SQLite database (medications, health records, kv_store tokens) ──── -->
-  <exclude domain="database" path="petchain.db" />
+  <exclude domain="database" path="catchain.db" />
 
   <!-- ── AsyncStorage (SharedPreferences) ─────────────────────────────── -->
   <!-- RNCAsyncStorage writes to a sub-directory on newer versions -->

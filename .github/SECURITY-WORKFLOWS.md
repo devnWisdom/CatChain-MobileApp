@@ -423,4 +423,4 @@ labels:
 ---
 
 **Last Updated:** May 28, 2026
-**Maintained By:** PetChain Security Team
+**Maintained By:** CatChain Security Team

@@ -78,7 +78,7 @@ const EMPTY: FormState = {
 const getBreedImageSource = (breed: BreedInsight): { uri: string } | null => {
   if (breed.id === 'mixed-breed' || breed.id === 'unknown-breed') return null;
   return {
-    uri: `https://cdn.petchain.app/breeds/${encodeURIComponent(breed.name.toLowerCase().replace(/\s+/g, '-'))}.jpg`,
+    uri: `https://cdn.catchain.app/breeds/${encodeURIComponent(breed.name.toLowerCase().replace(/\s+/g, '-'))}.jpg`,
   };
 };
 

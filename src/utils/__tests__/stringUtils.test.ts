@@ -135,7 +135,7 @@ describe('slugify', () => {
     ['Hello World!', 'hello-world'],
     ['Café au lait', 'cafe-au-lait'],
     ['  multiple   spaces ', 'multiple-spaces'],
-    ['PetChain -- App', 'petchain-app'],
+    ['CatChain -- App', 'catchain-app'],
     ['Already-a-slug', 'already-a-slug'],
     ['Ñoño', 'nono'],
     ['', ''],

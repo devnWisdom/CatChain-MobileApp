@@ -268,7 +268,7 @@ const DocumentVaultScreen: React.FC<DocumentVaultScreenProps> = ({
   const handleShare = (doc: DocumentMeta) => {
     Alert.alert(
       'Confirm your identity',
-      `Sharing "${doc.name}" sends a medical document outside PetChain. Confirm to continue.`,
+      `Sharing "${doc.name}" sends a medical document outside CatChain. Confirm to continue.`,
       [
         { text: 'Cancel', style: 'cancel' },
         {

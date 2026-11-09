@@ -90,7 +90,7 @@ jest.mock('../loggerService', () => ({
 import {
   HorizonStreamService,
   StreamManager,
-  type PetChainTransaction,
+  type CatChainTransaction,
   type StreamEvent,
   type CursorStorage,
 } from '../horizonStreamService';
@@ -192,7 +192,7 @@ describe('HorizonStreamService', () => {
     });
 
     it('resumes from stored cursor', async () => {
-      await mockCursorStorage.setCursor('petchain-transactions', 'stored_cursor_123');
+      await mockCursorStorage.setCursor('catchain-transactions', 'stored_cursor_123');
 
       await service.startTransactionStream(['GACCOUNT1']);
 
@@ -226,7 +226,7 @@ describe('HorizonStreamService', () => {
       onErrorHandler(new Error('Error 3'));
       jest.advanceTimersByTime(450); // 400ms delay (4x)
 
-      const metrics = service.getStreamMetrics('petchain-transactions');
+      const metrics = service.getStreamMetrics('catchain-transactions');
       if (metrics) {
         expect(metrics.reconnectAttempts).toBeGreaterThanOrEqual(1);
       }
@@ -247,7 +247,7 @@ describe('HorizonStreamService', () => {
       // Now trigger an error
       onErrorHandler(new Error('Error after success'));
 
-      const metrics = service.getStreamMetrics('petchain-transactions');
+      const metrics = service.getStreamMetrics('catchain-transactions');
       if (metrics) {
         expect(metrics.consecutiveFailures).toBe(1); // Should be reset to 1, not 2
       }
@@ -260,9 +260,9 @@ describe('HorizonStreamService', () => {
     it('allows stopping individual streams without affecting others', async () => {
       await service.startTransactionStream(['GACCOUNT1']);
 
-      const manager1 = service['streamManagers'].get('petchain-transactions');
+      const manager1 = service['streamManagers'].get('catchain-transactions');
 
-      service.stopStream('petchain-transactions');
+      service.stopStream('catchain-transactions');
 
       expect(manager1).toBeDefined();
       expect(mockCloseFunction).toHaveBeenCalled();
@@ -289,7 +289,7 @@ describe('HorizonStreamService', () => {
 
       service.on('transaction', (event: StreamEvent) => {
         expect(event.type).toBe('transaction');
-        const txData = event.data as PetChainTransaction;
+        const txData = event.data as CatChainTransaction;
         expect(txData.hash).toBe('hash123');
         expect(txData.sourceAccount).toBe('GACCOUNT1');
         expect(txData.successful).toBe(true);
@@ -309,7 +309,7 @@ describe('HorizonStreamService', () => {
       onMessageHandler(mockTx);
       jest.advanceTimersByTime(10);
 
-      const cursor = await mockCursorStorage.getCursor('petchain-transactions');
+      const cursor = await mockCursorStorage.getCursor('catchain-transactions');
       expect(cursor).toBe('new_cursor_456');
     });
 
@@ -333,7 +333,7 @@ describe('HorizonStreamService', () => {
       });
 
       service.on('transaction', (event: StreamEvent) => {
-        const txData = event.data as PetChainTransaction;
+        const txData = event.data as CatChainTransaction;
         expect(txData.operations).toHaveLength(1);
         expect(txData.operations[0].type).toBe('payment');
       });
@@ -417,10 +417,10 @@ describe('HorizonStreamService', () => {
     it('returns metrics for specific stream', async () => {
       await service.startTransactionStream(['GACCOUNT1']);
 
-      const metrics = service.getStreamMetrics('petchain-transactions');
+      const metrics = service.getStreamMetrics('catchain-transactions');
 
       expect(metrics).toMatchObject({
-        streamId: 'petchain-transactions',
+        streamId: 'catchain-transactions',
         isHealthy: true,
         reconnectAttempts: 0,
         consecutiveFailures: 0,
@@ -432,9 +432,9 @@ describe('HorizonStreamService', () => {
 
       const allMetrics = service.getStreamMetrics();
 
-      expect(allMetrics).toHaveProperty('petchain-transactions');
-      expect(allMetrics['petchain-transactions']).toMatchObject({
-        streamId: 'petchain-transactions',
+      expect(allMetrics).toHaveProperty('catchain-transactions');
+      expect(allMetrics['catchain-transactions']).toMatchObject({
+        streamId: 'catchain-transactions',
         isHealthy: true,
       });
     });

@@ -12,15 +12,15 @@ module.exports = {
   apps: {
     'ios.debug': {
       type: 'ios.app',
-      binaryPath: 'ios/build/Build/Products/Debug-iphonesimulator/PetChain.app',
+      binaryPath: 'ios/build/Build/Products/Debug-iphonesimulator/CatChain.app',
       build:
-        'xcodebuild -workspace ios/PetChain.xcworkspace -scheme PetChain -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build',
+        'xcodebuild -workspace ios/CatChain.xcworkspace -scheme CatChain -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build',
     },
     'ios.release': {
       type: 'ios.app',
-      binaryPath: 'ios/build/Build/Products/Release-iphonesimulator/PetChain.app',
+      binaryPath: 'ios/build/Build/Products/Release-iphonesimulator/CatChain.app',
       build:
-        'xcodebuild -workspace ios/PetChain.xcworkspace -scheme PetChain -configuration Release -sdk iphonesimulator -derivedDataPath ios/build',
+        'xcodebuild -workspace ios/CatChain.xcworkspace -scheme CatChain -configuration Release -sdk iphonesimulator -derivedDataPath ios/build',
     },
     'android.debug': {
       type: 'android.apk',

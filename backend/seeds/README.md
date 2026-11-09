@@ -1,6 +1,6 @@
-# PetChain Database Seeding
+# CatChain Database Seeding
 
-This directory contains the database seeding system for PetChain development and testing. It generates realistic test data including sample users, pets, medical records, appointments, and medications.
+This directory contains the database seeding system for CatChain development and testing. It generates realistic test data including sample users, pets, medical records, appointments, and medications.
 
 ## Overview
 
@@ -167,7 +167,7 @@ The test suite verifies:
 ## Database Requirements
 
 The seeding system requires:
-- PostgreSQL database with PetChain schema
+- PostgreSQL database with CatChain schema
 - All migrations applied (run `npm run migrate` first)
 - Valid `DATABASE_URL` environment variable
 
@@ -177,7 +177,7 @@ The seeding system requires:
 
 ```bash
 # Set DATABASE_URL
-export DATABASE_URL="postgresql://postgres:postgres@localhost:5432/petchain"
+export DATABASE_URL="postgresql://postgres:postgres@localhost:5432/catchain"
 
 # Run migrations
 npm run migrate
@@ -191,8 +191,8 @@ npm run seed
 ```bash
 # Start PostgreSQL
 docker run -d \
-  --name petchain-db \
-  -e POSTGRES_DB=petchain \
+  --name catchain-db \
+  -e POSTGRES_DB=catchain \
   -e POSTGRES_PASSWORD=postgres \
   -p 5432:5432 \
   postgres:15
@@ -226,7 +226,7 @@ npm run seed
 ### "No DATABASE_URL provided"
 
 ```bash
-export DATABASE_URL="postgresql://user:password@localhost:5432/petchain"
+export DATABASE_URL="postgresql://user:password@localhost:5432/catchain"
 ```
 
 ### "Migrations not applied"

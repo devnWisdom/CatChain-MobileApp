@@ -317,7 +317,7 @@ export const exportVaccinationCertificate = (
 ): string => {
   const history = getVaccinationHistory(medicalRecords.filter((record) => record.petId === pet.id));
   const lines = [
-    'PetChain Vaccination Certificate',
+    'CatChain Vaccination Certificate',
     `Issued: ${issuedAt.toISOString()}`,
     '',
     `Pet: ${pet.name}`,

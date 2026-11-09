@@ -12,7 +12,7 @@ export const PERMISSION_RATIONALES: Record<PermissionType, PermissionRationale> 
   camera: {
     title: 'Camera Access',
     description:
-      "PetChain needs camera access to scan your pet's QR code and instantly retrieve their medical records.",
+      "CatChain needs camera access to scan your pet's QR code and instantly retrieve their medical records.",
     icon: '📷',
     benefits: [
       'Scan pet QR codes for instant record access',
@@ -25,7 +25,7 @@ export const PERMISSION_RATIONALES: Record<PermissionType, PermissionRationale> 
   notifications: {
     title: 'Notification Access',
     description:
-      "PetChain uses notifications to remind you about your pet's medications, upcoming vet appointments, and vaccination due dates.",
+      "CatChain uses notifications to remind you about your pet's medications, upcoming vet appointments, and vaccination due dates.",
     icon: '🔔',
     benefits: [
       'Medication reminders so you never miss a dose',
@@ -38,7 +38,7 @@ export const PERMISSION_RATIONALES: Record<PermissionType, PermissionRationale> 
   location: {
     title: 'Location Access',
     description:
-      'PetChain uses your location to help you find nearby veterinary clinics and emergency pet services.',
+      'CatChain uses your location to help you find nearby veterinary clinics and emergency pet services.',
     icon: '📍',
     benefits: [
       'Find nearby vet clinics instantly',
@@ -51,7 +51,7 @@ export const PERMISSION_RATIONALES: Record<PermissionType, PermissionRationale> 
   calendar: {
     title: 'Calendar Access',
     description:
-      'PetChain uses your calendar only when you choose to export appointments, so vet visits show up alongside the rest of your day.',
+      'CatChain uses your calendar only when you choose to export appointments, so vet visits show up alongside the rest of your day.',
     icon: '📅',
     benefits: [
       'Vet visits appear in your own calendar app',

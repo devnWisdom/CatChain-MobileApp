@@ -138,7 +138,7 @@ export function createApp(): Express {
     }
     res.json({
       ok: true,
-      service: 'petchain-api',
+      service: 'catchain-api',
       timestamp: new Date().toISOString(),
       pool,
     });
@@ -148,13 +148,13 @@ export function createApp(): Express {
     if (!isReady) {
       res.status(503).json({
         ok: false,
-        service: 'petchain-api',
+        service: 'catchain-api',
         reason: 'Shutting down — draining connections',
         timestamp: new Date().toISOString(),
       });
       return;
     }
-    res.json({ ok: true, service: 'petchain-api', timestamp: new Date().toISOString() });
+    res.json({ ok: true, service: 'catchain-api', timestamp: new Date().toISOString() });
   });
 
   // --- Application routes ------------------------------------------------

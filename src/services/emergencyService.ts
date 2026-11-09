@@ -12,7 +12,7 @@ import { requestForegroundLocationPermission } from './permissionService';
 export const LOCATION_PERMISSION_RATIONALE = {
   title: 'Location Access for Emergency',
   message:
-    'PetChain uses your location only while the app is open to find nearby vet clinics and send your position during an SOS. Your location is never stored or shared without your action.',
+    'CatChain uses your location only while the app is open to find nearby vet clinics and send your position during an SOS. Your location is never stored or shared without your action.',
   buttonPositive: 'Allow While Using App',
   buttonNegative: 'Not Now',
 } as const;

@@ -3,7 +3,7 @@ import axios from 'axios';
 import type { Pet } from '../models/Pet';
 import { PetSharingError } from './petProfileSharingService';
 
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'https://api.petchain.com';
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'https://api.catchain.com';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 

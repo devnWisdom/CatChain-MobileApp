@@ -34,19 +34,19 @@ const VECTOR_B: MedicalCommitment = {
 const GOLDEN = {
   a: {
     canonical:
-      '{"domain":"petchain.medical.commitment","fields":{"issuedAt":1735689600000,"issuer":"GABC123","payloadHash":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","petId":"pet_abc","recordId":"rec_001"},"version":1}',
+      '{"domain":"catchain.medical.commitment","fields":{"issuedAt":1735689600000,"issuer":"GABC123","payloadHash":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","petId":"pet_abc","recordId":"rec_001"},"version":1}',
     sha256: '87dce2b771b56cdb0c57a67872a882724dfccf57cc24faf80a0cd70c280eb0c3',
   },
   b: {
     canonical:
-      '{"domain":"petchain.medical.commitment","fields":{"issuedAt":0,"issuer":"GXYZ","payloadHash":"deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef","petId":"pet_xyz","recordId":"rec_002"},"version":1}',
+      '{"domain":"catchain.medical.commitment","fields":{"issuedAt":0,"issuer":"GXYZ","payloadHash":"deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef","petId":"pet_xyz","recordId":"rec_002"},"version":1}',
     sha256: '4c0214f74ccdce3287e7f0846d861bf761fd008429cec210fed278845bc91e8f',
   },
 };
 
 describe('canonicalizeMedicalCommitment — golden vectors', () => {
   it('exposes a stable domain tag and version', () => {
-    expect(MEDICAL_COMMITMENT_DOMAIN).toBe('petchain.medical.commitment');
+    expect(MEDICAL_COMMITMENT_DOMAIN).toBe('catchain.medical.commitment');
     expect(MEDICAL_COMMITMENT_VERSION).toBe(1);
   });
 

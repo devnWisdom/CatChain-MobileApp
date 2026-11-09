@@ -35,7 +35,7 @@ jest.mock('react-native-keychain', () => ({
   getGenericPassword: jest.fn((opts?: { service?: string }) => {
     if (mockGetGenericPasswordThrows) throw mockGetGenericPasswordThrows;
     const val = mockKeychainStore[opts?.service ?? '__default__'];
-    return Promise.resolve(val ? { username: 'petchain_biometric_user', password: val } : false);
+    return Promise.resolve(val ? { username: 'catchain_biometric_user', password: val } : false);
   }),
   resetGenericPassword: jest.fn((opts?: { service?: string }) => {
     if (mockResetGenericPasswordThrows) throw mockResetGenericPasswordThrows;
@@ -61,8 +61,8 @@ import {
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
-const BIOMETRIC_SERVICE = 'com.petchain.biometric.credential';
-const CREDENTIAL_MARKER = 'petchain:biometric:enrolled';
+const BIOMETRIC_SERVICE = 'com.catchain.biometric.credential';
+const CREDENTIAL_MARKER = 'catchain:biometric:enrolled';
 
 // ─── Setup / Teardown ────────────────────────────────────────────────────────
 

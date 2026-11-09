@@ -1,5 +1,5 @@
 /**
- * Swagger UI Express server for PetChain API documentation.
+ * Swagger UI Express server for CatChain API documentation.
  *
  * Serves the interactive API docs at GET /api/docs
  * Serves the raw OpenAPI JSON at GET /api/docs/openapi.json
@@ -65,7 +65,7 @@ function createDocsAuthMiddleware(apiKey?: string) {
 // ─── Swagger UI options ───────────────────────────────────────────────────────
 
 const swaggerUiOptions: swaggerUi.SwaggerUiOptions = {
-  customSiteTitle: 'PetChain API Docs',
+  customSiteTitle: 'CatChain API Docs',
   customCss: `
     .swagger-ui .topbar { background-color: #1a1a2e; }
     .swagger-ui .topbar .download-url-wrapper { display: none; }
@@ -174,7 +174,7 @@ export function createStandaloneDocsServer(
   mountSwaggerUI(app, options);
 
   app.listen(port, () => {
-    console.log(`\n🚀 PetChain API Docs server running`);
+    console.log(`\n🚀 CatChain API Docs server running`);
     console.log(`   Swagger UI: http://localhost:${port}${docsPath}`);
     console.log(`   OpenAPI JSON: http://localhost:${port}${docsPath}/openapi.json\n`);
   });

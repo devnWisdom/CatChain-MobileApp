@@ -49,7 +49,7 @@ interface TrainingSample {
   label: 0 | 1;
 }
 
-const MODEL_VERSION = 'petchain-logreg-v1';
+const MODEL_VERSION = 'catchain-logreg-v1';
 const ALERT_THRESHOLD = 0.65;
 const MEDIUM_THRESHOLD = 0.42;
 

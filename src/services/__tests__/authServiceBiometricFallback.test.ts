@@ -104,7 +104,7 @@ describe('authService — Biometric Fallback (Issue #404)', () => {
       expect(result.fallbackReason).toBe('max_attempts_reached');
       // Should persist pin preference
       expect(SecureStore.setItemAsync).toHaveBeenCalledWith(
-        'com.petchain.auth.biometric.fallback.pref',
+        'com.catchain.auth.biometric.fallback.pref',
         'pin',
       );
     });
@@ -134,7 +134,7 @@ describe('authService — Biometric Fallback (Issue #404)', () => {
     it('deletes the fallback preference key', async () => {
       await clearBiometricFallbackPreference();
       expect(SecureStore.deleteItemAsync).toHaveBeenCalledWith(
-        'com.petchain.auth.biometric.fallback.pref',
+        'com.catchain.auth.biometric.fallback.pref',
       );
     });
   });

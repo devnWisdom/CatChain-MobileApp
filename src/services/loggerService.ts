@@ -39,7 +39,7 @@ const LOG_LEVELS: Record<LogLevel, number> = {
 
 // ─── Storage Keys ─────────────────────────────────────────────────────────────
 
-const STORAGE_KEY = '@petchain_logs';
+const STORAGE_KEY = '@catchain_logs';
 
 // ─── Logger Service ───────────────────────────────────────────────────────────
 

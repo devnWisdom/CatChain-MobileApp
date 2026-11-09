@@ -60,7 +60,7 @@ const AppointmentDetailScreen: React.FC<AppointmentDetailScreenProps> = ({ route
       await Share.share({
         message: `Check-in QR: ${qrUrl}`,
         url: qrUrl,
-        title: 'PetChain Check-in QR',
+        title: 'CatChain Check-in QR',
       });
     } catch (err) {
       // ignore

@@ -1,5 +1,5 @@
 /**
- * PetChain API Documentation — Public exports
+ * CatChain API Documentation — Public exports
  *
  * This module is the single entry point for all documentation tooling.
  *

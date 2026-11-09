@@ -1,5 +1,5 @@
 /**
- * Input validation utilities for PetChain Mobile App.
+ * Input validation utilities for CatChain Mobile App.
  *
  * All validators are pure functions that return a `ValidationResult`:
  *   { isValid: true,  error: null }   — passes validation

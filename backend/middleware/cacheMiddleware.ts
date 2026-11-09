@@ -72,7 +72,7 @@ export function cacheMiddleware(
 
 /**
  * Cache middleware for `GET /api/pets/:id`.
- * Key: `petchain:cache:pet:<id>`  TTL: 1 hour
+ * Key: `catchain:cache:pet:<id>`  TTL: 1 hour
  */
 export function petProfileCacheMiddleware(): RequestHandler {
   return cacheMiddleware((req) => CacheKeys.pet(String(req.params.id)), CACHE_TTL.PET);
@@ -81,7 +81,7 @@ export function petProfileCacheMiddleware(): RequestHandler {
 /**
  * Cache middleware for `GET /api/pets?ownerId=<id>` and
  * `GET /api/pets/owner/:ownerId`.
- * Key: `petchain:cache:owner:<ownerId>:pets`  TTL: 1 hour
+ * Key: `catchain:cache:owner:<ownerId>:pets`  TTL: 1 hour
  */
 export function petsByOwnerCacheMiddleware(): RequestHandler {
   return cacheMiddleware((req) => {
@@ -95,7 +95,7 @@ export function petsByOwnerCacheMiddleware(): RequestHandler {
 
 /**
  * Cache middleware for `GET /api/vets/:id`.
- * Key: `petchain:cache:vet:<id>`  TTL: 6 hours
+ * Key: `catchain:cache:vet:<id>`  TTL: 6 hours
  */
 export function vetProfileCacheMiddleware(): RequestHandler {
   return cacheMiddleware((req) => CacheKeys.vet(String(req.params.id)), CACHE_TTL.VET);
@@ -106,7 +106,7 @@ export function vetProfileCacheMiddleware(): RequestHandler {
  *
  * The cache key encodes the full query string so that different search
  * parameters produce independent cache entries.
- * Key: `petchain:cache:vets:dir:<encoded-query>`  TTL: 6 hours
+ * Key: `catchain:cache:vets:dir:<encoded-query>`  TTL: 6 hours
  */
 export function vetDirectoryCacheMiddleware(): RequestHandler {
   return cacheMiddleware((req) => {
@@ -123,7 +123,7 @@ export function vetDirectoryCacheMiddleware(): RequestHandler {
 
 /**
  * Cache middleware for breed information.
- * Key: `petchain:cache:breed:<name>`  TTL: 24 hours
+ * Key: `catchain:cache:breed:<name>`  TTL: 24 hours
  */
 export function breedCacheMiddleware(): RequestHandler {
   return cacheMiddleware((req) => {

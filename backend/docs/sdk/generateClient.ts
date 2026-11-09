@@ -1,12 +1,12 @@
 /**
- * TypeScript client SDK generator for the PetChain API.
+ * TypeScript client SDK generator for the CatChain API.
  *
  * Generates a fully-typed Axios-based client from the OpenAPI spec.
  *
  * Usage:
  *   npx ts-node backend/docs/sdk/generateClient.ts
  *
- * Output: backend/docs/sdk/generated/petchain-client.ts
+ * Output: backend/docs/sdk/generated/catchain-client.ts
  */
 
 import * as fs from 'fs';
@@ -125,7 +125,7 @@ function generateSdkFile(endpoints: EndpointDef[]): string {
   const methods = endpoints.map(generateMethod).join('\n');
 
   return `/**
- * PetChain API — TypeScript Client SDK
+ * CatChain API — TypeScript Client SDK
  *
  * Auto-generated from OpenAPI spec. Do not edit manually.
  * Regenerate with: npx ts-node backend/docs/sdk/generateClient.ts
@@ -137,8 +137,8 @@ import axios, { type AxiosInstance, type AxiosResponse, type AxiosRequestConfig 
 
 // ─── Configuration ────────────────────────────────────────────────────────────
 
-export interface PetChainClientConfig {
-  /** API base URL (default: https://api.petchain.app/api) */
+export interface CatChainClientConfig {
+  /** API base URL (default: https://api.catchain.app/api) */
   baseUrl?: string;
   /** JWT access token for authenticated requests */
   token?: string;
@@ -150,13 +150,13 @@ export interface PetChainClientConfig {
 
 // ─── Client class ─────────────────────────────────────────────────────────────
 
-export class PetChainClient {
+export class CatChainClient {
   private client: AxiosInstance;
   private token: string | null = null;
 
-  constructor(config: PetChainClientConfig = {}) {
+  constructor(config: CatChainClientConfig = {}) {
     const {
-      baseUrl = 'https://api.petchain.app/api',
+      baseUrl = 'https://api.catchain.app/api',
       token,
       timeoutMs = 10000,
       axiosConfig = {},
@@ -194,7 +194,7 @@ export class PetChainClient {
           const data = error.response?.data as { error?: { message?: string; code?: string } } | undefined;
           const message = data?.error?.message || error.message;
           const code = data?.error?.code || \`HTTP_\${status}\`;
-          throw new PetChainApiError(message, code, status);
+          throw new CatChainApiError(message, code, status);
         }
         throw error;
       },
@@ -217,40 +217,40 @@ ${methods}
 
 // ─── Error class ──────────────────────────────────────────────────────────────
 
-export class PetChainApiError extends Error {
+export class CatChainApiError extends Error {
   constructor(
     message: string,
     public readonly code: string,
     public readonly status?: number,
   ) {
     super(message);
-    this.name = 'PetChainApiError';
+    this.name = 'CatChainApiError';
   }
 }
 
 // ─── Factory function ─────────────────────────────────────────────────────────
 
 /**
- * Create a pre-configured PetChain API client.
+ * Create a pre-configured CatChain API client.
  *
  * @example
  * \`\`\`ts
- * const client = createPetChainClient({ token: 'your-jwt-token' });
+ * const client = createCatChainClient({ token: 'your-jwt-token' });
  * const pets = await client.listPets();
  * \`\`\`
  */
-export function createPetChainClient(config?: PetChainClientConfig): PetChainClient {
-  return new PetChainClient(config);
+export function createCatChainClient(config?: CatChainClientConfig): CatChainClient {
+  return new CatChainClient(config);
 }
 
-export default PetChainClient;
+export default CatChainClient;
 `;
 }
 
 // ─── Main ─────────────────────────────────────────────────────────────────────
 
 async function main(): Promise<void> {
-  console.log('🔧 Generating PetChain TypeScript client SDK...');
+  console.log('🔧 Generating CatChain TypeScript client SDK...');
 
   // Dynamically import the spec (avoids circular dep issues at generation time)
   const { openApiSpec } = await import('../openapi/spec');
@@ -267,7 +267,7 @@ async function main(): Promise<void> {
     fs.mkdirSync(outputDir, { recursive: true });
   }
 
-  const outputPath = path.join(outputDir, 'petchain-client.ts');
+  const outputPath = path.join(outputDir, 'catchain-client.ts');
   fs.writeFileSync(outputPath, sdkContent, 'utf-8');
 
   console.log(`✅ SDK generated: ${outputPath}`);

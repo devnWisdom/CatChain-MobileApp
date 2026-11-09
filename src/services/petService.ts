@@ -119,7 +119,7 @@ export class PetServiceError extends Error {
 // CONSTANTS
 // ─────────────────────────────────────────────
 
-const _QR_DEEP_LINK_PREFIX = 'petchain://pet/';
+const _QR_DEEP_LINK_PREFIX = 'catchain://pet/';
 const _PETS_ENDPOINT = '/pets';
 
 // ─────────────────────────────────────────────

@@ -69,13 +69,13 @@ jobs:
 
       - name: Download APK
         run: |
-          curl -L "${{ steps.wait-build.outputs.apk-url }}" -o petchain-preview.apk
+          curl -L "${{ steps.wait-build.outputs.apk-url }}" -o catchain-preview.apk
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
-          name: petchain-preview-apk
-          path: petchain-preview.apk
+          name: catchain-preview-apk
+          path: catchain-preview.apk
           retention-days: 7
 
   e2e-android:
@@ -90,7 +90,7 @@ jobs:
       - name: Download Preview APK
         uses: actions/download-artifact@v4
         with:
-          name: petchain-preview-apk
+          name: catchain-preview-apk
 
       - name: Enable KVM (hardware acceleration)
         run: |
@@ -125,7 +125,7 @@ jobs:
           echo "$HOME/.maestro/bin" >> $GITHUB_PATH
 
       - name: Install APK on emulator
-        run: adb install petchain-preview.apk
+        run: adb install catchain-preview.apk
 
       - name: Run Maestro smoke test
         run: maestro test .maestro/flows/smoke-test.yaml --format junit --output maestro-results.xml
@@ -146,7 +146,7 @@ jobs:
         with:
           payload: |
             {
-              "text": "${{ steps.maestro-run.outcome == 'success' && '✅' || '❌' }} *PetChain E2E Tests — ${{ steps.maestro-run.outcome == 'success' && 'PASSED' || 'FAILED' }}*",
+              "text": "${{ steps.maestro-run.outcome == 'success' && '✅' || '❌' }} *CatChain E2E Tests — ${{ steps.maestro-run.outcome == 'success' && 'PASSED' || 'FAILED' }}*",
               "blocks": [
                 {
                   "type": "section",

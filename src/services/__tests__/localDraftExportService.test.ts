@@ -79,18 +79,18 @@ describe('localDraftExportService', () => {
 
     expect(summary).toMatchObject({ clinicalNoteDraftCount: 1, pendingChangeCount: 1 });
     expect(encryptedFile).toMatchObject({
-      format: 'petchain-local-drafts',
+      format: 'catchain-local-drafts',
       algorithm: 'AES-256-CBC+HMAC-SHA256',
       keyDerivation: 'PBKDF2-SHA256',
       iterations: 150_000,
     });
     expect(JSON.stringify(encryptedFile)).not.toContain('private note');
     expect(Sharing.shareAsync).toHaveBeenCalledWith(
-      expect.stringContaining('petchain-local-drafts-'),
+      expect.stringContaining('catchain-local-drafts-'),
       expect.objectContaining({ mimeType: 'application/json' }),
     );
     expect(FileSystem.deleteAsync).toHaveBeenCalledWith(
-      expect.stringContaining('petchain-local-drafts-'),
+      expect.stringContaining('catchain-local-drafts-'),
       { idempotent: true },
     );
   });

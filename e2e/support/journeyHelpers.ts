@@ -10,14 +10,14 @@ import { by, device, element, expect as detoxExpect, waitFor } from 'detox';
  */
 
 export const SYNTHETIC = {
-  email: 'journey-user@petchain.test',
+  email: 'journey-user@catchain.test',
   password: 'JourneyPass123!',
   name: 'Journey User',
   // 6-digit app-lock PIN — synthetic, not a real secret.
   pin: '246810',
   // Fake QR payload; the backend fixture resolves this to a seeded pet.
-  petQrPayload: 'petchain://pet/pet_fixture_0001',
-  malformedQrPayload: 'not-a-petchain-uri',
+  petQrPayload: 'catchain://pet/pet_fixture_0001',
+  malformedQrPayload: 'not-a-catchain-uri',
   // Synthetic card accepted by the deterministic payment fixture.
   card: {
     number: '4242424242424242',

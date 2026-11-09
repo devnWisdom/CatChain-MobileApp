@@ -14,7 +14,7 @@ import type {
   TrustlineTransaction,
   AddTrustlineParams,
   RemoveTrustlineParams,
-  PetChainAssetDefinition,
+  CatChainAssetDefinition,
 } from '../models/Trustline';
 
 // ─── Network config ───────────────────────────────────────────────────────────
@@ -33,22 +33,22 @@ export const XLM_RESERVE_PER_TRUSTLINE = 0.5;
 /** Base account reserve (2 XLM) */
 const BASE_RESERVE_XLM = 2;
 
-// ─── PetChain asset registry ──────────────────────────────────────────────────
+// ─── CatChain asset registry ──────────────────────────────────────────────────
 
-export const PETCHAIN_ASSETS: PetChainAssetDefinition[] = [
+export const CATCHAIN_ASSETS: CatChainAssetDefinition[] = [
   {
     assetCode: 'PETC',
     issuerPublicKey:
-      process.env.PETCHAIN_ISSUER_PUBLIC_KEY ??
+      process.env.CATCHAIN_ISSUER_PUBLIC_KEY ??
       'GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5',
-    name: 'PetChain Token',
-    description: 'Core utility token for the PetChain ecosystem',
+    name: 'CatChain Token',
+    description: 'Core utility token for the CatChain ecosystem',
     iconEmoji: '🐾',
   },
   {
     assetCode: 'VETH',
     issuerPublicKey:
-      process.env.PETCHAIN_ISSUER_PUBLIC_KEY ??
+      process.env.CATCHAIN_ISSUER_PUBLIC_KEY ??
       'GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5',
     name: 'Vet Health Credit',
     description: 'Redeemable credits for veterinary services',
@@ -57,15 +57,15 @@ export const PETCHAIN_ASSETS: PetChainAssetDefinition[] = [
   {
     assetCode: 'PAWP',
     issuerPublicKey:
-      process.env.PETCHAIN_ISSUER_PUBLIC_KEY ??
+      process.env.CATCHAIN_ISSUER_PUBLIC_KEY ??
       'GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5',
     name: 'PawPoints',
-    description: 'Loyalty reward points earned through PetChain activity',
+    description: 'Loyalty reward points earned through CatChain activity',
     iconEmoji: '⭐',
   },
 ];
 
-const PETCHAIN_ASSET_CODES = new Set(PETCHAIN_ASSETS.map((a) => a.assetCode));
+const CATCHAIN_ASSET_CODES = new Set(CATCHAIN_ASSETS.map((a) => a.assetCode));
 
 // ─── Error class ──────────────────────────────────────────────────────────────
 
@@ -195,12 +195,12 @@ function parseBalance(balances: StellarSdk.Horizon.HorizonApi.BalanceLine[]): {
       trustlines.push({
         assetCode: code,
         issuerPublicKey: issuer,
-        issuerLabel: PETCHAIN_ASSETS.find((a) => a.assetCode === code)?.name,
+        issuerLabel: CATCHAIN_ASSETS.find((a) => a.assetCode === code)?.name,
         balance: b.balance,
         limit: b.limit,
         sellingLiabilities: line.selling_liabilities ?? '0',
         buyingLiabilities: line.buying_liabilities ?? '0',
-        isPetChainAsset: PETCHAIN_ASSET_CODES.has(code),
+        isCatChainAsset: CATCHAIN_ASSET_CODES.has(code),
       });
     }
   }

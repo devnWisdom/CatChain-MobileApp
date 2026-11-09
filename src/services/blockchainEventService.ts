@@ -28,7 +28,7 @@ export interface TransactionEvent {
     amount?: string;
     data?: string;
   }>;
-  recordIds?: string[]; // PetChain record IDs affected by this transaction
+  recordIds?: string[]; // CatChain record IDs affected by this transaction
 }
 
 export interface VerificationUpdateEvent {
@@ -66,7 +66,7 @@ export interface EventServiceStatus {
 const DEFAULT_CONFIG: EventServiceConfig = {
   websocketUrl: config.isDev
     ? 'ws://localhost:3001/blockchain-events'
-    : 'wss://api.petchain.app/blockchain-events',
+    : 'wss://api.catchain.app/blockchain-events',
   reconnectDelay: 3000,
   maxReconnectAttempts: 10,
   heartbeatInterval: 30000,

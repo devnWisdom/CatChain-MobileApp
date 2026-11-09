@@ -32,7 +32,7 @@ const mockApi = api as unknown as { get: jest.Mock };
 const online = networkMonitor.isOnline as jest.Mock;
 const fs = FileSystem as unknown as { downloadAsync: jest.Mock; deleteAsync: jest.Mock };
 const DAY = 24 * 60 * 60 * 1000;
-const att = { id: 'att1', url: 'https://petchain.app/a', sizeBytes: 2048 };
+const att = { id: 'att1', url: 'https://catchain.app/a', sizeBytes: 2048 };
 
 beforeEach(() => {
   mockStore.clear();

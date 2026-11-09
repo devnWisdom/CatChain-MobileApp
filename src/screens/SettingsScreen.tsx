@@ -52,8 +52,8 @@ const BUILD_NUMBER = String(
   Constants.expoConfig?.ios?.buildNumber ?? Constants.expoConfig?.android?.versionCode ?? '1',
 );
 
-const TERMS_URL = 'https://petchain.app/terms';
-const PRIVACY_URL = 'https://petchain.app/privacy';
+const TERMS_URL = 'https://catchain.app/terms';
+const PRIVACY_URL = 'https://catchain.app/privacy';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -358,7 +358,7 @@ const SettingsScreen: React.FC<Props> = ({ onLogout, onOpenSyncRetryDetail }) =>
       t('settings.exportDataTitle', 'Export Your Data'),
       t(
         'settings.exportDataMessage',
-        'We will prepare a complete export of all your PetChain data (pets, records, appointments, medications) in JSON and PDF formats. You will receive an email with a download link when ready (expires in 48 hours).',
+        'We will prepare a complete export of all your CatChain data (pets, records, appointments, medications) in JSON and PDF formats. You will receive an email with a download link when ready (expires in 48 hours).',
       ),
       [
         { text: t('common.cancel'), style: 'cancel' },
@@ -1082,7 +1082,7 @@ const SettingsScreen: React.FC<Props> = ({ onLogout, onOpenSyncRetryDetail }) =>
             <Text style={[styles.modalBody, { color: colors.secondaryText }]}>
               {t(
                 'settings.draftExportPasswordMessage',
-                'Choose a passphrase with at least 12 characters. You will need it to open this export; PetChain cannot recover it.',
+                'Choose a passphrase with at least 12 characters. You will need it to open this export; CatChain cannot recover it.',
               )}
             </Text>
             <TextInput

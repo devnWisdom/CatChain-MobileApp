@@ -2,7 +2,7 @@
  * Guarded medical-document sharing (issue #965)
  *
  * The OS share sheet can hand a file to any app the user picks, beyond
- * PetChain's authorization boundary. Before a document leaves the vault we:
+ * CatChain's authorization boundary. Before a document leaves the vault we:
  *   1. require a fresh step-up confirmation (biometric / passcode),
  *   2. mint a short-lived, single-purpose export grant that expires,
  *   3. stamp a visible watermark and write an audit entry.
@@ -140,7 +140,7 @@ export function assertExportUsable(grant: Pick<ExportGrant, 'expiresAt'>, now: n
 /** Short, PHI-free watermark string. */
 export function buildWatermark(actorId: string, issuedAt: number): string {
   const stamp = new Date(issuedAt).toISOString().slice(0, 16).replace('T', ' ');
-  return `PetChain • shared by ${actorId} • ${stamp} UTC • confidential`;
+  return `CatChain • shared by ${actorId} • ${stamp} UTC • confidential`;
 }
 
 /** Builds an audit entry that is safe to persist — no PHI, no raw token. */

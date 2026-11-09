@@ -62,7 +62,7 @@ describe('reminderService.snooze', () => {
     (Notifications.getPermissionsAsync as jest.Mock).mockResolvedValue({ status: 'denied' });
 
     await expect(reminderService.snooze('reminder-1', 15)).rejects.toThrow(
-      'Notifications are turned off for PetChain',
+      'Notifications are turned off for CatChain',
     );
     expect(Notifications.scheduleNotificationAsync).not.toHaveBeenCalled();
   });

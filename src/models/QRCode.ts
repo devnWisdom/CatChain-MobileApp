@@ -104,7 +104,7 @@ export interface QRCode {
 
 /** Why a scan failed. */
 export enum QRScanErrorCode {
-  /** Not a PetChain QR code, or not parseable at all. */
+  /** Not a CatChain QR code, or not parseable at all. */
   MALFORMED = 'MALFORMED',
   /** Payload version is newer than this app build understands. */
   UNSUPPORTED_VERSION = 'UNSUPPORTED_VERSION',

@@ -59,7 +59,7 @@ describe('federationService', () => {
     it('creates a federation record with a Stellar keypair', () => {
       const record = claimFederatedAddress('vet-1', 'dr.test', CREDENTIAL_HASH);
 
-      expect(record.federatedAddress).toBe('dr.test*petchain.app');
+      expect(record.federatedAddress).toBe('dr.test*catchain.app');
       expect(record.stellarPublicKey).toBe('GPUBKEY123');
       expect(record.vetId).toBe('vet-1');
       expect(record.revokedAt).toBeUndefined();
@@ -83,28 +83,28 @@ describe('federationService', () => {
   describe('lookupFederation', () => {
     it('returns the record for a valid federated address', () => {
       claimFederatedAddress('vet-lookup', 'dr.lookup', CREDENTIAL_HASH);
-      const result = lookupFederation('dr.lookup*petchain.app', 'name');
+      const result = lookupFederation('dr.lookup*catchain.app', 'name');
       expect(result).not.toBeNull();
       expect(result!.vetId).toBe('vet-lookup');
     });
 
     it('returns null for unknown address', () => {
-      expect(lookupFederation('nobody*petchain.app', 'name')).toBeNull();
+      expect(lookupFederation('nobody*catchain.app', 'name')).toBeNull();
     });
 
     it('returns null for unsupported type', () => {
-      expect(lookupFederation('dr.lookup*petchain.app', 'id')).toBeNull();
+      expect(lookupFederation('dr.lookup*catchain.app', 'id')).toBeNull();
     });
 
     it('returns null for a revoked address', () => {
       claimFederatedAddress('vet-revlookup', 'dr.revlookup', CREDENTIAL_HASH);
       revokeVetCredential('vet-revlookup');
-      expect(lookupFederation('dr.revlookup*petchain.app', 'name')).toBeNull();
+      expect(lookupFederation('dr.revlookup*catchain.app', 'name')).toBeNull();
     });
   });
 
   describe('resolveFederationAddress — caching', () => {
-    const address = 'user*petchain.app';
+    const address = 'user*catchain.app';
     const resolvedRecord = { account_id: 'GPUBKEYRESOLVED', memo_type: 'text', memo: 'user-1' };
 
     it('returns cached result on cache hit (no upstream call)', async () => {
@@ -203,7 +203,7 @@ describe('federationService', () => {
       const signed = signMedicalRecord('mr-sign-1', RECORD_PAYLOAD, 'vet-signer');
 
       expect(signed.recordId).toBe('mr-sign-1');
-      expect(signed.vetFederatedAddress).toBe('dr.signer*petchain.app');
+      expect(signed.vetFederatedAddress).toBe('dr.signer*catchain.app');
       expect(signed.vetPublicKey).toBe('GPUBKEY123');
       expect(signed.signature).toBeTruthy();
     });
@@ -264,7 +264,7 @@ describe('federationService', () => {
       signMedicalRecord('mr-getsigned-1', RECORD_PAYLOAD, 'vet-getsigned');
       const result = getSignedRecord('mr-getsigned-1');
       expect(result).not.toBeNull();
-      expect(result!.vetFederatedAddress).toBe('dr.getsigned*petchain.app');
+      expect(result!.vetFederatedAddress).toBe('dr.getsigned*catchain.app');
     });
   });
 });

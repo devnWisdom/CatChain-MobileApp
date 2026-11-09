@@ -23,7 +23,7 @@ const router = express.Router();
 router.use(authenticateJWT);
 
 const JOB_TTL_SECONDS = 3600; // 1 hour
-const JOB_KEY_PREFIX = 'petchain:report:job:';
+const JOB_KEY_PREFIX = 'catchain:report:job:';
 
 type JobStatus = 'queued' | 'processing' | 'complete' | 'failed';
 

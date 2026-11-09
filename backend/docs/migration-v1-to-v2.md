@@ -21,8 +21,8 @@ Link: </api/v2>; rel="successor-version"
 
 | Version | Base URL |
 |---------|----------|
-| v1 (deprecated) | `https://api.petchain.app/api/v1` |
-| v2 (current) | `https://api.petchain.app/api/v2` |
+| v1 (deprecated) | `https://api.catchain.app/api/v1` |
+| v2 (current) | `https://api.catchain.app/api/v2` |
 
 The legacy `/api` prefix still routes to v1 behaviour but will be removed alongside v1.
 

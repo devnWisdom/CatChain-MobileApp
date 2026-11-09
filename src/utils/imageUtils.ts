@@ -32,7 +32,7 @@ export const pickImage = async (): Promise<ImagePickerResult | null> => {
 
       const granted = await requestAndroidPermission(mediaPermission, {
         title: 'Photo Permission',
-        message: 'PetChain needs access to your photos to upload pet pictures.',
+        message: 'CatChain needs access to your photos to upload pet pictures.',
         buttonPositive: 'Allow',
         buttonNegative: 'Cancel',
       });

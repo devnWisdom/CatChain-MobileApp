@@ -2,7 +2,7 @@
  * SQLite-backed notification store.
  *
  * Single source of truth for all in-app notifications.
- * Uses the same petchain.db database as localDB.ts.
+ * Uses the same catchain.db database as localDB.ts.
  */
 import * as SQLite from 'expo-sqlite';
 

@@ -1,7 +1,7 @@
 import CryptoJS from 'crypto-js';
 import * as SecureStore from 'expo-secure-store';
 
-const SALT_PREFIX = 'com.petchain.encryption.salt.';
+const SALT_PREFIX = 'com.catchain.encryption.salt.';
 
 export interface DerivedKey {
   key: string;

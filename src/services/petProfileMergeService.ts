@@ -20,7 +20,7 @@ const EDITABLE_FIELDS: readonly PetProfileField[] = [
   'dateOfBirth',
   'microchipId',
 ];
-const DRAFT_KEY_PREFIX = '@petchain/pet-profile-merge/';
+const DRAFT_KEY_PREFIX = '@catchain/pet-profile-merge/';
 
 export interface PetProfileConflict {
   field: PetProfileField;

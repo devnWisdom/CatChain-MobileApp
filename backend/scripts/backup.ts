@@ -30,7 +30,7 @@ const execFileAsync = promisify(execFile);
 // ─── Configuration ────────────────────────────────────────────────────────────
 
 const DATABASE_URL =
-  process.env.DATABASE_URL || 'postgresql://postgres:postgres@localhost:5432/petchain';
+  process.env.DATABASE_URL || 'postgresql://postgres:postgres@localhost:5432/catchain';
 const S3_BUCKET = process.env.BACKUP_S3_BUCKET || '';
 const S3_PREFIX = (process.env.BACKUP_S3_PREFIX || 'backups').replace(/\/$/, '');
 const S3_REGION = process.env.BACKUP_S3_REGION || 'us-east-1';
@@ -281,7 +281,7 @@ export async function sendAlert(summary: string, details: Record<string, unknown
     payload: {
       summary,
       severity: 'critical',
-      source: 'petchain-backup',
+      source: 'catchain-backup',
       custom_details: details,
     },
   });
@@ -327,7 +327,7 @@ async function withRetry<T>(fn: () => Promise<T>, attempts = 3, delayMs = 5000):
 
 export async function runBackup(): Promise<BackupResult> {
   const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-  const dumpPath = path.join(TEMP_DIR, `petchain-${timestamp}.dump`);
+  const dumpPath = path.join(TEMP_DIR, `catchain-${timestamp}.dump`);
   const gzPath = `${dumpPath}.gz`;
 
   logger.info('[backup] Starting backup', { timestamp });
@@ -392,7 +392,7 @@ export async function runBackup(): Promise<BackupResult> {
     const message = err instanceof Error ? err.message : String(err);
     logger.error('[backup] Backup failed', { error: message });
 
-    await sendAlert('PetChain backup failed', { error: message, timestamp }).catch(() => {});
+    await sendAlert('CatChain backup failed', { error: message, timestamp }).catch(() => {});
 
     // Cleanup temp files on failure
     for (const p of [dumpPath, gzPath]) {

@@ -64,7 +64,7 @@ export interface StoredMedicalRecord {
 
   // Federated vet signature fields
   vetSignature?: string; // Ed25519 signature over record hash
-  vetFederatedAddress?: string; // e.g. dr.smith*petchain.app
+  vetFederatedAddress?: string; // e.g. dr.smith*catchain.app
   vetPublicKey?: string; // Stellar public key of signing vet
   vetSignedAt?: string; // When the vet signed this record
 }
@@ -210,7 +210,7 @@ function seed() {
   const users = new Map<string, StoredUser>();
   users.set(userId, {
     id: userId,
-    email: 'demo@petchain.app',
+    email: 'demo@catchain.app',
     name: 'Demo User',
     phone: '+10000000000',
     role: UserRole.OWNER,

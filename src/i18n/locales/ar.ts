@@ -79,7 +79,7 @@ export default {
     draftExportFailed: 'تعذّر إنشاء نسخة المسودات المشفّرة.',
     draftExportPasswordTitle: 'تشفير المسودات المحلية',
     draftExportPasswordMessage:
-      'اختر عبارة مرور من 12 حرفًا على الأقل. ستحتاج إليها لفتح النسخة المصدّرة ولا يمكن لـ PetChain استعادتها.',
+      'اختر عبارة مرور من 12 حرفًا على الأقل. ستحتاج إليها لفتح النسخة المصدّرة ولا يمكن لـ CatChain استعادتها.',
     draftExportPasswordPlaceholder: 'عبارة مرور التصدير',
     draftExportPasswordConfirmPlaceholder: 'تأكيد عبارة المرور',
     createEncryptedExport: 'إنشاء نسخة مصدّرة مشفّرة',

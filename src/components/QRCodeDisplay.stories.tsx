@@ -24,7 +24,7 @@ const meta: Meta<typeof QRCodeDisplay> = {
     ),
   ],
   parameters: {
-    notes: 'Renders a PetChain QR code image with accessible alt text for the current pet.',
+    notes: 'Renders a CatChain QR code image with accessible alt text for the current pet.',
   },
 };
 

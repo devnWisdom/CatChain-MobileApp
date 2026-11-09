@@ -36,7 +36,7 @@ const EXPIRY_MS: Record<QRExpiry, number | null> = {
 
 const QR_TOKEN_PREFIX = '@qr_token_';
 
-const QR_PREFIX = 'PETCHAIN_QR';
+const QR_PREFIX = 'CATCHAIN_QR';
 const PET_ID_REGEX = /^[a-zA-Z0-9_-]{1,64}$/;
 const QR_IMAGE_BASE_URL = 'https://api.qrserver.com/v1/create-qr-code/';
 
@@ -215,8 +215,8 @@ export const sharePetQRCode = async (
   const payload = await generateQR(petData, options);
   const imageUrl = getQRImageUrl(payload);
   await Share.share({
-    title: `${petData.name}'s PetChain QR`,
-    message: `PetChain QR for ${petData.name}:\n${imageUrl}`,
+    title: `${petData.name}'s CatChain QR`,
+    message: `CatChain QR for ${petData.name}:\n${imageUrl}`,
     url: imageUrl,
   });
   return payload;
@@ -229,8 +229,8 @@ export const printPetQRCode = async (
   const payload = await generateQR(petData, options);
   const imageUrl = getQRImageUrl(payload);
   await Share.share({
-    title: `Print ${petData.name}'s PetChain QR`,
-    message: `Print or save this PetChain QR for ${petData.name}:\n${imageUrl}`,
+    title: `Print ${petData.name}'s CatChain QR`,
+    message: `Print or save this CatChain QR for ${petData.name}:\n${imageUrl}`,
     url: imageUrl,
   });
   return payload;
@@ -366,7 +366,7 @@ export const parseQRCodeData = (qrData: string): PetQRData => {
  * Works fully offline — no network call required.
  *
  * Returns a QRScanResult with:
- *  - valid: whether the QR is a genuine PetChain code
+ *  - valid: whether the QR is a genuine CatChain code
  *  - petId: the pet's ID
  *  - petData: embedded pet snapshot (v2 only)
  *  - version: format version number

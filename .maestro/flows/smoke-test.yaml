@@ -1,7 +1,7 @@
-appId: app.petchain.mobile.staging
+appId: app.catchain.mobile.staging
 ---
 - launchApp
-- assertVisible: "Welcome to PetChain"
+- assertVisible: "Welcome to CatChain"
 - tapOn: "Next"
 - assertVisible: "Secure Medical Records"
 - tapOn: "Next"
@@ -14,7 +14,7 @@ appId: app.petchain.mobile.staging
 - assertVisible: "Welcome Back"
 - assertVisible: "Sign in to PetMedTracka"
 - tapOn: "Email"
-- inputText: "test@petchain.app"
+- inputText: "test@catchain.app"
 - tapOn: "Password"
 - inputText: "SuperSecretPassword123"
 - tapOn: "Sign In"
@@ -26,7 +26,7 @@ appId: app.petchain.mobile.staging
     clearState: true
     env:
       RTL_FIXTURE_LOCALE: "ar"
-- assertVisible: "مرحبًا بك في PetChain"
+- assertVisible: "مرحبًا بك في CatChain"
 - tapOn: "التالي"
 - assertVisible: "سجلات طبية آمنة"
 - tapOn: "التالي"
@@ -39,7 +39,7 @@ appId: app.petchain.mobile.staging
 - assertVisible: "مرحبًا بعودتك"
 - assertVisible: "تسجيل الدخول إلى PetMedTracka"
 - tapOn: "البريد الإلكتروني"
-- inputText: "test@petchain.app"
+- inputText: "test@catchain.app"
 - tapOn: "كلمة المرور"
 - inputText: "SuperSecretPassword123"
 - tapOn: "تسجيل الدخول"

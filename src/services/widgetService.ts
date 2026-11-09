@@ -91,15 +91,15 @@ export interface WidgetData {
 
 // ─── Constants ───────────────────────────────────────────────────────────────
 
-const WIDGET_DATA_KEY = 'petchain_widget_data';
+const WIDGET_DATA_KEY = 'catchain_widget_data';
 const WIDGET_PREFS_KEY = 'widget_preferences';
 const WIDGET_UPDATE_INTERVAL = 5 * 60 * 1000; // 5 minutes
 
 // ─── Native Module Setup ───────────────────────────────────────────────────────
 
-const PetChainWidgetModule = Platform.select({
-  ios: () => NativeModules.PetChainWidget || {},
-  android: () => NativeModules.PetChainWidgetModule || {},
+const CatChainWidgetModule = Platform.select({
+  ios: () => NativeModules.CatChainWidget || {},
+  android: () => NativeModules.CatChainWidgetModule || {},
   default: () => ({}),
 })();
 
@@ -516,12 +516,12 @@ async function updateWidgetDisplay(data: WidgetData): Promise<void> {
     // Store in app local storage for widget to read
     await setItem(WIDGET_DATA_KEY, dataJson);
 
-    if (Platform.OS === 'ios' && PetChainWidgetModule.updateWidget) {
+    if (Platform.OS === 'ios' && CatChainWidgetModule.updateWidget) {
       // iOS: Use WidgetKit to update
-      await PetChainWidgetModule.updateWidget(data);
-    } else if (Platform.OS === 'android' && PetChainWidgetModule.updateWidget) {
+      await CatChainWidgetModule.updateWidget(data);
+    } else if (Platform.OS === 'android' && CatChainWidgetModule.updateWidget) {
       // Android: Use App Widget manager to update
-      await PetChainWidgetModule.updateWidget(data);
+      await CatChainWidgetModule.updateWidget(data);
     }
 
     console.log('[WidgetService] Widget display updated successfully');
@@ -655,10 +655,10 @@ export async function clearWidgetData(): Promise<void> {
     
     await setItem(WIDGET_DATA_KEY, JSON.stringify(emptyData));
     
-    if (Platform.OS === 'ios' && PetChainWidgetModule.updateWidget) {
-      await PetChainWidgetModule.updateWidget(emptyData);
-    } else if (Platform.OS === 'android' && PetChainWidgetModule.updateWidget) {
-      await PetChainWidgetModule.updateWidget(emptyData);
+    if (Platform.OS === 'ios' && CatChainWidgetModule.updateWidget) {
+      await CatChainWidgetModule.updateWidget(emptyData);
+    } else if (Platform.OS === 'android' && CatChainWidgetModule.updateWidget) {
+      await CatChainWidgetModule.updateWidget(emptyData);
     }
     console.log('[WidgetService] Widget data cleared successfully');
   } catch (error) {
@@ -673,11 +673,11 @@ export async function clearWidgetData(): Promise<void> {
  */
 export async function isWidgetAvailable(): Promise<boolean> {
   try {
-    if (Platform.OS === 'ios' && PetChainWidgetModule.isWidgetKitAvailable) {
-      return await PetChainWidgetModule.isWidgetKitAvailable();
+    if (Platform.OS === 'ios' && CatChainWidgetModule.isWidgetKitAvailable) {
+      return await CatChainWidgetModule.isWidgetKitAvailable();
     }
-    if (Platform.OS === 'android' && PetChainWidgetModule.isWidgetAvailable) {
-      return await PetChainWidgetModule.isWidgetAvailable();
+    if (Platform.OS === 'android' && CatChainWidgetModule.isWidgetAvailable) {
+      return await CatChainWidgetModule.isWidgetAvailable();
     }
     return false;
   } catch (error) {

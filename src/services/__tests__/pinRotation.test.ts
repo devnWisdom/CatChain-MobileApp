@@ -47,9 +47,9 @@ describe('Pin Rotation and Telemetry (Issue #902)', () => {
   describe('recordPinFailure', () => {
     it('converts pin-failure error into privacy-safe telemetry', () => {
       const error = new Error('SSL certificate pinning failed');
-      const telemetry = recordPinFailure(error, 'api.petchain.app');
+      const telemetry = recordPinFailure(error, 'api.catchain.app');
 
-      expect(telemetry.hostname).toBe('api.petchain.app');
+      expect(telemetry.hostname).toBe('api.catchain.app');
       expect(telemetry.timestamp).toBeDefined();
       expect(telemetry.errorType).toBeDefined();
       expect(telemetry.isBackupAvailable).toBeDefined();
@@ -57,34 +57,34 @@ describe('Pin Rotation and Telemetry (Issue #902)', () => {
 
     it('detects SSL errors', () => {
       const error = new Error('SSL_ERROR: certificate verification failed');
-      const telemetry = recordPinFailure(error, 'api.petchain.app');
+      const telemetry = recordPinFailure(error, 'api.catchain.app');
       expect(telemetry.errorType).toBe('ssl_error');
     });
 
     it('detects certificate errors', () => {
       const error = new Error('Certificate error: untrusted issuer');
-      const telemetry = recordPinFailure(error, 'api.petchain.app');
+      const telemetry = recordPinFailure(error, 'api.catchain.app');
       expect(telemetry.errorType).toBe('certificate_error');
     });
 
     it('detects pinning errors', () => {
       const error = new Error('Pin verification failed: fingerprint mismatch');
-      const telemetry = recordPinFailure(error, 'api.petchain.app');
+      const telemetry = recordPinFailure(error, 'api.catchain.app');
       expect(telemetry.errorType).toBe('pinning_error');
     });
 
     it('reports backup availability', () => {
-      // api.petchain.app has primary + backup
+      // api.catchain.app has primary + backup
       const telemetry = recordPinFailure(
         new Error('SSL certificate pinning failed'),
-        'api.petchain.app',
+        'api.catchain.app',
       );
       expect(telemetry.isBackupAvailable).toBe(true);
 
-      // staging.petchain.app has only primary
+      // staging.catchain.app has only primary
       const stagingTelemetry = recordPinFailure(
         new Error('SSL certificate pinning failed'),
-        'staging.petchain.app',
+        'staging.catchain.app',
       );
       expect(stagingTelemetry.isBackupAvailable).toBe(false);
     });
@@ -92,7 +92,7 @@ describe('Pin Rotation and Telemetry (Issue #902)', () => {
     it('does not include raw error messages in telemetry', () => {
       const rawError = 'This is a secret token: abc123def456';
       const error = new Error(rawError);
-      const telemetry = recordPinFailure(error, 'api.petchain.app');
+      const telemetry = recordPinFailure(error, 'api.catchain.app');
 
       // Telemetry should not contain the raw error message
       const telemetryStr = JSON.stringify(telemetry);
@@ -102,7 +102,7 @@ describe('Pin Rotation and Telemetry (Issue #902)', () => {
 
     it('does not include PII or health data', () => {
       const error = new Error('Connection failed for user@example.com');
-      const telemetry = recordPinFailure(error, 'api.petchain.app');
+      const telemetry = recordPinFailure(error, 'api.catchain.app');
 
       const telemetryStr = JSON.stringify(telemetry);
       expect(telemetryStr).not.toContain('user@example.com');
@@ -111,7 +111,7 @@ describe('Pin Rotation and Telemetry (Issue #902)', () => {
 
   describe('getPinsForHostname', () => {
     it('returns pins for configured hostname', () => {
-      const pins = getPinsForHostname('api.petchain.app');
+      const pins = getPinsForHostname('api.catchain.app');
       expect(Array.isArray(pins)).toBe(true);
       expect(pins.length).toBeGreaterThan(0);
       pins.forEach((pin) => {
@@ -128,19 +128,19 @@ describe('Pin Rotation and Telemetry (Issue #902)', () => {
   describe('validatePin', () => {
     it('accepts pin that matches primary', () => {
       const correctPin = 'sha256/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=';
-      const isValid = validatePin(correctPin, 'api.petchain.app');
+      const isValid = validatePin(correctPin, 'api.catchain.app');
       expect(isValid).toBe(true);
     });
 
     it('accepts pin that matches backup', () => {
       const backupPin = 'sha256/BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB=';
-      const isValid = validatePin(backupPin, 'api.petchain.app');
+      const isValid = validatePin(backupPin, 'api.catchain.app');
       expect(isValid).toBe(true);
     });
 
     it('rejects pin that matches neither primary nor backup', () => {
       const wrongPin = 'sha256/XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX=';
-      const isValid = validatePin(wrongPin, 'api.petchain.app');
+      const isValid = validatePin(wrongPin, 'api.catchain.app');
       expect(isValid).toBe(false);
     });
 
@@ -154,14 +154,14 @@ describe('Pin Rotation and Telemetry (Issue #902)', () => {
       const primary = 'sha256/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=';
       const backup = 'sha256/BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB=';
 
-      expect(validatePin(primary, 'api.petchain.app')).toBe(true);
-      expect(validatePin(backup, 'api.petchain.app')).toBe(true);
+      expect(validatePin(primary, 'api.catchain.app')).toBe(true);
+      expect(validatePin(backup, 'api.catchain.app')).toBe(true);
     });
   });
 
   describe('getPinStatus', () => {
     it('returns primary and backup pin metadata', () => {
-      const status = getPinStatus('api.petchain.app');
+      const status = getPinStatus('api.catchain.app');
 
       expect(status.primary).toBeDefined();
       expect(status.backup).toBeDefined();
@@ -170,7 +170,7 @@ describe('Pin Rotation and Telemetry (Issue #902)', () => {
     });
 
     it('returns rotation window when both pins exist', () => {
-      const status = getPinStatus('api.petchain.app');
+      const status = getPinStatus('api.catchain.app');
 
       if (status.primary && status.backup) {
         expect(status.rotationWindow).toBeDefined();
@@ -180,7 +180,7 @@ describe('Pin Rotation and Telemetry (Issue #902)', () => {
     });
 
     it('handles hostname with only primary pin', () => {
-      const status = getPinStatus('staging.petchain.app');
+      const status = getPinStatus('staging.catchain.app');
 
       expect(status.primary).toBeDefined();
       expect(status.backup).toBeUndefined();
@@ -230,7 +230,7 @@ describe('Pin Rotation and Telemetry (Issue #902)', () => {
 
   describe('no bypass mechanism', () => {
     it('getPinsForHostname never returns a bypass flag', () => {
-      const pins = getPinsForHostname('api.petchain.app');
+      const pins = getPinsForHostname('api.catchain.app');
       // Pins should be actual pin strings, not a bypass marker
       expect(pins).not.toContain('bypass');
       expect(pins).not.toContain('debug');
@@ -241,11 +241,11 @@ describe('Pin Rotation and Telemetry (Issue #902)', () => {
 
     it('validatePin has no debug override for production', () => {
       // No way to pass a debug flag or bypass value
-      const result = validatePin('sha256/INVALID', 'api.petchain.app');
+      const result = validatePin('sha256/INVALID', 'api.catchain.app');
       expect(result).toBe(false);
 
       // Trying to pass a debug-like value should still fail validation
-      const debugResult = validatePin('debug-bypass', 'api.petchain.app');
+      const debugResult = validatePin('debug-bypass', 'api.catchain.app');
       expect(debugResult).toBe(false);
     });
 
@@ -254,9 +254,9 @@ describe('Pin Rotation and Telemetry (Issue #902)', () => {
       const error = new Error('SSL certificate pinning failed');
 
       // recordPinFailure always returns telemetry, cannot opt out
-      const telemetry = recordPinFailure(error, 'api.petchain.app');
+      const telemetry = recordPinFailure(error, 'api.catchain.app');
       expect(telemetry).toBeDefined();
-      expect(telemetry.hostname).toBe('api.petchain.app');
+      expect(telemetry.hostname).toBe('api.catchain.app');
     });
   });
 
@@ -289,16 +289,16 @@ describe('Pin Rotation and Telemetry (Issue #902)', () => {
       const primary = 'sha256/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=';
       const backup = 'sha256/BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB=';
 
-      expect(validatePin(primary, 'api.petchain.app')).toBe(true);
-      expect(validatePin(backup, 'api.petchain.app')).toBe(true);
+      expect(validatePin(primary, 'api.catchain.app')).toBe(true);
+      expect(validatePin(backup, 'api.catchain.app')).toBe(true);
     });
 
     it('rejects both pins invalid (hard failure)', () => {
       const oldExpiredPin = 'sha256/YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY=';
       const newFailedPin = 'sha256/ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ=';
 
-      expect(validatePin(oldExpiredPin, 'api.petchain.app')).toBe(false);
-      expect(validatePin(newFailedPin, 'api.petchain.app')).toBe(false);
+      expect(validatePin(oldExpiredPin, 'api.catchain.app')).toBe(false);
+      expect(validatePin(newFailedPin, 'api.catchain.app')).toBe(false);
     });
   });
 });

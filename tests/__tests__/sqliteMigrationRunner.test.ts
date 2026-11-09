@@ -9,7 +9,7 @@ import {
   type SqliteMigration,
 } from '../../src/migrations/sqliteMigrationRunner';
 
-const mockDb = SQLite.openDatabaseSync('petchain.db') as any;
+const mockDb = SQLite.openDatabaseSync('catchain.db') as any;
 
 function makeMigration(
   version: string,

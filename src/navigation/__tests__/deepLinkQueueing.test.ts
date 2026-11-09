@@ -11,7 +11,7 @@ describe('Deep-Link Queueing During App-Lock (#908)', () => {
       // without waiting for app-lock verification
       // After fix: destination is queued until unlock completes
 
-      const mockDeepLink = 'petchain://pets/pet-123/dashboard';
+      const mockDeepLink = 'catchain://pets/pet-123/dashboard';
       // This should NOT navigate immediately on cold start
       expect(mockDeepLink).toBeDefined();
     });
@@ -24,8 +24,8 @@ describe('Deep-Link Queueing During App-Lock (#908)', () => {
       // 4. User unlocks
       // 5. Queued navigation replayed
       const queueNavigation = jest.fn();
-      queueNavigation('petchain://pets/pet-123');
-      expect(queueNavigation).toHaveBeenCalledWith('petchain://pets/pet-123');
+      queueNavigation('catchain://pets/pet-123');
+      expect(queueNavigation).toHaveBeenCalledWith('catchain://pets/pet-123');
     });
 
     it('should handle killed app state with pending deep link', () => {
@@ -65,7 +65,7 @@ describe('Deep-Link Queueing During App-Lock (#908)', () => {
     });
 
     it('should discard stale queued navigation if user logs out', () => {
-      // Queued: petchain://pets/pet-123
+      // Queued: catchain://pets/pet-123
       // User taps lock screen "logout"
       // Queued navigation discarded
       const discardQueuedNav = jest.fn();
@@ -97,7 +97,7 @@ describe('Deep-Link Queueing During App-Lock (#908)', () => {
       // First unlock attempt fails
       // Queue should still exist for next attempt
       const queue: string[] = [];
-      queue.push('petchain://pets/123');
+      queue.push('catchain://pets/123');
       expect(queue).toHaveLength(1);
       // After successful unlock, queue[0] is navigated
       queue.pop();
@@ -109,7 +109,7 @@ describe('Deep-Link Queueing During App-Lock (#908)', () => {
     it('should not log destination params containing sensitive data', () => {
       const consoleSpy = jest.spyOn(console, 'log').mockImplementation();
 
-      // Queue: petchain://pets/sensitive-pet-id/health
+      // Queue: catchain://pets/sensitive-pet-id/health
       // Should not appear in logs
       const sensitiveParam = 'sensitive-pet-id';
 
@@ -117,7 +117,7 @@ describe('Deep-Link Queueing During App-Lock (#908)', () => {
         // Correct: queue without logging
         // Wrong: console.log(`Queued: ${destination}`)
       });
-      queueNav('petchain://pets/sensitive-pet-id');
+      queueNav('catchain://pets/sensitive-pet-id');
 
       const allLogs = consoleSpy.mock.calls.flat();
       const logContent = allLogs.map((call) => JSON.stringify(call)).join('');
@@ -129,7 +129,7 @@ describe('Deep-Link Queueing During App-Lock (#908)', () => {
     it('should not log queued destination in error reports', () => {
       const errorSpy = jest.spyOn(console, 'error').mockImplementation();
 
-      const destination = 'petchain://account/settings/security';
+      const destination = 'catchain://account/settings/security';
       const handleError = jest.fn((err) => {
         // Correct: "Navigation queuing failed"
         // Wrong: `Failed to queue ${destination}`
@@ -164,12 +164,12 @@ describe('Deep-Link Queueing During App-Lock (#908)', () => {
 
   describe('Replay after successful unlock', () => {
     it('should replay queued deep link after successful unlock', () => {
-      // Queue: petchain://pets/123/health
+      // Queue: catchain://pets/123/health
       // Unlock successful
       // Navigation to pets/123/health occurs
       const replayQueue = jest.fn();
-      replayQueue('petchain://pets/123/health');
-      expect(replayQueue).toHaveBeenCalledWith('petchain://pets/123/health');
+      replayQueue('catchain://pets/123/health');
+      expect(replayQueue).toHaveBeenCalledWith('catchain://pets/123/health');
     });
 
     it('should replay queued notification destination after unlock', () => {

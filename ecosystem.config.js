@@ -1,5 +1,5 @@
 /**
- * PM2 Ecosystem Configuration — PetChain Backend
+ * PM2 Ecosystem Configuration — CatChain Backend
  *
  * Manages the Node.js backend in cluster mode so all available CPU cores
  * are utilised. Sessions are stored in Redis, so every instance is
@@ -13,7 +13,7 @@
  *   pm2 reload ecosystem.config.js --env production
  *
  *   # Stop all workers
- *   pm2 stop petchain-api
+ *   pm2 stop catchain-api
  *
  *   # Save process list so it survives reboots
  *   pm2 save && pm2 startup
@@ -25,7 +25,7 @@ module.exports = {
   apps: [
     {
       // ---- Identity -------------------------------------------------------
-      name: 'petchain-api',
+      name: 'catchain-api',
       script: 'backend/server/index.ts',
       interpreter: 'node',
       interpreter_args: '--import tsx',
@@ -49,8 +49,8 @@ module.exports = {
       restart_delay: 1_000,
 
       // ---- Log management -------------------------------------------------
-      error_file: 'logs/petchain-error.log',
-      out_file: 'logs/petchain-out.log',
+      error_file: 'logs/catchain-error.log',
+      out_file: 'logs/catchain-out.log',
       log_date_format: 'YYYY-MM-DD HH:mm:ss Z',
       merge_logs: true,
 

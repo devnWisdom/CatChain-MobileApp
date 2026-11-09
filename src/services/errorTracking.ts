@@ -1,7 +1,7 @@
 /**
  * errorTracking.ts
  *
- * Centralised Sentry integration for PetChain.
+ * Centralised Sentry integration for CatChain.
  * Covers: initialisation, error/message capture, user context,
  * breadcrumbs (navigation, API, blockchain, login, sync, SOS),
  * and performance tracing for critical flows.
@@ -128,7 +128,7 @@ export function init(): void {
   Sentry.init({
     dsn: SENTRY_DSN,
     environment: APP_ENV,
-    release: `petchain-mobile@${APP_VERSION}`,
+    release: `catchain-mobile@${APP_VERSION}`,
     dist: APP_VERSION,
     enabled: !(typeof __DEV__ !== 'undefined' && __DEV__) || SENTRY_ENABLE_IN_DEV,
     tracesSampleRate: TRACES_SAMPLE_RATE[APP_ENV] ?? 1.0,

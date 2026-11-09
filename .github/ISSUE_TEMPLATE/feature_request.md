@@ -71,5 +71,5 @@ Optional: known constraints, relevant files/services, potential risks, or depend
 ## Checklist
 
 - [ ] I searched existing issues and this is not a duplicate
-- [ ] The feature is aligned with the PetChain product direction
+- [ ] The feature is aligned with the CatChain product direction
 - [ ] I have defined clear acceptance criteria above

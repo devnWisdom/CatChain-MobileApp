@@ -1,5 +1,5 @@
 /**
- * Payment and subscription models for PetChain premium features.
+ * Payment and subscription models for CatChain premium features.
  * NOTE: This feature is marked as FUTURE — architecture is in place but
  * actual payment processing is stubbed and not connected to a live provider.
  */
@@ -73,7 +73,7 @@ export const SUBSCRIPTION_PLANS: Record<SubscriptionPlan, SubscriptionPlanDetail
   premium_monthly: {
     id: 'premium_monthly',
     name: 'Premium Monthly',
-    description: 'Full access to all PetChain features, billed monthly',
+    description: 'Full access to all CatChain features, billed monthly',
     priceMonthly: '9.99',
     priceAnnual: '119.88',
     currency: 'USD',
@@ -89,7 +89,7 @@ export const SUBSCRIPTION_PLANS: Record<SubscriptionPlan, SubscriptionPlanDetail
   premium_annual: {
     id: 'premium_annual',
     name: 'Premium Annual',
-    description: 'Full access to all PetChain features, billed annually (save 20%)',
+    description: 'Full access to all CatChain features, billed annually (save 20%)',
     priceMonthly: '7.99',
     priceAnnual: '95.88',
     currency: 'USD',

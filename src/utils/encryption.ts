@@ -39,8 +39,8 @@ export { hashPassword, deriveKey } from './encryption/crypto';
 // Constants
 // ─────────────────────────────────────────────────────────────────────────────
 
-const KEY_SERVICE = 'com.petchain.encryption.utility';
-const KEY_USERNAME = 'PETCHAIN_UTILITY_KEY';
+const KEY_SERVICE = 'com.catchain.encryption.utility';
+const KEY_USERNAME = 'CATCHAIN_UTILITY_KEY';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // generateKey

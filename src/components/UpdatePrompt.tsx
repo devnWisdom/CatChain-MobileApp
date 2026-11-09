@@ -63,8 +63,8 @@ export default function UpdatePrompt({ variant, onUpdate, storeUrl, onDismiss, v
             accessibilityLiveRegion="polite"
           >
             {isForce
-              ? 'A critical update is required to continue using PetChain. Please update the app from the store.'
-              : 'A new version of PetChain is ready. Update now for the latest features and fixes.'}
+              ? 'A critical update is required to continue using CatChain. Please update the app from the store.'
+              : 'A new version of CatChain is ready. Update now for the latest features and fixes.'}
           </Text>
 
           <TouchableOpacity

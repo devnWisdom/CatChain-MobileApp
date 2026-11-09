@@ -20,7 +20,7 @@ export default function ErrorFallback({
   const contactSupport = () => {
     if (onContactSupport) return onContactSupport();
     const mailto =
-      'mailto:support@petchain.app?subject=App%20Error&body=I%20encountered%20an%20error.';
+      'mailto:support@catchain.app?subject=App%20Error&body=I%20encountered%20an%20error.';
     void Linking.openURL(mailto).catch(() => {});
   };
 

@@ -10,12 +10,12 @@
  *
  * SENSITIVE DATA INVENTORY (from audit):
  *   Android (expo-sqlite / AsyncStorage via SQLite):
- *     - databases/petchain.db   → AES-256 encrypted content, but file SHOULD
+ *     - databases/catchain.db   → AES-256 encrypted content, but file SHOULD
  *                                  be excluded from adb-backup / cloud-backup
  *     - shared_prefs/           → AsyncStorage-backed values (access/refresh tokens,
  *                                  session, pets list, sync state, notification map)
  *   iOS (equivalent):
- *     - Documents/ExponentExperienceData/<bundleId>/SQLite/petchain.db
+ *     - Documents/ExponentExperienceData/<bundleId>/SQLite/catchain.db
  *     - NSUserDefaults (RNCAsyncStorage)
  *   expo-secure-store items:
  *     These are already stored in the platform Keychain/Keystore and are

@@ -292,7 +292,7 @@ const LostFoundScreen: React.FC = () => {
       setScannedPet(pet);
       setQrModalVisible(false);
     } catch (error) {
-      Alert.alert('Invalid QR Code', 'Unable to resolve this PetChain QR code.');
+      Alert.alert('Invalid QR Code', 'Unable to resolve this CatChain QR code.');
     }
   };
 
@@ -341,7 +341,7 @@ const LostFoundScreen: React.FC = () => {
       <View style={styles.topBar}>
         <Text style={styles.screenTitle}>Lost & Found Network</Text>
         <TouchableOpacity style={styles.scanButton} onPress={() => setQrModalVisible(true)}>
-          <Text style={styles.scanButtonText}>Scan PetChain QR</Text>
+          <Text style={styles.scanButtonText}>Scan CatChain QR</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.filterRow}>
@@ -600,7 +600,7 @@ const LostFoundScreen: React.FC = () => {
       <Modal visible={qrModalVisible} animationType="slide" transparent>
         <View style={styles.modalOverlay}>
           <View style={styles.modalContentLarge}>
-            <Text style={styles.modalTitle}>Scan PetChain QR</Text>
+            <Text style={styles.modalTitle}>Scan CatChain QR</Text>
             <Text style={styles.helpText}>Use the app's QR scanner to locate a pet profile.</Text>
             <TouchableOpacity
               style={styles.scanActionButton}

@@ -29,7 +29,7 @@ export function isRedisReady(): boolean {
   return isReady;
 }
 
-export const REDIS_KEY_PREFIX = 'petchain:';
+export const REDIS_KEY_PREFIX = 'catchain:';
 
 export const CACHE_TTL = {
   PET: 3600, // 1 hour

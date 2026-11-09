@@ -102,7 +102,7 @@ describe('backup utilities', () => {
     it('hashes a real temp file', async () => {
       const { sha256File } = await import('./backup');
       const filePath = path.join(os.tmpdir(), `test-hash-${Date.now()}.txt`);
-      await writeFile(filePath, 'petchain backup test');
+      await writeFile(filePath, 'catchain backup test');
       const hash = await sha256File(filePath);
       expect(hash).toHaveLength(64);
       await unlink(filePath);

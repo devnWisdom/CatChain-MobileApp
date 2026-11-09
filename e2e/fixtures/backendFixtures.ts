@@ -34,7 +34,7 @@ export const authFixtures: FixtureRoute[] = [
     body: {
       token: 'fixture-access-token-DO-NOT-LOG',
       refreshToken: 'fixture-refresh-token-DO-NOT-LOG',
-      user: { id: 'user_fixture_0001', name: 'Journey User', email: 'journey-user@petchain.test' },
+      user: { id: 'user_fixture_0001', name: 'Journey User', email: 'journey-user@catchain.test' },
     },
   },
   {

@@ -35,7 +35,7 @@ This directory contains GitHub Actions workflows and configurations for automate
 
 3. **Respond to vulnerabilities:**
    - Use private vulnerability reporting
-   - Email security@petchain.app
+   - Email security@catchain.app
    - Follow incident response procedures
 
 ## Files Overview
@@ -303,7 +303,7 @@ For questions or issues:
 
 1. Check documentation above
 2. Review GitHub Actions logs
-3. Contact security@petchain.app
+3. Contact security@catchain.app
 4. Open issue with `security` label
 
 ---
@@ -361,4 +361,4 @@ For questions or issues:
 ---
 
 **Last Updated:** May 28, 2026
-**Maintained By:** PetChain Security Team
+**Maintained By:** CatChain Security Team

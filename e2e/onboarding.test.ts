@@ -13,7 +13,7 @@ async function navigateThroughSlidesToRegister(): Promise<void> {
 async function completeOnboardingHappyPath(): Promise<void> {
   await navigateThroughSlidesToRegister();
   await element(by.id('register-name-input')).typeText('Test User');
-  await element(by.id('register-email-input')).typeText('testuser@petchain.test');
+  await element(by.id('register-email-input')).typeText('testuser@catchain.test');
   await element(by.id('register-password-input')).typeText('TestPass123!');
   await element(by.id('register-submit-button')).tap();
   await waitFor(element(by.id('pet-list-screen')))
@@ -49,7 +49,7 @@ describe('Onboarding & Authentication — happy path', () => {
 
   it('registers a new user', async () => {
     await element(by.id('register-name-input')).typeText('Test User');
-    await element(by.id('register-email-input')).typeText('testuser@petchain.test');
+    await element(by.id('register-email-input')).typeText('testuser@catchain.test');
     await element(by.id('register-password-input')).typeText('TestPass123!');
     await element(by.id('register-submit-button')).tap();
 
@@ -64,7 +64,7 @@ describe('Onboarding & Authentication — happy path', () => {
 
     await detoxExpect(element(by.id('login-screen'))).toBeVisible();
 
-    await element(by.id('login-email-input')).typeText('testuser@petchain.test');
+    await element(by.id('login-email-input')).typeText('testuser@catchain.test');
     await element(by.id('login-password-input')).typeText('TestPass123!');
     await element(by.id('login-submit-button')).tap();
 
@@ -90,7 +90,7 @@ describe('Onboarding — network failure recovery', () => {
   it('shows an error and stays on register screen when network fails', async () => {
     // Fill in registration fields
     await element(by.id('register-name-input')).typeText('Network Failure User');
-    await element(by.id('register-email-input')).typeText('networkfail@petchain.test');
+    await element(by.id('register-email-input')).typeText('networkfail@catchain.test');
     await element(by.id('register-password-input')).typeText('TestPass123!');
 
     // Block registration API calls to simulate network failure
@@ -143,7 +143,7 @@ describe('Onboarding — navigation state preservation', () => {
   it('preserves registration input when navigating to login and back', async () => {
     // Enter registration data
     await element(by.id('register-name-input')).typeText('State Preserve User');
-    await element(by.id('register-email-input')).typeText('preserve@petchain.test');
+    await element(by.id('register-email-input')).typeText('preserve@catchain.test');
     await element(by.id('register-password-input')).typeText('TestPass123!');
 
     // Navigate to the login screen via "Sign In" link

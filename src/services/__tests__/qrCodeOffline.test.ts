@@ -88,7 +88,7 @@ describe('qrCodeService offline verification (Issue #937)', () => {
     });
 
     it('reports an unverifiable cached QR that cannot be decoded', async () => {
-      await cacheQRPayload(mockPet.id, 'this-is-not-a-valid-petchain-qr');
+      await cacheQRPayload(mockPet.id, 'this-is-not-a-valid-catchain-qr');
       const info = await getOfflineQRCodeInfo(mockPet.id);
 
       expect(info.status).toBe('unverifiable');

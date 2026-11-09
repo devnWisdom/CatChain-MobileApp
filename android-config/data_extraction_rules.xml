@@ -17,7 +17,7 @@
 
   Sensitive data categories handled here
   ────────────────────────────────────────
-  • databases/petchain.db
+  • databases/catchain.db
       AES-256 encrypted SQLite with medications, health records, appointments,
       SOAP drafts, and the kv_store (auth tokens, PII, emergency contacts).
 
@@ -48,7 +48,7 @@
   <cloud-backup>
 
     <!-- SQLite database -->
-    <exclude domain="database" path="petchain.db" />
+    <exclude domain="database" path="catchain.db" />
 
     <!-- AsyncStorage (SharedPreferences) -->
     <exclude domain="sharedpref" path="RNCAsyncStorage" />
@@ -72,7 +72,7 @@
   <device-transfer>
 
     <!-- SQLite database -->
-    <exclude domain="database" path="petchain.db" />
+    <exclude domain="database" path="catchain.db" />
 
     <!-- AsyncStorage (SharedPreferences) -->
     <exclude domain="sharedpref" path="RNCAsyncStorage" />

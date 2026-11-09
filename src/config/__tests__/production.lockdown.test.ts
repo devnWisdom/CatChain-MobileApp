@@ -2,7 +2,7 @@ import { validateRuntimeConfig, shouldFailHardOnConfigError } from '../schema';
 
 describe('Production Lockdown (Issue #901)', () => {
   const validProdConfig = {
-    apiBaseUrl: 'https://api.petchain.app/api',
+    apiBaseUrl: 'https://api.catchain.app/api',
     apiTimeoutMs: 10000,
     cacheSizeMb: 50,
     paginationLimit: 20,
@@ -21,14 +21,14 @@ describe('Production Lockdown (Issue #901)', () => {
     });
 
     it('rejects HTTP API in production even with real domain', () => {
-      const config = { ...validProdConfig, apiBaseUrl: 'http://api.petchain.app/api' };
+      const config = { ...validProdConfig, apiBaseUrl: 'http://api.catchain.app/api' };
       const result = validateRuntimeConfig(config, 'production');
       expect(result.isValid).toBe(false);
       expect(result.error).toContain('HTTPS');
     });
 
     it('requires explicit HTTPS production URLs', () => {
-      const config = { ...validProdConfig, apiBaseUrl: 'https://api.petchain.app/api' };
+      const config = { ...validProdConfig, apiBaseUrl: 'https://api.catchain.app/api' };
       const result = validateRuntimeConfig(config, 'production');
       expect(result.isValid).toBe(true);
     });
@@ -94,7 +94,7 @@ describe('Production Lockdown (Issue #901)', () => {
     });
 
     it('simulates staging EAS build', () => {
-      const stagingConfig = { ...validProdConfig, apiBaseUrl: 'https://staging.petchain.app/api' };
+      const stagingConfig = { ...validProdConfig, apiBaseUrl: 'https://staging.catchain.app/api' };
       const result = validateRuntimeConfig(stagingConfig, 'staging');
       expect(result.isValid).toBe(true);
     });

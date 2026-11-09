@@ -15,7 +15,7 @@
  *      whenever the URL is about to expire (checked via `isSignedUrlExpiring`).
  *
  * Environment variables:
- *   CDN_BASE_URL              — Public CDN origin (e.g. https://cdn.petchain.app)
+ *   CDN_BASE_URL              — Public CDN origin (e.g. https://cdn.catchain.app)
  *   CDN_SIGNING_SECRET        — HMAC-SHA256 secret for signed URLs (required in prod)
  *   CDN_SIGNED_URL_TTL_S      — Signed URL expiry in seconds (default: 3600 = 1 h)
  *   CDN_MEDICAL_SIGNING_SECRET — Separate secret for medical record URLs (falls back to CDN_SIGNING_SECRET)
@@ -41,11 +41,11 @@ try {
 // CONFIGURATION
 // ─────────────────────────────────────────────────────────────────────────────
 
-const CDN_BASE_URL = (process.env.CDN_BASE_URL ?? 'https://cdn.petchain.app').replace(/\/$/, '');
-const CDN_SIGNING_SECRET = process.env.CDN_SIGNING_SECRET ?? 'petchain-dev-cdn-secret';
+const CDN_BASE_URL = (process.env.CDN_BASE_URL ?? 'https://cdn.catchain.app').replace(/\/$/, '');
+const CDN_SIGNING_SECRET = process.env.CDN_SIGNING_SECRET ?? 'catchain-dev-cdn-secret';
 const CDN_MEDICAL_SIGNING_SECRET = process.env.CDN_MEDICAL_SIGNING_SECRET ?? CDN_SIGNING_SECRET;
 const CDN_SIGNED_URL_TTL_S = Number(process.env.CDN_SIGNED_URL_TTL_S) || 3600;
-const CDN_BUCKET = process.env.CDN_BUCKET ?? 'petchain-photos';
+const CDN_BUCKET = process.env.CDN_BUCKET ?? 'catchain-photos';
 const CDN_PROVIDER = (process.env.CDN_PROVIDER ?? 's3') as 'stub' | 's3';
 const THUMBNAIL_WIDTH = Number(process.env.THUMBNAIL_WIDTH) || 320;
 const THUMBNAIL_HEIGHT = Number(process.env.THUMBNAIL_HEIGHT) || 320;

@@ -42,7 +42,7 @@ jobs:
       postgres:
         image: postgres:15
         env:
-          POSTGRES_DB: petchain_test
+          POSTGRES_DB: catchain_test
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
         ports:
@@ -54,7 +54,7 @@ jobs:
           --health-retries 5
 
     env:
-      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/petchain_test
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/catchain_test
       NODE_ENV: test
 
     steps:

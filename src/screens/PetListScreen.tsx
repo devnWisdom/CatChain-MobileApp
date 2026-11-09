@@ -242,7 +242,7 @@ const PetListScreen: React.FC<Props> = ({ onSelectPet, onAddPet, onAdoptPet }) =
             <EmptyState
               icon="paw"
               title="No Pets Yet"
-              description="Get started by adding your first pet's profile to PetChain."
+              description="Get started by adding your first pet's profile to CatChain."
               buttonText="Add your first pet"
               onPress={handleAddPet}
             />

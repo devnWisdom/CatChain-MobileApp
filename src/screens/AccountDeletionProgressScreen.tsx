@@ -34,7 +34,7 @@ const STATE_COPY: Record<AccountDeletionState, { label: string; detail: string }
   },
   failed: {
     label: 'Deletion did not complete',
-    detail: 'The last request failed. Contact PetChain support to resolve it.',
+    detail: 'The last request failed. Contact CatChain support to resolve it.',
   },
   unknown: {
     label: 'Status unavailable',

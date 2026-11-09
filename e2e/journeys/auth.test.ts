@@ -65,7 +65,7 @@ describe('Journey — Authentication', () => {
     });
     if (!(await isVisible('login-screen'))) return;
 
-    await element(by.id('login-email-input')).typeText('wrong@petchain.test');
+    await element(by.id('login-email-input')).typeText('wrong@catchain.test');
     await element(by.id('login-password-input')).typeText('WrongPass123!');
     await element(by.id('login-submit-button')).tap();
 

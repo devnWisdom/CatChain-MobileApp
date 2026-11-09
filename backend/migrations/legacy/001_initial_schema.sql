@@ -1,4 +1,4 @@
--- Initial Schema for PetChain
+-- Initial Schema for CatChain
 
 -- Users table
 CREATE TABLE IF NOT EXISTS users (

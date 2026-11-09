@@ -18,7 +18,7 @@ export function initCrashReporting(): void {
   Sentry.init({
     dsn: SENTRY_DSN,
     environment: APP_ENV,
-    release: `petchain-mobile@${APP_VERSION}`,
+    release: `catchain-mobile@${APP_VERSION}`,
     dist: APP_VERSION,
     enabled: !__DEV__ || SENTRY_ENABLE_IN_DEV,
     // Capture 100% of transactions in non-prod; tune down in production

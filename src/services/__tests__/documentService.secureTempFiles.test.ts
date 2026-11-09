@@ -77,8 +77,8 @@ const TEST_KEY_VERSION = 1;
 
 function setupKey() {
   mockSecureStore.getItemAsync.mockImplementation(async (key: string) => {
-    if (key === 'com.petchain.docvault.keyVersion') return String(TEST_KEY_VERSION);
-    if (key === `com.petchain.docvault.key.${TEST_KEY_VERSION}`) return TEST_KEY;
+    if (key === 'com.catchain.docvault.keyVersion') return String(TEST_KEY_VERSION);
+    if (key === `com.catchain.docvault.key.${TEST_KEY_VERSION}`) return TEST_KEY;
     return null;
   });
 }

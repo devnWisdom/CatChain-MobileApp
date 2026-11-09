@@ -61,7 +61,7 @@ const WelcomeStep: React.FC<Props> = ({ onNext, onSkip }) => {
       </View>
 
       <Text style={styles.emoji}>🐾</Text>
-      <Text style={styles.title}>Welcome to PetChain</Text>
+      <Text style={styles.title}>Welcome to CatChain</Text>
       <Text style={styles.subtitle}>
         Secure, blockchain-verified health records for your beloved pets.
       </Text>

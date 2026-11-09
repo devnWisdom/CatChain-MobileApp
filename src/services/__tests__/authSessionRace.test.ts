@@ -15,7 +15,7 @@
 
 jest.mock('../../config', () => ({
   __esModule: true,
-  default: { api: { baseUrl: 'https://api.petchain.test/api', timeoutMs: 5000 } },
+  default: { api: { baseUrl: 'https://api.catchain.test/api', timeoutMs: 5000 } },
 }));
 
 const mockAxiosPost = jest.fn();

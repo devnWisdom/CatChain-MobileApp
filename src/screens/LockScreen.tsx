@@ -136,7 +136,7 @@ export default function LockScreen({ onUnlock, onWipe, showPinFallback = false }
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>🔒 PetChain</Text>
+      <Text style={styles.title}>🔒 CatChain</Text>
       <Text style={styles.subtitle}>
         {mode === 'biometric' ? 'Authenticating…' : 'Enter your 6-digit PIN'}
       </Text>

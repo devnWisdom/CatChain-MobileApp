@@ -58,7 +58,7 @@ export type MedicalRecordWithChainData = MedicalRecord & {
 // CONFIG
 // ==============================
 
-const API_BASE_URL = 'https://api.petchain.app/api';
+const API_BASE_URL = 'https://api.catchain.app/api';
 const CACHE_TTL_MS = 2 * 60 * 1000;
 
 // Stellar network configuration (issue #943).
