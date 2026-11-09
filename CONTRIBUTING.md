@@ -34,7 +34,7 @@ Thank you for your interest in contributing to **PetChain**! We welcome contribu
 1. **Clone the repository:**
 
    ```bash
-   git clone https://github.com/DogStark/PetChain-MobileApp.git
+   git clone https://github.com/devnWisdom/PetChain-MobileApp.git
    cd PetChain-MobileApp
    ```
 
@@ -355,7 +355,7 @@ npm test -- --testPathPattern="backupExclusion"
 
 ## Getting Help
 
-- **GitHub Issues**: Use the [issue tracker](https://github.com/DogStark/PetChain-MobileApp/issues) for bug reports and feature requests.
+- **GitHub Issues**: Use the [issue tracker](https://github.com/devnWisdom/PetChain-MobileApp/issues) for bug reports and feature requests.
 - **Discussion**: Open a GitHub Discussion for questions or ideas.
 - **Security Issues**: See our [Security Policy](.github/SECURITY-README.md) for reporting vulnerabilities.
 

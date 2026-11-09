@@ -131,8 +131,8 @@ chore: apply security patches via npm audit fix
 #### npm Updates
 - **Schedule:** Weekly on Mondays at 3 AM UTC
 - **Open PRs Limit:** 5 concurrent PRs
-- **Reviewers:** DogStark (update as needed)
-- **Assignees:** DogStark (update as needed)
+- **Reviewers:** devnWisdom (update as needed)
+- **Assignees:** devnWisdom (update as needed)
 - **Labels:** `dependencies`, `security`
 - **Commit Prefix:** `chore(deps):`
 - **Rebase Strategy:** Auto
@@ -145,7 +145,7 @@ chore: apply security patches via npm audit fix
 #### GitHub Actions Updates
 - **Schedule:** Weekly on Mondays at 4 AM UTC
 - **Open PRs Limit:** 5 concurrent PRs
-- **Reviewers:** DogStark (update as needed)
+- **Reviewers:** devnWisdom (update as needed)
 - **Labels:** `ci-cd`, `github-actions`
 - **Commit Prefix:** `ci(actions):`
 - **Rebase Strategy:** Auto

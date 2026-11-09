@@ -13,9 +13,9 @@ updates:
     pull-request-branch-name:
       separator: "/"
     reviewers:
-      - DogStark
+      - devnWisdom
     assignees:
-      - DogStark
+      - devnWisdom
     labels:
       - dependencies
       - security
@@ -46,7 +46,7 @@ updates:
     pull-request-branch-name:
       separator: "/"
     reviewers:
-      - DogStark
+      - devnWisdom
     labels:
       - ci-cd
       - github-actions

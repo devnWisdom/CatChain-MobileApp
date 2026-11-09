@@ -3,7 +3,7 @@
 > Secure pet health records, medication reminders, QR scanning, and emergency SOS — powered by blockchain.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-1.0.0-blue)](https://github.com/DogStark/PetChain-MobileApp/releases)
+[![Version](https://img.shields.io/badge/version-1.0.0-blue)](https://github.com/devnWisdom/PetChain-MobileApp/releases)
 
 **PetChain** is a comprehensive mobile application for pet owners to securely manage their pets' medical records, medication schedules, vet appointments, and emergency contacts. Built with React Native and Expo, it integrates with the Stellar blockchain to provide immutable, verifiable health records.
 
@@ -86,7 +86,7 @@ See [ARCHITECTURE.md](./ARCHITECTURE.md) for detailed system diagrams.
 ### Installation
 ```bash
 # Clone repository
-git clone https://github.com/DogStark/PetChain-MobileApp.git
+git clone https://github.com/devnWisdom/PetChain-MobileApp.git
 cd PetChain-MobileApp
 
 # Install dependencies
@@ -301,7 +301,7 @@ PetChain is not a substitute for professional veterinary care. Always consult a 
 
 ## 📞 Support
 
-- Issues: https://github.com/DogStark/PetChain-MobileApp/issues
+- Issues: https://github.com/devnWisdom/PetChain-MobileApp/issues
 - Email: support@petchain.app
 - Twitter: [@petchainapp](https://twitter.com/petchainapp)
 - Website: https://petchain.app

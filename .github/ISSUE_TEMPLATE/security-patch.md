@@ -3,7 +3,7 @@ name: 🔒 Security Patch
 about: Track security patches and updates
 title: "[SECURITY PATCH] "
 labels: security, patch, dependencies
-assignees: DogStark
+assignees: devnWisdom
 ---
 
 ## Security Patch Details
